@@ -673,3 +673,77 @@ arquivos pendentes: `AGT-001.md` (marcas da Seção 4 confirmadas), `AGT-002.md`
 não executada), `ATUALIZACAO-TCC-APOS-AGT-001.md` (aplicada no Docs) e este diário. O hash do
 commit está na resposta ao pesquisador e em `git log`. Autor igual ao da linha de base; nenhum
 arquivo de código foi alterado.
+
+---
+
+## Entrada 29 — PASSO 0 do prompt do orientador: diagnóstico e plano
+**Horário:** 2026-11-13T16:49:43-03:00 (comando `date`; leituras a partir de 16:48:31)
+
+**Pedido do pesquisador:** enviou o prompt `prompt_tcc_vscode.md` (resumo do relatório do
+orientador, 35 correções textuais, recomendações por capítulo e entregas no repositório e no Docs),
+que manda começar pelo PASSO 0 (diagnóstico, sem editar) e mostrar o plano antes de qualquer edição.
+
+**Ações:**
+- Releu o TCC no Google Docs (59,7 mil caracteres) e conferiu por busca de texto as 35 correções
+  (41 verificações): 0 já aplicadas, 33 com o texto original presente, 8 em trechos reescritos
+  pelo agente em 13/11/2026 (precisam de adaptação).
+- Conferiu o repositório (`git log`, tags, `TCC/`, `docs/`, `METRICAS.csv`).
+- Identificou que o prompt descreve um estado anterior do estudo (3 atividades AP-1) e que o
+  repositório e o TCC atuais têm piloto com 5 atividades e experimento principal com a AGT-001 AP-3;
+  não existe esquema de banco no principal (AGT-002 não executada).
+- Escreveu `TCC/relatorios/PLANO-ADEQUACAO-ORIENTADOR.md` (divergências, correções, evidências,
+  fases e decisões pendentes).
+- Não leu os dois arquivos do orientador (só o resumo no prompt). Não abriu o repositório do piloto.
+  Não editou o Google Docs.
+
+**Arquivos criados:** o plano. **Alterados:** este diário. Nenhum commit.
+
+**Pendências:** aprovação do plano e respostas às 9 decisões da Seção 5 do plano.
+
+---
+
+## Entrada 30 — Fases 1 e 2 do plano do orientador
+**Horário:** 2026-11-13T16:56:31-03:00 (comando `date`; trabalho a partir de 16:51:53)
+
+**Pedido do pesquisador (respostas ao plano):** aprovou usar "piloto 5, principal 1 de 18"; delegou
+ao agente a decisão sobre abrir os registros do piloto; dispensou o backup do Docs; mandou aplicar
+e adaptar o conteúdo passado ao que o orientador pede, com o que existe hoje.
+
+**Decisões do agente:** (a) **não abrir** o repositório do piloto (regra 8 e ameaça à validade já
+registrada); dados do piloto só os do TCC, o resto "[DADO NÃO REGISTRADO]"; (b) item 31: usar a
+redação "sem nenhuma atividade, até o momento, classificada como AP-2 ou RP" (a vírgula do
+orientador estaria incorreta); (c) sem backup do Docs, por decisão do pesquisador (o histórico de
+versões permite reverter).
+
+**Fase 1 (repositório), arquivos criados:** `docs/fichas-agt/AGT-TEMPLATE.md`;
+`docs/fichas-agt/principal/AGT-001.md`; `docs/fichas-agt/piloto/AGT-001.md` a `AGT-005.md` (só dados do
+TCC); `docs/rubrica-avaliacao.md`; `docs/quadro-resultados.md`; `docs/requisitos/RF.md`, `RNF.md`,
+`RN.md` (42, 33 e 44 itens, copiados da especificação por script, contagens conferidas);
+`docs/matriz-rastreabilidade.md` (evidência só para RNF-018 a 026 e 029 da AGT-001; o resto
+"Planejada"); `docs/decisoes/ADR-postgres-para-sqlite.md` (do piloto; dados faltantes marcados;
+consequências técnicas marcadas "[A CONFERIR]"); `docs/diagramas/diagramas.md` (ER conceitual,
+arquitetura por áreas, fluxo experimental, reserva/retenção, pagamento, cancelamento; sem esquema
+inventado).
+
+**Fase 2 (Google Docs):** com controle de revisão, aplicou 40 trocas de texto em uma chamada ao
+`update_doc`, todas com sucesso (itens 1 e 3 com 2 ocorrências cada): pré-textuais, Resumo,
+Introdução, Fundamentação, Metodologia, Especificação, Execução, Resultados e Considerações, mais
+a delimitação "piloto 5; principal 1 de 18" no Resumo e no Abstract. Itens do orientador sem
+correspondência no texto atual: 33 (frase removida na reescrita de 13/11), 30 e 35b (trechos
+reescritos), "AGT-001 a AGT-018" (não encontrado); o item 28 foi adaptado a "acesso ao Codex".
+Adaptações do agente: item 29 manteve "quatro" (piloto AGT-001 a AGT-004) e usou "não é evidência
+suficiente" para evitar repetição; item 31b adaptado à frase atual.
+
+**Não feito:** Fase 3 (conteúdo novo e apêndices no Docs) e Fase 4 (referências). Nenhum commit.
+
+---
+
+## Entrada 31 — Commit das Fases 1 e 2 e início da Fase 4 (referências)
+**Horário:** 2026-11-13T17:07:01-03:00 (comando `date`)
+
+**Pedido do pesquisador:** "Sim, que você comece e faça o commit dos arquivos".
+
+**Ações:** commitou os arquivos de `docs/` (fichas, rubrica, quadro de resultados, requisitos,
+matriz, ADR, diagramas), o plano em `TCC/relatorios/` e este diário, com mensagem `DOCS: ...`.
+Em seguida iniciou a Fase 4 (conferência das referências por busca na web), descrita nas
+próximas entradas.

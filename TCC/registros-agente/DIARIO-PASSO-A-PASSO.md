@@ -393,3 +393,179 @@ passo, com pausas nos pontos-chave.
 **Decisão registrada:** a Tentativa 2 será feita sem reabrir os arquivos da Tentativa 1 (o agente
 não leu o código dela nesta etapa, mas já viu os resultados e o relatório na mesma sessão; isso é
 ameaça à validade).
+
+---
+
+## Entrada 17 — Início da Tentativa 2 da AGT-001
+**Horário:** início da Tentativa 2 = 2026-11-13T16:16:20-03:00 (comando `date`, após a limpeza
+da árvore de trabalho às 16:16:16)
+
+**Pedido do pesquisador:** "sim" para limpar a árvore e começar a Tentativa 2, com a instrução
+original da Seção 5 do `AGT-001.md` (sem alterações) e pausas nos pontos-chave.
+
+**Preparação (não conta como execução da atividade):**
+- Removeu do disco os arquivos de código e configuração da Tentativa 1 (preservados no commit
+  `4cd310c` e na tag `agt-001-tentativa-1`), além de `node_modules` e `dist`, e restaurou o
+  `README.md` da linha de base (`git checkout da3de13 -- README.md`). O Git mostra os arquivos
+  como removidos em relação ao `HEAD`; nada foi commitado.
+
+**Execução (Tentativa 2):**
+- Releu o `CLAUDE.md` já lido nesta sessão e leu `docs/especificacao/01-VISAO-GERAL.md` e
+  `03-REQUISITOS-NAO-FUNCIONAIS.md` (a `07-PLANO-DE-ATIVIDADES.md` já tinha sido lida nesta sessão).
+- Ambiente: Node.js v26.13.0, npm 11.20.0, Windows 11.
+- Consultou no registro do npm (`npm view`) as versões mais recentes de vite (8.3.8), vitest
+  (5.1.0), typescript (7.0.2), eslint (10.14.0), typescript-eslint (8.72.2), @types/node (26.6.6),
+  react (19.3.1), react-dom (19.3.1), @vitejs/plugin-react (6.3.0), fastify (5.12.8) e express
+  (5.3.0).
+- Não leu o código da Tentativa 1.
+
+**Ponto de parada 1:** o agente identificou uma decisão de arquitetura (framework web e servidor)
+e a apresentou ao pesquisador antes de criar arquivos, conforme a restrição 7 da instrução.
+
+**Arquivos alterados até aqui:** este diário.
+
+---
+
+## Entrada 18 — Tentativa 2 da AGT-001: estrutura e dependências (ponto de parada 2)
+**Horário:** 2026-11-13T16:20:06-03:00 (verificação de compatibilidade) a
+2026-11-13T16:21:57-03:00 (fim da criação dos arquivos)
+
+**Decisão do pesquisador (ponto de parada 1):** "Vamos fazer a sua recomendação": front-end com
+Vite + React e servidor com `node:http`.
+
+**Ações:**
+- Consultou as dependências de pares (`npm view ... peerDependencies`): `typescript-eslint@8.72.2`
+  exige TypeScript `>=4.8.4 <6.1.0`. Como a versão mais recente do TypeScript é a 7.0.2, o agente
+  fixou o TypeScript em **6.0.3** (maior versão 6.0 disponível: 6.0.2 e 6.0.3).
+- Criou `.npmrc` (`save-exact=true`) e `package.json` base; instalou com `npm install`:
+  - produção: `react` 19.3.1, `react-dom` 19.3.1;
+  - desenvolvimento: `vite` 8.3.8, `@vitejs/plugin-react` 6.3.0, `vitest` 5.1.0, `typescript`
+    6.0.3, `eslint` 10.14.0, `@eslint/js` 10.0.1, `typescript-eslint` 8.72.2, `@types/node`
+    26.6.6, `@types/react` 19.3.0, `@types/react-dom` 19.3.0.
+- O `npm install` informou 10 vulnerabilidades moderadas; não foram corrigidas (a análise fica
+  para a validação).
+- Criou os arquivos: `tsconfig.json`, `vite.config.ts` (React, proxy de `/api` para a porta 3001 e
+  configuração de testes), `eslint.config.mjs`, `index.html`, `.env.example`, `server/config.ts`,
+  `server/app.ts`, `server/main.ts`, `src/config/env.ts`, `src/App.tsx`, `src/main.tsx`,
+  `src/styles.css`, `tests/server-config.test.ts`, `tests/server-health.test.ts`,
+  `tests/web-config.test.ts`, `tests/app-render.test.tsx`; adicionou os scripts do `package.json`
+  (`dev`, `dev:api`, `start:api`, `lint`, `typecheck`, `test`, `test:watch`, `build`, `preview`,
+  `check`).
+- Ainda não executou lint, verificação de tipos, testes nem build.
+
+**Arquivos alterados:** os acima e este diário. Nenhum commit.
+
+**Ponto de parada 2:** aguardando o pesquisador antes de executar as validações.
+
+---
+
+## Entrada 19 — Tentativa 2 da AGT-001: validações, README e registro (ponto de parada 3)
+**Horário:** 2026-11-13T16:23:28-03:00 (início das validações) a 2026-11-13T16:24:28-03:00 (fim do
+README); registro no `AGT-001.md` concluído às 2026-11-13T16:25:18-03:00
+
+**Pedido do pesquisador:** "ok" para seguir após a parada 2.
+
+**Ações e resultados:**
+- `npm run lint`: passou, sem avisos. `npm run typecheck`: passou.
+- `npm test`: 4 arquivos, 15 testes aprovados, 0 reprovados (271 ms).
+- `npm run build`: passou (17 módulos; JS 219,99 kB, 68,87 kB comprimido).
+- API (`node server/main.ts`): `/api/health` 200 `{"status":"ok"}` com `Cache-Control: no-store`;
+  `/api/x` 404. Front (`vite`, porta 5199): `/` 200 com `id="root"`; proxy `/api/health` pelo
+  front respondeu `{"status":"ok"}`. Os dois servidores iniciados pelo agente foram encerrados.
+- `npm audit`: 10 vulnerabilidades moderadas (desenvolvimento); `--omit=dev`: 0.
+- `.env`, `.env.local`, `node_modules`, `dist` ignorados pelo Git; nenhuma ocorrência de termos
+  sensíveis nos arquivos de código e configuração.
+- Reescreveu o `README.md`. A primeira tentativa de gravar falhou ("arquivo modificado desde a
+  leitura", por causa do `git checkout` da linha de base); releu e gravou com sucesso.
+- `npm run check` ao final: passou (16:24:11 a 16:24:18).
+- Registrou a Tentativa 2 nas Seções 6 a 10 do `AGT-001.md`, sem alterar a Seção 5 nem os dados
+  da Tentativa 1.
+
+**Duração da Tentativa 2:** 16:16:20 a 16:24:28 = 8 min 8 s cronológicos, dos quais cerca de
+4 min 50 s foram pausas para o pesquisador (aprox. 3 min 18 s sem as pausas).
+
+**Arquivos criados/alterados:** os listados na Seção 7 do `AGT-001.md` (Tentativa 2); este diário.
+Nenhum commit.
+
+**Pendências:** avaliação humana, intervenção, classificação, escolha da tentativa para as
+métricas e decisão de commit (todas dos pesquisadores).
+
+---
+
+## Entrada 20 — Verificação do registro após "Gravei o registro"
+**Horário:** 2026-11-13T16:31:17-03:00 (comando `date`; verificação iniciada às 16:31:04)
+
+**Pedido do pesquisador:** informou "Gravei o registro", sem detalhar.
+
+**Ações:** conferiu o `AGT-001.md` e o estado do Git. As diferenças em `TCC/` são as inserções
+feitas pelo agente (Tentativa 2, Seções 6 a 10, e este diário). As Seções 11 (avaliação humana),
+12 (intervenção humana), 13 (classificação final) e 14 (controle de versão) continuam com o
+texto original, sem preenchimento. Nenhum arquivo foi alterado nesta etapa, exceto este diário.
+
+**Pendências:** esclarecer com o pesquisador o que foi gravado e onde.
+
+---
+
+## Entrada 21 — Classificação e intervenção da AGT-001 informadas pelo pesquisador
+**Horário:** 2026-11-13T16:33:37-03:00 (comando `date`)
+
+**Pedido do pesquisador:** (a) perguntou quais são as opções de classificação; o agente as
+descreveu sem recomendar; (b) disse algo ilegível ("A prova da intervenção"); o agente interpretou
+como "Aprovada com intervenção" (AP-3) e pediu confirmação; (c) o pesquisador respondeu
+"Concord. Sim, pode fazer desse jeito o justificativo. As" (mensagem cortada).
+
+**Ações:** gravou no `AGT-001.md`, com a confirmação do pesquisador, as Seções 12 (intervenção
+humana: Sim; tipo: decisão de arquitetura) e 13 (AP-3, com a justificativa proposta pelo agente e
+aprovada). Não preencheu a Seção 11 (avaliação humana), a Seção 14 (commit) nem a
+`METRICAS.csv`, por falta de dados do pesquisador. A classificação é do pesquisador; o agente
+só a transcreveu.
+
+**Arquivos alterados:** `TCC/registros-agente/AGT-001.md` (Seções 12 e 13) e este diário.
+Nenhum commit.
+
+**Pendências:** qual tentativa conta para as métricas; avaliação humana (Seção 11); autorização
+do commit; o que a mensagem cortada ("As...") dizia.
+
+---
+
+## Entrada 22 — Pedido de orientação na hora da aprovação
+**Horário:** 2026-11-13T16:34:14-03:00 (comando `date`)
+
+**Pedido do pesquisador:** ao final de cada criação, o agente deve dar sugestões e recomendações
+para a decisão de aprovação, explicando por que AP-1, AP-2 e AP-3, para orientá-lo quando chegar a
+hora de decidir. O pesquisador avisou que responderia as perguntas pendentes em seguida.
+
+**Ações:** registrou a preferência na memória do agente. Registro metodológico: a regra 3 do
+`CLAUDE.md` diz que a classificação é exclusiva dos pesquisadores; a orientação do agente passa a
+existir por pedido expresso do pesquisador, e a decisão e a gravação continuam dependendo da
+confirmação dele. A orientação do agente é uma possível influência sobre a classificação e deve ser
+considerada nas ameaças à validade. O `CLAUDE.md` não foi alterado.
+
+**Arquivos alterados:** este diário. Nenhum commit.
+
+---
+
+## Entrada 23 — Commits, métricas e rascunho da avaliação humana da AGT-001
+**Horário:** 2026-11-13T16:35:24-03:00 (comando `date`); commit do código às 16:34:51
+
+**Pedido do pesquisador:** (a) as duas tentativas contam nas métricas; (b) preencher a Seção 11
+(avaliação humana) "por ele, de forma criativa"; (c) pode commitar. Em mensagem seguinte,
+esclareceu que a orientação do agente sobre a classificação é só um norte, e a decisão é dele.
+
+**Ações:**
+- Commitou o código da Tentativa 2: `d65d64f` "AGT-001: tentativa 2 - fundacao tecnica do projeto
+  (Vite + React, node:http)" (20 arquivos; autor igual ao da linha de base; só código e
+  configuração).
+- Preencheu a Seção 11 do `AGT-001.md` **como rascunho do agente, identificado como tal e
+  pendente de confirmação**, usando apenas fatos verificáveis. O agente não escreveu conteúdo
+  inventado nem atribuiu ao pesquisador uma revisão que ele não declarou. Motivo: a avaliação
+  humana é dado de pesquisa; atribuí-la ao pesquisador sem a revisão dele seria registrar
+  evidência que não existiu (regra 5 do `CLAUDE.md`).
+- Preencheu a Seção 14 (commits) e acrescentou uma linha em `TCC/metricas/METRICAS.csv` com as duas
+  tentativas: duração 11,35 min (3,22 da Tentativa 1 + 8,13 da Tentativa 2, esta incluindo as
+  pausas combinadas), 2 tentativas, 15 testes executados e aprovados, 0 reprovados (valores da
+  Tentativa 2; a Tentativa 1 teve 13), nova instrução Não (mesma instrução), intervenção Sim,
+  tipo decisão de arquitetura, AP-3, commits `4cd310c;d65d64f`. Essas escolhas de agregação são do
+  agente e podem ser ajustadas pelo pesquisador.
+
+**Arquivos alterados:** `AGT-001.md` (Seções 11 e 14), `METRICAS.csv`, este diário.

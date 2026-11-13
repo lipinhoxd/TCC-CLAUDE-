@@ -1,1 +1,2 @@
 ID,Agente,Categoria,Duracao_Minutos,Tentativas,Testes_Executados,Testes_Aprovados,Testes_Reprovados,Erros_Dificuldades,Nova_Instrucao,Intervencao_Humana,Tipo_Intervencao,Classificacao,Commit
+AGT-001,Claude Code (Claude Sonnet 5.5),Configuracao / Infraestrutura inicial,11.35,2,15,15,0,TypeScript 7 incompativel com typescript-eslint (fixado 6.0.3); 10 vulnerabilidades moderadas em ferramentas de desenvolvimento; Tentativa 2 nao independente da 1,Nao,Sim,Decisao de arquitetura,AP-3,4cd310c;d65d64f

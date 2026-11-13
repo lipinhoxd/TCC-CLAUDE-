@@ -61,9 +61,9 @@ Cadeia (TCC, Seção 3.8): requisito → atividade AGT → instrução → execu
 | RNF-004 | Autorização verificada no servidor | a definir | Planejada | — |
 | RNF-005 | Proteção de dados pessoais | a definir | Planejada | — |
 | RNF-006 | Segurança de sessão | a definir | Planejada | — |
-| RNF-007 | Integridade dos dados | 002 | Planejada | — |
-| RNF-008 | Prevenção de excedente de capacidade | 002 | Planejada | — |
-| RNF-009 | Consistência em operações críticas | 002 | Planejada | — |
+| RNF-007 | Integridade dos dados | 002 | Evidenciada na AGT-002 | `server/db/migrations.ts` (restrições, chaves estrangeiras); `tests/db-schema.test.ts` |
+| RNF-008 | Prevenção de excedente de capacidade | 002 | Evidenciada na AGT-002 (estrutura; fluxo na AGT-008) | `CHECK` em `excursao`; `tests/db-schema.test.ts`, `tests/db-concorrencia.test.ts` |
+| RNF-009 | Consistência em operações críticas | 002 | Evidenciada na AGT-002 | `server/db/transaction.ts`; `tests/db-transaction-audit.test.ts` |
 | RNF-010 | Tratamento de falhas | a definir | Planejada | — |
 | RNF-011 | Desempenho das consultas públicas | a definir | Planejada | — |
 | RNF-012 | Desempenho das operações de reserva e pagamento | a definir | Planejada | — |

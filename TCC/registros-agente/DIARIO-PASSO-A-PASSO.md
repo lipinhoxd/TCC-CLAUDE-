@@ -885,3 +885,16 @@ concorrência deixado por engano e depois substituído; (3) um `import` sem `typ
 nova. A classificação (AP-1, AP-2, AP-3 ou RP) cabe ao pesquisador; o agente não a registrou.
 
 **Arquivos alterados:** os listados acima, `AGT-002.md` e este diário. Nenhum commit.
+
+---
+
+## Entrada 37 — AGT-002: classificação AP-2, commits e transcrição para o Google Docs
+**Horário:** commits às 2026-11-13T20:3x-03:00 (hashes 1c59330 e 50a84a1); edição do Docs às 20:50:12-03:00 (comando date).
+
+**Pedido do pesquisador:** "AP2 e pode comitar"; depois "Sim, eu aprovo" e "transcrever ... no Google Docs".
+
+**Ações:** gravou a classificação AP-2 (Seção 13 do registro), a linha da AGT-002 em METRICAS.csv e no quadro de resultados; commitou (1c59330) e acrescentou o hash (50a84a1). Confirmou a Seção 11 pela aprovação. Criou docs/fichas-agt/principal/AGT-002.md. No Google Docs: ficha do Apêndice E, linha do Quadro 2, parágrafo da Seção 5.3, ajustes em Resumo, Abstract, 3.3, 4.8, 5.1, 5.4, 6.1 a 6.4, 7 e Apêndice D (15 substituições, todas confirmadas). Atualizou a matriz de rastreabilidade (RNF-007 a 009).
+
+**Pontos de atenção registrados no TCC (6.3):** AP-2 pela rubrica exige correções do próprio agente; a AGT-002 teve só ajustes de lint e de processo, e a AGT-001, com decisão parecida, foi AP-3. O pesquisador não registrou justificativa; o agente não alterou a classificação.
+
+**Erros do agente:** o primeiro commit falhou por falta de identidade do Git; usou a identidade dos commits anteriores só no comando, sem alterar a configuração.

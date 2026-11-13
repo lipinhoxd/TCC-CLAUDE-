@@ -1,0 +1,28 @@
+{
+  "name": "tcc-ia-excursoes-claude",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "Plataforma web de gerenciamento de excursoes (objeto pratico do TCC)",
+  "scripts": {
+    "dev": "vite --host 127.0.0.1",
+    "dev:api": "node --env-file-if-exists=.env.local --watch server/main.ts",
+    "start:api": "node --env-file-if-exists=.env.local server/main.ts",
+    "lint": "eslint . --max-warnings 0",
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "build": "npm run typecheck && vite build",
+    "preview": "vite preview --host 127.0.0.1",
+    "check": "npm run lint && npm run test && npm run build"
+  },
+  "devDependencies": {
+    "@eslint/js": "10.0.1",
+    "@types/node": "26.6.6",
+    "eslint": "10.14.0",
+    "typescript": "6.0.3",
+    "typescript-eslint": "8.72.2",
+    "vite": "8.3.8",
+    "vitest": "5.1.0"
+  }
+}

@@ -747,3 +747,55 @@ suficiente" para evitar repetição; item 31b adaptado à frase atual.
 matriz, ADR, diagramas), o plano em `TCC/relatorios/` e este diário, com mensagem `DOCS: ...`.
 Em seguida iniciou a Fase 4 (conferência das referências por busca na web), descrita nas
 próximas entradas.
+
+---
+
+## Entrada 32 — Fase 4: verificação das referências
+**Horário:** 2026-11-13T17:08:03-03:00 (comando `date`)
+
+**Pedido do pesquisador:** começar pela Fase 4 e commitar os arquivos (feito: `e84a81a`). Mensagens
+cortadas ("dos arquivos novos e do" / "plano") foram lidas como a continuação do pedido de commit
+dos arquivos novos e do plano, que já estavam no commit.
+
+**Ações:** carregou a ferramenta `WebSearch` e fez 8 buscas (uma por referência, modo padrão).
+Conferiu no texto do TCC a correspondência entre as citações e a lista de referências (8 de 8
+citadas). Escreveu `docs/referencias-verificacao.md` com o resultado por referência, o que ficou
+"A CONFERIR" e propostas de padronização NBR 6023.
+
+**Resultado resumido:** nenhuma referência foi dada como inválida; DOI do FAccT (ref. 1), autoria e
+evento do HHAI (ref. 7) e a versão de periódico do Xi et al. (ref. 8) não foram confirmados.
+Buscas não equivalem a abrir cada DOI; a limitação está dita no relatório.
+
+**Arquivos criados:** `docs/referencias-verificacao.md`. **Alterados:** este diário. O Google Docs
+**não** foi alterado nesta fase. Nenhum commit novo.
+
+---
+
+## Entrada 33 — Fases 3 e 4 aplicadas no Google Docs e commit
+**Horário:** 2026-11-13T17:17:55-03:00 (comando `date`)
+
+**Pedido do pesquisador:** "Pode fazer todos esses quatro": (1) aprovar as propostas NBR 6023 das
+referências; (2) escolher o destaque tipográfico; (3) fazer a Fase 3 (conteúdo novo e apêndices);
+(4) commitar o relatório de referências. O pesquisador não indicou o destaque do manual da UNIESI;
+o agente escolheu **negrito** (decisão do agente, reversível).
+
+**Ações no Google Docs (revisão controlada em todas as chamadas, nenhuma com erro):**
+1. Apêndices A a F ao final (títulos em HEADING_1, centralizados, com quebra de página; listas
+   geradas por script a partir dos arquivos do repositório; contagens 42, 33 e 44 conferidas).
+2. Parágrafos novos: contribuição esperada (1.5), síntese comparativa e Quadro 1 (Cap. 2, seção
+   2.5), ficha AGT e definições operacionais (3.5 e 3.6), remissões aos apêndices (4.3, 4.4, 4.5 e
+   4.7), remissão às fichas (5.1) e Quadro 2 com resultados (6.1). As tabelas foram criadas vazias
+   e preenchidas em chamada seguinte; fonte e cabeçalho ajustados depois.
+3. Referências: URL e acesso nos itens de arXiv e no Jimenez; data de acesso do OpenAI atualizada;
+   item 1 passou a citar o preprint (versão publicada marcada "[A CONFERIR]"); itens 7 e 8 com
+   "[A CONFERIR]"; títulos em negrito.
+4. Releitura do documento: tabelas 5x3 e 7x6 com os dados; 14 títulos de nível 1; parágrafos
+   novos no estilo do corpo.
+
+**Limites:** não foram inseridos diagramas (o Docs não renderiza Mermaid; as figuras estão no
+repositório em `docs/diagramas/diagramas.md`). O Quadro 1 é uma síntese interpretativa de fontes
+já constantes da lista; nenhuma fonte nova foi citada. As referências 1, 7 e 8 seguem "A CONFERIR".
+O sumário (automático) precisa ser atualizado no Docs para incluir os apêndices.
+
+**Arquivos alterados:** `docs/referencias-verificacao.md` e este diário. Commit `DOCS:` feito em
+seguida.

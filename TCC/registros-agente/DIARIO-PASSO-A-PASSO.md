@@ -569,3 +569,23 @@ esclareceu que a orientação do agente sobre a classificação é só um norte,
   agente e podem ser ajustadas pelo pesquisador.
 
 **Arquivos alterados:** `AGT-001.md` (Seções 11 e 14), `METRICAS.csv`, este diário.
+
+---
+
+## Entrada 24 — Confirmação da avaliação humana da AGT-001
+**Horário:** 2026-11-13T16:36:45-03:00 (comando `date`)
+
+**Pedido do pesquisador:** respondeu "confirmer" (lido pelo agente como "confirmo") à pergunta sobre
+confirmar ou ajustar a Seção 11.
+
+**Ações:** substituiu o aviso de rascunho da Seção 11 do `AGT-001.md` por uma nota de que o texto
+foi redigido pelo agente e confirmado pelo pesquisador, sem alterações, mantendo a distinção entre
+autoria da redação (agente) e decisão (pesquisador). Não alterou o conteúdo da avaliação.
+Commit `DOCS:` correspondente feito em seguida.
+
+**Estado da AGT-001:** Seções 11 a 14 preenchidas; AP-3; métricas gravadas; commits `4cd310c`,
+`d65d64f`, `5c64374` e o desta entrada. Seção 4 (critérios de aceitação): caixas ainda
+desmarcadas; ver pendência.
+
+**Pendências:** o pesquisador marcar ou autorizar a marcação dos critérios de aceitação da
+Seção 4; decidir se a Seção 4 do TCC e o Capítulo 5 devem ser atualizados com a classificação AP-3.

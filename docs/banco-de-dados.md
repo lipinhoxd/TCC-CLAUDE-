@@ -1,0 +1,82 @@
+# Banco de dados (AGT-002)
+
+## Decisão (registrada com justificativa)
+
+- **Banco:** SQLite, via `node:sqlite` (módulo integrado ao Node.js 26; SQLite 3.54.0 na máquina de
+  desenvolvimento). **Acesso:** SQL direto, sem ORM. Decisão do pesquisador em 13/11/2026, a partir das
+  opções e da recomendação apresentadas pelo agente (a resposta foi "a"; o agente a interpretou como
+  "A, SQL direto").
+- **Motivos:** roda sem instalar servidor (Docker e PostgreSQL não existem no ambiente); atende ao
+  esquema, às transações e aos testes desta atividade; o esquema é pequeno e o SQL explícito é fácil
+  de revisar.
+- **Limitações:** um único escritor por vez e banco em arquivo local, o que restringe produção com
+  várias instâncias. Migrar para PostgreSQL fica como trabalho futuro. O módulo `node:sqlite` é
+  recente: conferir seu estágio de estabilidade na documentação do Node.js [A CONFERIR].
+
+## Como usar
+
+```bash
+npm run db:migrate   # cria e atualiza o banco local
+npm run db:reset     # apaga e recria do zero
+```
+
+`DATABASE_PATH` define o arquivo (padrão `data/excursoes.sqlite`; `:memory:` para banco temporário).
+Os arquivos `*.sqlite`, `*.db` e a pasta `data/` não são versionados.
+
+## Migrações
+
+`server/db/migrations.ts` lista as migrações em ordem. Cada uma roda em uma transação própria; a
+tabela `schema_migrations` guarda versão, nome, checksum (SHA-256) e data de aplicação. Rodar de novo
+não altera nada. Migração já aplicada **não é editada** (o checksum detecta); mudanças viram uma
+nova versão.
+
+## Esquema (versão 1)
+
+Tabelas `STRICT`, chaves estrangeiras ligadas em cada conexão (`PRAGMA foreign_keys = ON`).
+
+| Tabela | Observações |
+| --- | --- |
+| `usuario` | CPF (11 dígitos) e e-mail (minúsculas) únicos; perfil `passageiro` ou `administrador`; guarda só `senha_hash`. |
+| `excursao` | `capacidade`, `vagas_ocupadas`, `preco_centavos`; `CHECK (vagas_ocupadas BETWEEN 0 AND capacidade)`; prazo da 2.ª parcela obrigatório e anterior à partida se houver parcelamento. |
+| `reserva` | Situações da RN-023; índice único parcial: uma reserva não cancelada por passageiro e excursão. |
+| `pagamento` | Parcela `unica`/`primeira`/`segunda`, uma por reserva; valor em centavos maior que zero. |
+| `retencao_vaga` | Validade posterior à criação; no máximo uma retenção ativa por reserva. |
+| `reembolso` | Valor em centavos; percentual de 0 a 100. |
+| `auditoria` | Somente inclusão (gatilhos bloqueiam alteração e exclusão); JSON válido. |
+| `sessao`, `token_acesso` | Apenas `token_hash`, validade e revogação/uso; nunca o segredo em claro. |
+
+Convenções: dinheiro em **centavos inteiros** (RN-038; `STRICT` recusa decimais); instantes em texto
+ISO 8601 **UTC** terminado em `Z` (RN-039; `CHECK` de formato); datas de calendário `AAAA-MM-DD`.
+
+Situações da excursão (`rascunho`, `publicada`, `encerrada`, `cancelada`), de pagamento, retenção e
+reembolso não estão definidas na especificação (a RN-037 está como "[confirmar]"). São valores
+**provisórios** escolhidos nesta atividade; a revisão do pesquisador deve confirmá-los.
+
+## Capacidade e concorrência (RN-021, RN-040, RNF-008)
+
+- **Garantia no banco:** `CHECK (vagas_ocupadas >= 0 AND vagas_ocupadas <= capacidade)`. Nenhuma
+  operação, nem uma com defeito, consegue gravar ocupação acima da capacidade.
+- **Como a AGT-008 deve ocupar vaga:** dentro de `withTransaction(db, fn)` (modo `IMMEDIATE`), com
+  `UPDATE excursao SET vagas_ocupadas = vagas_ocupadas + 1 WHERE id = ? AND vagas_ocupadas < capacidade`;
+  `changes = 0` significa "sem vaga". A condição é reavaliada na gravação, então uma leitura antiga
+  não causa excedente. Liberar vaga usa o mesmo padrão com `vagas_ocupadas > 0`.
+- **Por que funciona no SQLite:** `BEGIN IMMEDIATE` adquire o bloqueio de escrita no início; escritas
+  concorrentes esperam (`busy_timeout`) ou falham com "database is locked". Testado em
+  `tests/db-concorrencia.test.ts` com duas conexões ao mesmo arquivo.
+- **Pendente para a AGT-008:** a regra completa de retenção, expiração e confirmação, e a política de
+  nova tentativa quando o banco estiver ocupado. O contador `vagas_ocupadas` é mantido pela aplicação
+  (não há gatilho que o recalcule a partir de reservas e retenções).
+
+## Camada de acesso
+
+Sem ORM: `server/db/` traz `connection.ts` (abre e configura), `migrate.ts`, `migrations.ts`,
+`transaction.ts` (`withTransaction`: confirma ou desfaz tudo, modo `IMMEDIATE` por padrão; não admite
+aninhamento), `audit.ts` (`registrarAuditoria`, que **rejeita** campos como senha, token, hash, CPF,
+e-mail, telefone e nascimento, inclusive aninhados) e `cli.ts`. Repositórios por entidade e fluxos de
+negócio ficam para as atividades seguintes.
+
+## Testes
+
+`tests/db-schema.test.ts`, `tests/db-transaction-audit.test.ts` e `tests/db-concorrencia.test.ts`
+cobrem migrações (inclusive do zero em arquivo), restrições, transações com rollback, auditoria e
+concorrência entre conexões. Todos os dados são fictícios.

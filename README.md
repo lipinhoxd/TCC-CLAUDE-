@@ -45,6 +45,15 @@ Em desenvolvimento, o front-end encaminha as chamadas a `/api` para a API.
 | `npm test` | Testes automatizados. |
 | `npm run build` | Verificação de tipos e build de produção do front-end. |
 | `npm run check` | Lint, testes e build em sequência. |
+| `npm run db:migrate` | Cria o banco local (se não existir) e aplica as migrações pendentes. |
+| `npm run db:reset` | Apaga o banco local e o recria do zero pelas migrações. |
+
+## Banco de dados
+
+SQLite via `node:sqlite` (módulo do Node.js), SQL direto e migrações versionadas em
+`server/db/migrations.ts`. O arquivo fica em `data/excursoes.sqlite` (não versionado; mude com
+`DATABASE_PATH`). Para recriar o banco local: `npm run db:reset`. Detalhes, esquema e a estratégia
+de concorrência em [docs/banco-de-dados.md](docs/banco-de-dados.md).
 
 ## Variáveis de ambiente
 

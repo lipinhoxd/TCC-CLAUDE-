@@ -845,3 +845,43 @@ testes, 18,58 min, `9f5c038`; AGT-004: 118 testes, `41fba49`, duração pendente
 
 **Arquivos alterados:** fichas do piloto, `docs/quadro-resultados.md`, `docs/referencias-verificacao.md`,
 `docs/decisoes/ADR-postgres-para-sqlite.md` e este diário. Google Docs alterado como descrito.
+
+---
+
+## Entrada 35 — Início da AGT-002 (Tentativa 1) e parada para decisão do banco
+**Horário:** início da Tentativa 1 = 2026-11-13T17:26:34-03:00 (comando `date`); registro às 2026-11-13T17:27:01-03:00
+
+**Pedido do pesquisador:** "em seguida a gente começar a AGT-002". A instrução (Seção 5 do
+`AGT-002.md`) foi aprovada em 13/11/2026 e usada sem alterações.
+
+**Ações:** conferiu o ambiente (Node.js v26.13.0; `node:sqlite` com SQLite 3.54.0; sem Docker, `psql`
+nem `pg_ctl`); releu `04-REGRAS-DE-NEGOCIO.md` (já lidos antes: `CLAUDE.md`, `AGT-001.md`, `03` e `06`);
+registrou o início e o contato prévio com o registro do piloto na Seção 6 do `AGT-002.md`. **Não criou
+arquivos de código.** Parou antes de criar arquivos, como a instrução exige, para apresentar as opções
+de banco e de acesso ao pesquisador.
+
+**Arquivos alterados:** `AGT-002.md` (Seção 6) e este diário. Nenhum commit.
+
+---
+
+## Entrada 36 — AGT-002: decisão do banco e implementação (Tentativa 1)
+**Horário:** decisão recebida e execução iniciada às 2026-11-13T18:45:40-03:00; última verificação às
+18:49:51-03:00; registro às 18:50:17-03:00 (comando `date`).
+
+**Pedido do pesquisador:** (1) mensagem cortada "Qual que você me", entendida pelo agente como pedido
+de recomendação; (2) "a". O agente respondeu com a recomendação (A, SQL direto) e o aviso de viés, e
+interpretou "a" como "A, SQL direto" (a forma de acesso não foi dita; registrado para revisão).
+
+**Ações:** leu a Seção 06 e as RN-002, 003, 009, 021, 023, 038 a 042 (`04-REGRAS-DE-NEGOCIO.md`), `package.json`, `server/config.ts`, `server/main.ts`,
+`tsconfig.json`, `.env.example` e `.gitignore`; criou `server/db/` (7 arquivos), 3 arquivos de teste e
+`docs/banco-de-dados.md`; alterou `package.json` (2 scripts), `.env.example` e `README.md`; executou
+lint, tipos, testes, build e a criação do banco do zero; preencheu as Seções 6 a 10 do `AGT-002.md`.
+
+**Erros do agente:** (1) heredoc de shell falhou por sintaxe e nada foi gravado; (2) teste vazio de
+concorrência deixado por engano e depois substituído; (3) um `import` sem `type` no teste; (4) mensagem
+"Banco removido" sem banco existente. Todos corrigidos.
+
+**Resultado:** lint, tipos e build sem erros; 57 testes aprovados (15 + 42 novos). Nenhuma dependência
+nova. A classificação (AP-1, AP-2, AP-3 ou RP) cabe ao pesquisador; o agente não a registrou.
+
+**Arquivos alterados:** os listados acima, `AGT-002.md` e este diário. Nenhum commit.

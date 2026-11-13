@@ -889,7 +889,7 @@ nova. A classificação (AP-1, AP-2, AP-3 ou RP) cabe ao pesquisador; o agente n
 ---
 
 ## Entrada 37 — AGT-002: classificação AP-2, commits e transcrição para o Google Docs
-**Horário:** commits às 2026-11-13T20:3x-03:00 (hashes 1c59330 e 50a84a1); edição do Docs às 20:50:12-03:00 (comando date).
+**Horário:** commits entre 2026-11-13T20:46:57-03:00 e 20:50:12-03:00 (hashes 1c59330, 50a84a1 e a9f6fc0; horário exato de cada commit não registrado); edição do Docs às 20:50:12-03:00 (comando date).
 
 **Pedido do pesquisador:** "AP2 e pode comitar"; depois "Sim, eu aprovo" e "transcrever ... no Google Docs".
 

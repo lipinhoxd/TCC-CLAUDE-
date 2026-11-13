@@ -589,3 +589,87 @@ desmarcadas; ver pendência.
 
 **Pendências:** o pesquisador marcar ou autorizar a marcação dos critérios de aceitação da
 Seção 4; decidir se a Seção 4 do TCC e o Capítulo 5 devem ser atualizados com a classificação AP-3.
+
+---
+
+## Entrada 25 — Critérios da AGT-001, atualização do TCC e rascunho da AGT-002
+**Horário:** 2026-11-13T16:39:02-03:00 (comando `date`; leituras iniciadas às 16:37:45)
+
+**Pedido do pesquisador:** fazer os itens 1 a 3: marcar os critérios de aceitação da AGT-001,
+preparar o texto de atualização do TCC e preparar a instrução da AGT-002.
+
+**Ações:**
+1. **Critérios de aceitação (Seção 4 do `AGT-001.md`):** marcou 11 dos 15 itens, os comprovados por
+   comandos e verificações; deixou sem marca "estrutura organizada e adequada" (subjetivo),
+   "nenhuma funcionalidade de negócio fora do escopo" (afirmação do próprio agente) e "resultado
+   submetido à revisão humana" (só o pesquisador pode afirmar), com nota explicando o critério.
+   (São 12 marcados de 15; 3 sem marca.) Pendente de confirmação do pesquisador.
+2. **Atualização do TCC:** escreveu `TCC/relatorios/ATUALIZACAO-TCC-APOS-AGT-001.md` com textos
+   propostos para as Seções 3.9, 5.1, 5.3, 6.1, 6.2, 6.3, 6.4 e 7. **Não alterou o Google Docs**
+   (aguarda aprovação, conforme o fluxo combinado).
+3. **AGT-002:** leu `06-MODELO-DE-DADOS.md` e as regras RN-001 a RN-006, RN-021, RN-038 a RN-042;
+   escreveu `TCC/registros-agente/AGT-002.md` como **rascunho não aprovado**, com a instrução
+   original (Seção 5), três perguntas abertas ao pesquisador e as demais seções vazias. Não
+   consultou o repositório do piloto.
+
+**Arquivos criados:** `ATUALIZACAO-TCC-APOS-AGT-001.md`, `AGT-002.md`. **Alterados:**
+`AGT-001.md` (Seção 4) e este diário. Nenhum commit (não autorizado para estes arquivos).
+
+**Pendências:** aprovação ou ajuste da atualização do TCC (para aplicar no Docs); confirmação da
+marcação da Seção 4; decisão sobre as perguntas abertas e aprovação da instrução da AGT-002.
+
+---
+
+## Entrada 26 — Aprovações do pesquisador e aplicação da atualização no Google Docs
+**Horário:** 2026-11-13T16:42:03-03:00 (comando `date`)
+
+**Pedido do pesquisador:** "Approvo" (a atualização do TCC); "Confirma as 12" (marcas da Seção 4 da
+AGT-001); manter a parada para ele escolher o banco; migrações a critério do agente; incluir todas
+as entidades; "Ok, tudo certo". A pergunta sobre commit ficou sem resposta explícita.
+
+**Ações:**
+- Releu o documento do TCC (a revisão tinha mudado desde a leitura anterior) e conferiu que cada
+  trecho a substituir existia exatamente uma vez. Aplicou em uma chamada ao `update_doc`, com
+  controle de revisão: substituição dos parágrafos da AGT-001 na Seção 5.3 e 7 substituições de
+  frases (3.9, 5.1, 6.1, 6.2, 6.3, 6.4 e 7); todas retornaram 1 ocorrência alterada.
+- Releu o documento: os parágrafos novos estão em estilo de texto normal (justificado, 12 pt),
+  os títulos 5.3 e 5.4 mantêm o estilo de título, e o marcador "aguarda avaliação humana" e o
+  "[a preencher exclusivamente pelos pesquisadores]" não aparecem mais.
+- Atualizou o `AGT-001.md` (as 12 marcas foram confirmadas; 3 itens seguem sem marca), o
+  `AGT-002.md` (instrução marcada como aprovada, ainda não executada; as 3 respostas registradas)
+  e o status do `ATUALIZACAO-TCC-APOS-AGT-001.md` (aplicado).
+- Interpretou "Sim" e "Ok, tudo certo" como aprovação da instrução da AGT-002; o texto da
+  Seção 5 não foi alterado.
+
+**Google Docs alterado:** sim (trechos acima). **Arquivos do projeto alterados:** `AGT-001.md`,
+`AGT-002.md`, `ATUALIZACAO-TCC-APOS-AGT-001.md` e este diário. Nenhum commit.
+
+**Pendências:** autorização para commit dos arquivos novos e alterados; pedido para iniciar a
+AGT-002; os 3 itens sem marca da AGT-001; números de página do sumário (automático, atualizar no Docs).
+
+---
+
+## Entrada 27 — Aviso de arquivos do orientador antes da AGT-002
+**Horário:** 2026-11-13T16:44:01-03:00 (comando `date`)
+
+**Pedido do pesquisador:** (resposta "C." ambígua) antes de iniciar a AGT-002, enviar dois arquivos
+com correção e orientação do orientador do TCC; o agente deve analisá-los, adequar o que for
+necessário e usar as informações relevantes.
+
+**Ações:** nenhuma alteração. A AGT-002 não foi iniciada. A pergunta sobre commit dos arquivos
+novos continua sem resposta explícita; nada foi commitado.
+
+**Pendências:** receber os dois arquivos; resposta sobre o commit.
+
+---
+
+## Entrada 28 — Commit dos registros e documentos pendentes
+**Horário:** 2026-11-13T16:45:40-03:00 (comando `date`; estado do Git conferido às 16:45:30)
+
+**Pedido do pesquisador:** "pode comitar".
+
+**Ações:** commitou, com mensagem `DOCS: ...` (padrão do `CLAUDE.md` para registros), os quatro
+arquivos pendentes: `AGT-001.md` (marcas da Seção 4 confirmadas), `AGT-002.md` (instrução aprovada,
+não executada), `ATUALIZACAO-TCC-APOS-AGT-001.md` (aplicada no Docs) e este diário. O hash do
+commit está na resposta ao pesquisador e em `git log`. Autor igual ao da linha de base; nenhum
+arquivo de código foi alterado.

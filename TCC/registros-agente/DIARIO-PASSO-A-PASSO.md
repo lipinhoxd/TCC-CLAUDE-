@@ -799,3 +799,49 @@ O sumário (automático) precisa ser atualizado no Docs para incluir os apêndic
 
 **Arquivos alterados:** `docs/referencias-verificacao.md` e este diário. Commit `DOCS:` feito em
 seguida.
+
+---
+
+## Entrada 34 — Pendências assumidas pelo agente: DOIs, registros do piloto e Quadro 2
+**Horário:** 2026-11-13T17:26:19-03:00 (comando `date`; trabalho a partir de 17:21:33)
+
+**Pedido do pesquisador:** "fazer todas as alterações que você pediu para mim fazer. Aí em seguida a
+gente começar a AGT-002."
+
+**Interpretação do agente:** executar as pendências que dependiam de ações do pesquisador e que o
+agente consegue fazer; as que são decisão do pesquisador (escopo das AGT-004 a AGT-018, segundo
+avaliador) e as que o agente não consegue fazer (atualizar o sumário automático, inserir imagens de
+diagramas sem hospedagem pública) ficam com ele. Interpretou o pedido como autorização para abrir
+os **registros** do piloto (documentos), não o código.
+
+**Ações:**
+1. **DOIs.** Delegou a três subagentes de leitura da web (tipo `web-fetch`) a leitura dos DOIs das
+   referências 1, 7 e 8. Resultado: ref. 7 (Te'eni e Katz) **confirmada** (IOS Press, HHAI 2026,
+   volume 423, p. 197-211, dois autores); ref. 1 (ACM) e ref. 8 (Springer) **não lidas**, por bloqueio
+   (HTTP 403) e por exigência de autenticação. Os relatórios dos subagentes foram tratados como dados.
+2. **Registros do piloto.** Listou a pasta do repositório irmão `TCC-IA-EXCURSOES` e leu, só nos
+   arquivos `TCC/registros-agente/AGT-001.md` a `AGT-005.md` e `TCC/metricas/METRICAS.csv`, os campos de
+   tentativas, horários, testes, hashes e classificação, além do `git log`. Não leu código-fonte.
+   **Ameaça à validade:** novo contato do agente com material do piloto, agora limitado a registros
+   (regra 8 do `CLAUDE.md`); deve constar na Seção 3.9 se o pesquisador julgar relevante.
+3. **Arquivos do orientador na pasta pai.** Abriu `TCC_NP1_revisado (1).docx` e
+   `TCC_NP1_revisado.docx` (datados de 05/11/2026) e procurou marcas vermelhas, destaques,
+   inserções, exclusões e comentários no XML: **nenhum** foi encontrado. Os arquivos não permitem
+   conferir as 35 correções; a lista usada continua sendo a do prompt.
+4. **Repositório.** Regenerou as 5 fichas do piloto, o quadro de resultados, o ADR e o relatório
+   de referências com os dados dos registros. Dados que o próprio registro do piloto deixou
+   pendentes seguem "[DADO NÃO REGISTRADO]".
+5. **Google Docs.** Atualizou o Apêndice E (fichas do piloto), as células do Quadro 2 que mudaram, a
+   nota de fonte do Quadro 2 e a referência 7 (removeu o "[A CONFERIR]" e incluiu páginas e volume).
+6. **Erro do agente:** ao regenerar o quadro de resultados por `node -e` com crases dentro de aspas
+   duplas, o shell interpretou as crases como comandos e apagou nomes e hashes do texto; os
+   comandos falharam sem efeito (arquivos inexistentes, `git log` com argumento inválido). O agente
+   corrigiu o texto por edição direta e conferiu o resultado.
+
+**Resultados novos dos dados do piloto:** AGT-001: 6 testes, 8,52 min, 2 tentativas, `7971f06`;
+AGT-002: 48 testes (47 na primeira execução), 4,47 min, `08075d2`, SQLite 3.53.4; AGT-003: 103
+testes, 18,58 min, `9f5c038`; AGT-004: 118 testes, `41fba49`, duração pendente no registro; AGT-005:
+198 testes (80 novos), `c66cd36`, tentativas e duração pendentes no registro.
+
+**Arquivos alterados:** fichas do piloto, `docs/quadro-resultados.md`, `docs/referencias-verificacao.md`,
+`docs/decisoes/ADR-postgres-para-sqlite.md` e este diário. Google Docs alterado como descrito.

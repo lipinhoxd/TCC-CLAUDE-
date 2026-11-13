@@ -1,8 +1,8 @@
 # ADR — Do PostgreSQL planejado para SQLite com `node:sqlite` (estudo piloto)
 
 Data do registro: 13/11/2026. Elaborado pelo agente (Claude Code, Claude Sonnet 5.5), por pedido dos
-pesquisadores. Fontes: TCC (Seções 3.3, 4.8 e 5), `docs/especificacao/01-VISAO-GERAL.md`. O
-repositório do piloto **não foi reaberto**; o que ele poderia informar está marcado.
+pesquisadores. Fontes: TCC (Seções 3.3, 4.8 e 5), `docs/especificacao/01-VISAO-GERAL.md` e, a partir de 13/11/2026, o
+registro e a planilha de métricas da AGT-002 do piloto (leitura apenas de documentos, não de código).
 
 ## Escopo
 
@@ -26,12 +26,12 @@ Usar SQLite via `node:sqlite` (módulo integrado do Node.js), sem ORM, na persis
 | Item | Valor |
 | --- | --- |
 | Atividade em que ocorreu | AGT-002 do piloto |
-| Quem decidiu (agente ou pesquisador) e em que momento | **[DADO NÃO REGISTRADO]** |
-| Justificativa registrada na época | **[DADO NÃO REGISTRADO]** |
+| Quem decidiu (agente ou pesquisador) e em que momento | O registro do piloto informa banco escolhido: SQLite 3.53.4, incorporado ao Node.js; a AGT-002 do piloto começou em 10/09/2026 13:25:35 e não registra intervenção humana. Quem decidiu: **[DADO NÃO REGISTRADO]** |
+| Justificativa registrada na época | No relatório do agente (AGT-002 do piloto): "permite desenvolvimento local, integridade e transações sem instalar ou contratar serviço externo" |
 | Versão do Node.js do piloto | **[DADO NÃO REGISTRADO]** |
 | Versão do agente (Codex e modelo) do piloto | **[DADO NÃO REGISTRADO]** |
 | Condições de execução do piloto (sistema, extensão do VS Code) | **[DADO NÃO REGISTRADO]**; o TCC cita Codex integrado ao Visual Studio Code |
-| Hash do commit da AGT-002 do piloto | **[DADO NÃO REGISTRADO]** |
+| Hash do commit da AGT-002 do piloto | `08075d2` (registro: `62649c2`) |
 
 ## Consequências técnicas (análise do agente, não medida)
 

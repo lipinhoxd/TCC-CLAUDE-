@@ -53,3 +53,16 @@ minúsculas com ano entre parênteses, o que está correto.
 - Abrir o DOI dos itens 1, 7 e 8 e dizer se a informação confere.
 - Escolher o destaque tipográfico do manual da UNIESI (negrito ou itálico).
 - Aprovar as propostas da seção 3 para o agente aplicar no Google Docs.
+
+## 5. Verificação dos DOIs (13/11/2026, segunda rodada)
+
+Feita por leitura das páginas de destino dos DOIs, por subagentes de leitura da web.
+
+| Ref. | Resultado |
+| --- | --- |
+| 7 (Te'eni e Katz) | **Confirmada.** `doi.org/10.3233/FAIA260505` resolve para a página da IOS Press: título "Reliable Vibe Coding: The Human-AI Context Gap in Software Development"; autores Dov Te'Eni e Adi Katz (apenas dois); volume 423, "HHAI 2026" (5.ª International Conference on Hybrid Human-Artificial Intelligence), série Frontiers in Artificial Intelligence and Applications; páginas 197-211. O ano 2026 vem do nome do volume e do rodapé de direitos autorais, não de um campo de data. O marcador "[A CONFERIR]" foi removido da referência e substituído por "p. 197-211" e o volume. |
+| 1 (Dhanorkar et al.) | **Não confirmada.** O DOI 10.1145/3805689.3812402 redireciona (HTTP 302) para a página da ACM, mas a página respondeu 403 (bloqueio de acesso automatizado). Título, autores, evento e páginas **não foram lidos**. O marcador "[A CONFERIR]" permanece. |
+| 8 (Xi et al.) | **Não confirmada.** O DOI 10.1007/s11432-024-4222-0 está registrado e redireciona para o Springer Link, mas a página exige autenticação nesse ambiente. Volume, artigo, ano e autores **não foram lidos**. O marcador "[A CONFERIR]" permanece. |
+
+Os itens 1 e 8 precisam ser abertos pelo pesquisador em navegador, com o acesso institucional, se
+necessário.

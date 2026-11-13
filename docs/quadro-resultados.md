@@ -6,19 +6,22 @@ Células sem dado verificável contêm **[DADO NÃO REGISTRADO]**.
 
 ## 1. Estudo piloto (Codex)
 
-n = 5 atividades concluídas e classificadas (de 5 executadas no piloto). Dados do repositório do
-piloto (`TCC-IA-EXCURSOES`, tag `piloto-codex`) não foram reabertos para este quadro.
+n = 5 atividades concluídas e classificadas (de 5 executadas no piloto). Fonte: registros do piloto
+(`TCC-IA-EXCURSOES`, tag `piloto-codex`; leitura apenas de documentos de registro, planilha de
+métricas e `git log`, em 13/11/2026, com autorização do pesquisador; ver Entrada 34 do diário) e TCC.
+Durações são o **tempo de trabalho informado pelo Codex** quando não há horário de fim registrado.
 
-| AGT | Atividade | Classe | Tentativas | Testes | Duração | Intervenção | Commit |
+| AGT | Atividade | Classe | Tentativas | Testes aprovados | Duração | Intervenção | Commit |
 | --- | --- | --- | --- | --- | --- | --- | --- |
-| 001 | Fundação técnica | AP-1 | 2 (segunda: instrução corretiva sobre extensão dos arquivos metodológicos) | [DADO NÃO REGISTRADO] | [DADO NÃO REGISTRADO] | Não | [DADO NÃO REGISTRADO] |
-| 002 | Modelo de dados e persistência | AP-1 | [DADO NÃO REGISTRADO] | [DADO NÃO REGISTRADO] | [DADO NÃO REGISTRADO] | Não | [DADO NÃO REGISTRADO] |
-| 003 | Cadastro, autenticação e controle de acesso | AP-1 | [DADO NÃO REGISTRADO] | [DADO NÃO REGISTRADO] | [DADO NÃO REGISTRADO] | Não | [DADO NÃO REGISTRADO] |
-| 004 | Estrutura pública | AP-1 | 1 (inferido: AP-1; o TCC informa que a interrupção por limite de uso não foi contada como nova tentativa) | 118 aprovados | [DADO NÃO REGISTRADO] (início em 10/09/2026) | Não | `41fba49` |
-| 005 | Gerenciamento administrativo de excursões | AP-3 | [DADO NÃO REGISTRADO] | 198 na suíte (80 novos) aprovados | [DADO NÃO REGISTRADO] | Sim: esclarecimento de requisito e decisão de arquitetura | `c66cd36` |
+| 001 | Fundação técnica | AP-1 | 2 (segunda: instrução corretiva sobre extensão dos arquivos metodológicos) | 6 | 8,52 min (início 10/09/2026 12:48:06) | Não (nova instrução registrada) | `7971f06` |
+| 002 | Modelo de dados e persistência | AP-1 | 1 | 48 (47 na 1.ª execução) | 4,47 min (início 13:25:35) | Não | `08075d2` |
+| 003 | Cadastro, autenticação e controle de acesso | AP-1 | 1 | 103 | 18,58 min (início 13:57:02) | Não | `9f5c038` |
+| 004 | Estrutura pública | AP-1 | 1 (interrupção por limite de uso não contada) | 118 | [DADO NÃO REGISTRADO] (início 14:39:24) | Não | `41fba49` |
+| 005 | Gerenciamento administrativo de excursões | AP-3 | [DADO NÃO REGISTRADO] (uma execução com retomadas) | 198 (80 novos) | [DADO NÃO REGISTRADO] (início 19:16:25) | Sim: esclarecimento de requisito e decisão de arquitetura | `c66cd36` |
 
-Nota: "Não" na coluna Intervenção para AGT-001 a AGT-004 é **inferido da definição de AP-1** (sem
-intervenção direta), não de um registro individual de intervenção; a conferir nas fichas do piloto.
+Todas as execuções do piloto ocorreram em 10/09/2026. Dados que o registro do piloto deixou
+pendentes (fim e duração da AGT-004 e da AGT-005; tentativas da AGT-005) permanecem
+**[DADO NÃO REGISTRADO]**; a versão do Node.js e o modelo do Codex nas execuções também não constam.
 
 Distribuição descritiva: 4 AP-1 (4/5), 1 AP-3 (1/5), 0 AP-2, 0 RP. **A contagem é do subconjunto
 avaliado, com n = 5, e não é uma taxa generalizável.** Perfil das tarefas: predominantemente

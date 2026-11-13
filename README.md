@@ -12,8 +12,8 @@ com o Codex, está no repositório `TCC-IA-EXCURSOES` (tag `piloto-codex`).
 
 | Pasta | Conteúdo |
 | --- | --- |
-| `src/` | Front-end (Vite + TypeScript). |
-| `server/` | API em Node.js (TypeScript executado diretamente pelo Node). |
+| `src/` | Front-end (React + Vite + TypeScript). |
+| `server/` | API em Node.js (TypeScript executado diretamente pelo Node, sem framework). |
 | `tests/` | Testes automatizados (Vitest). |
 | `docs/especificacao/` | Especificação (requisitos, regras de negócio, fluxos, dados, plano de atividades). |
 | `TCC/` | Registros do experimento: atividades, métricas, evidências e documentos metodológicos. |
@@ -21,7 +21,8 @@ com o Codex, está no repositório `TCC-IA-EXCURSOES` (tag `piloto-codex`).
 
 ## Requisitos
 
-- Node.js 26 e npm 11 (versões usadas no desenvolvimento e nos testes). O Node.js 22.18 ou superior deve funcionar, pois executa TypeScript diretamente, mas isso não foi testado.
+- Node.js 26 e npm 11 (versões usadas no desenvolvimento e nos testes). Outras versões não foram
+  testadas.
 
 ## Executar localmente
 
@@ -33,6 +34,7 @@ npm run dev                  # front-end em http://127.0.0.1:5173 (terminal 2)
 ```
 
 Verificação da API: `GET http://127.0.0.1:3001/api/health` deve responder `{"status":"ok"}`.
+Em desenvolvimento, o front-end encaminha as chamadas a `/api` para a API.
 
 ## Comandos
 

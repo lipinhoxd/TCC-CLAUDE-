@@ -3,23 +3,33 @@ export interface ServerConfig {
   port: number;
 }
 
+export class ConfigError extends Error {
+  constructor(message: string) {
+    super(message);
+    this.name = 'ConfigError';
+  }
+}
+
 const DEFAULT_HOST = '127.0.0.1';
 const DEFAULT_PORT = 3001;
 
-/** Lê e valida a configuração do servidor a partir das variáveis de ambiente. */
-export function readServerConfig(
-  env: Record<string, string | undefined> = process.env,
-): ServerConfig {
-  const host = env.HOST?.trim() || DEFAULT_HOST;
-
-  const rawPort = env.PORT?.trim();
-  let port = DEFAULT_PORT;
-  if (rawPort) {
-    port = Number(rawPort);
-    if (!Number.isInteger(port) || port < 0 || port > 65535) {
-      throw new Error(`PORT inválida: "${rawPort}". Informe um inteiro entre 0 e 65535.`);
-    }
+function parsePort(raw: string | undefined): number {
+  if (raw === undefined || raw.trim() === '') {
+    return DEFAULT_PORT;
   }
+  const value = raw.trim();
+  if (!/^\d+$/.test(value)) {
+    throw new ConfigError(`PORT invalida: "${value}". Informe um inteiro entre 0 e 65535.`);
+  }
+  const port = Number(value);
+  if (port > 65535) {
+    throw new ConfigError(`PORT invalida: ${port}. O maximo e 65535.`);
+  }
+  return port;
+}
 
-  return { host, port };
+/** Le e valida as variaveis de ambiente da API. */
+export function loadServerConfig(env: NodeJS.ProcessEnv = process.env): ServerConfig {
+  const host = env['HOST']?.trim() || DEFAULT_HOST;
+  return { host, port: parsePort(env['PORT']) };
 }

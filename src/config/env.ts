@@ -2,12 +2,11 @@ export interface WebConfig {
   appName: string;
 }
 
-const DEFAULT_APP_NAME = 'Excursões';
+const DEFAULT_APP_NAME = 'Plataforma de Excursões';
 
-/** Lê a configuração pública do front-end. Somente variáveis VITE_* são expostas ao navegador. */
-export function readWebConfig(
-  env: Record<string, string | undefined> = import.meta.env,
-): WebConfig {
-  const name = env.VITE_APP_NAME?.trim();
-  return { appName: name ? name : DEFAULT_APP_NAME };
+/** Le as variaveis publicas (VITE_*) expostas ao navegador. */
+export function loadWebConfig(env: Record<string, unknown> = import.meta.env): WebConfig {
+  const raw = env['VITE_APP_NAME'];
+  const appName = typeof raw === 'string' && raw.trim() !== '' ? raw.trim() : DEFAULT_APP_NAME;
+  return { appName };
 }

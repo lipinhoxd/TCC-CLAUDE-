@@ -1,14 +1,16 @@
+import react from '@vitejs/plugin-react';
 import { defineConfig } from 'vitest/config';
 
-// O front-end é servido pelo Vite; chamadas a /api são encaminhadas ao servidor Node local.
+// Em desenvolvimento, as chamadas a /api são encaminhadas para a API Node.
 export default defineConfig({
+  plugins: [react()],
   server: {
     proxy: {
       '/api': 'http://127.0.0.1:3001',
     },
   },
   test: {
-    include: ['tests/**/*.test.ts'],
     environment: 'node',
+    include: ['tests/**/*.test.{ts,tsx}'],
   },
 });

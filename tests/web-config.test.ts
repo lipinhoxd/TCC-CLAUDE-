@@ -1,16 +1,17 @@
 import { describe, expect, it } from 'vitest';
-import { readWebConfig } from '../src/config/env.ts';
+import { loadWebConfig } from '../src/config/env.ts';
 
-describe('readWebConfig', () => {
-  it('usa o nome padrão quando VITE_APP_NAME não é informado', () => {
-    expect(readWebConfig({})).toEqual({ appName: 'Excursões' });
+describe('loadWebConfig', () => {
+  it('usa o nome padrao quando VITE_APP_NAME nao e informado', () => {
+    expect(loadWebConfig({})).toEqual({ appName: 'Plataforma de Excursões' });
   });
 
   it('usa VITE_APP_NAME quando informado', () => {
-    expect(readWebConfig({ VITE_APP_NAME: ' Minha Agência ' })).toEqual({ appName: 'Minha Agência' });
+    expect(loadWebConfig({ VITE_APP_NAME: ' Minha Plataforma ' })).toEqual({ appName: 'Minha Plataforma' });
   });
 
-  it('ignora valor vazio', () => {
-    expect(readWebConfig({ VITE_APP_NAME: '   ' })).toEqual({ appName: 'Excursões' });
+  it('ignora valor vazio ou que nao seja texto', () => {
+    expect(loadWebConfig({ VITE_APP_NAME: '   ' }).appName).toBe('Plataforma de Excursões');
+    expect(loadWebConfig({ VITE_APP_NAME: 42 }).appName).toBe('Plataforma de Excursões');
   });
 });

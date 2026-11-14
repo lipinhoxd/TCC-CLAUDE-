@@ -1,8 +1,23 @@
 import { createApp } from './app.ts';
+import { loadAuthConfig } from './auth/config.ts';
+import { AuthService } from './auth/service.ts';
+import { fileOutbox, noOutbox } from './auth/support.ts';
 import { loadServerConfig } from './config.ts';
+import { loadDatabaseConfig } from './db/config.ts';
+import { openDatabase } from './db/connection.ts';
+import { runMigrations } from './db/migrate.ts';
 
 const { host, port } = loadServerConfig();
-const server = createApp();
+const authConfig = loadAuthConfig();
+const db = openDatabase(loadDatabaseConfig().path);
+runMigrations(db);
+
+const service = new AuthService({
+  db,
+  config: authConfig,
+  outbox: authConfig.recoveryOutboxPath === null ? noOutbox : fileOutbox(authConfig.recoveryOutboxPath),
+});
+const server = createApp({ auth: { service, config: authConfig } });
 
 server.listen(port, host, () => {
   console.log(`API em http://${host}:${port}`);
@@ -10,6 +25,7 @@ server.listen(port, host, () => {
 
 function shutdown(): void {
   server.close(() => {
+    db.close();
     process.exit(0);
   });
 }

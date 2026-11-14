@@ -898,3 +898,49 @@ nova. A classificação (AP-1, AP-2, AP-3 ou RP) cabe ao pesquisador; o agente n
 **Pontos de atenção registrados no TCC (6.3):** AP-2 pela rubrica exige correções do próprio agente; a AGT-002 teve só ajustes de lint e de processo, e a AGT-001, com decisão parecida, foi AP-3. O pesquisador não registrou justificativa; o agente não alterou a classificação.
 
 **Erros do agente:** o primeiro commit falhou por falta de identidade do Git; usou a identidade dos commits anteriores só no comando, sem alterar a configuração.
+
+---
+
+## Entrada 38 — Rascunho da instrução da AGT-003
+**Horário:** até 2026-11-13T20:53:18-03:00 (comando date; arquivo gravado nesse intervalo).
+
+**Pedido do pesquisador:** "Pode redigir" a instrução; a frase "E o controle de acesso aprovado" foi entendida como referência ao título da AGT-003, e a instrução não foi tratada como aprovada. Confirmou também que os Apêndices A a F vêm depois das Referências.
+
+**Ações:** leu RF-001 a 006, RN-001 a 008, RNF de segurança e os fluxos (`02` a `05` e `07`); não leu o piloto. Criou TCC/registros-agente/AGT-003.md com a instrução (Seção 5), quatro perguntas ao pesquisador e quatro paradas para decisão humana (hash de senha, sessão, validação do telefone, token de recuperação). Nenhum código criado, nenhum commit, Google Docs não alterado.
+
+**Pendente:** aprovação (ou correções) do pesquisador sobre o rascunho; confirmação das situações provisórias da AGT-002, que o pesquisador respondeu com "ok" sem confirmar item a item.
+
+---
+
+## Entrada 39 — Aprovação da instrução da AGT-003 e início da execução
+**Horário:** 2026-11-13T22:40:09-03:00 (comando date).
+
+**Pedido do pesquisador:** "aprovo" (instrução da AGT-003 com as quatro opções adotadas no rascunho).
+
+**Ações:** marcou a instrução como aprovada no cabeçalho de AGT-003.md e iniciou a execução. Conforme a Seção 5, nenhum arquivo de código foi criado antes das quatro decisões; apresentou a parada 1 (algoritmo de hash de senha). Nenhum commit; Google Docs não alterado.
+
+**Pendente:** decisões 1 a 4 do pesquisador; confirmação das situações provisórias da AGT-002.
+
+---
+
+## Entrada 40 — AGT-003: decisões, implementação e verificação
+**Horário:** decisões respondidas às 22:41:07-03:00 (primeiro comando após a resposta); código concluído e verificado às 22:47:07-03:00; registro gravado às 22:47:48-03:00 (comando date).
+
+**Pedido do pesquisador:** "So this is recomendadas." (todas as opções recomendadas nas quatro decisões).
+
+**Ações:** implementou server/auth (config, password, tokens, validation, support, service, routes, admin-cli), integrou em app.ts e main.ts, criou o script admin:create, atualizou .env.example e README, escreveu docs/autenticacao.md e 43 testes novos (100 no total). Executou a API real com dados fictícios e varreu auditoria e log: sem dados sensíveis. Preencheu as Seções 6 a 10 de AGT-003.md. Nenhuma dependência nova; nenhuma migração nova. Nenhum commit; Google Docs não alterado.
+
+**Erros do agente:** um heredoc com erro de sintaxe (nada gravado, usou a ferramenta de escrita); um aviso de lint (regex do telefone), corrigido; ao preencher o registro, um comando removeu por engano o início do cabeçalho do AGT-003.md, restaurado na hora.
+
+**Pendente:** avaliação humana, classificação (AP-1/AP-2/AP-3/RP) e commit, todos do pesquisador; marcar os critérios de aceitação da Seção 4.
+
+---
+
+## Entrada 41 — AGT-003: classificação AP-3, critérios, commit e preparo da transcrição
+**Horário:** início às 2026-11-13T22:56:07-03:00 (comando date); horário exato do commit registrado na Entrada 42.
+
+**Pedido do pesquisador:** "Eu acho que a P3. Eu quero fazer o commit, pode transcrever no Google Docs. Classifique a atividade para mim. E os critérios da seção". O agente leu "P3" como AP-3.
+
+**Ações:** marcou os 19 critérios da Seção 4 (evidências: 100 testes, execução real, varredura); redigiu as Seções 11 a 14 do registro, avisando que o texto é do agente e que o código de segurança aguarda revisão; registrou AP-3 e intervenção Sim (decisão de arquitetura e segurança). Atualizou METRICAS.csv, quadro de resultados, matriz de rastreabilidade (RF-001 a 006, RNF-001 a 006, RNF-027 parcial) e criou docs/fichas-agt/principal/AGT-003.md.
+
+**Ponto de atenção:** o pesquisador não escreveu justificativa da classificação; o agente registrou que o critério coincide com o da AGT-001 (decisões do pesquisador, AP-3), o que deixa a AGT-002 (AP-2, parada equivalente) como inconsistência aberta.

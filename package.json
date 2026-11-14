@@ -32,6 +32,7 @@
     "preview": "vite preview --host 127.0.0.1",
     "check": "npm run lint && npm run test && npm run build",
     "db:migrate": "node --env-file-if-exists=.env.local server/db/cli.ts migrate",
-    "db:reset": "node --env-file-if-exists=.env.local server/db/cli.ts reset"
+    "db:reset": "node --env-file-if-exists=.env.local server/db/cli.ts reset",
+    "admin:create": "node --env-file-if-exists=.env.local server/auth/admin-cli.ts"
   }
 }

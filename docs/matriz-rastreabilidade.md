@@ -8,12 +8,12 @@ Cadeia (TCC, Seção 3.8): requisito → atividade AGT → instrução → execu
 
 | RF | Requisito | AGT prevista | Estado | Evidência |
 | --- | --- | --- | --- | --- |
-| RF-001 | Cadastro de usuário | 003 | Planejada | — |
-| RF-002 | Validação dos dados de cadastro | 003 | Planejada | — |
-| RF-003 | Autenticação por e-mail e senha | 003 | Planejada | — |
-| RF-004 | Controle de acesso por perfil | 003 | Planejada | — |
-| RF-005 | Perfil do usuário (consulta e edição) | 003 | Planejada | — |
-| RF-006 | Recuperação de acesso | 003 | Planejada | — |
+| RF-001 | Cadastro de usuário | 003 | Evidenciada na AGT-003 | `server/auth/service.ts`; `tests/auth-api.test.ts` |
+| RF-002 | Validação dos dados de cadastro | 003 | Evidenciada na AGT-003 | `server/auth/validation.ts`; `tests/auth-validation.test.ts` |
+| RF-003 | Autenticação por e-mail e senha | 003 | Evidenciada na AGT-003 | `server/auth/service.ts, routes.ts`; `tests/auth-api.test.ts` |
+| RF-004 | Controle de acesso por perfil | 003 | Evidenciada na AGT-003 | `server/auth/routes.ts`; `tests/auth-api.test.ts` |
+| RF-005 | Perfil do usuário (consulta e edição) | 003 | Evidenciada na AGT-003 | `PATCH /api/me`; `tests/auth-api.test.ts` |
+| RF-006 | Recuperação de acesso | 003 | Evidenciada na AGT-003 | `recovery/request e recovery/confirm`; `tests/auth-api.test.ts` |
 | RF-007 | Estrutura pública: Home, Excursões, Sobre, Como funciona e Contato | 004 | Planejada | — |
 | RF-008 | Navegação pública (cabeçalho, rodapé, Cadastro e Login visíveis, estado autenticado) | 004 | Planejada | — |
 | RF-009 | Cadastro de excursão | 005 | Planejada | — |
@@ -55,12 +55,12 @@ Cadeia (TCC, Seção 3.8): requisito → atividade AGT → instrução → execu
 
 | RNF | Requisito | AGT prevista | Estado | Evidência (principal) |
 | --- | --- | --- | --- | --- |
-| RNF-001 | Hash seguro de senha | a definir | Planejada | — |
-| RNF-002 | Proteção de rotas administrativas | a definir | Planejada | — |
-| RNF-003 | Validação de dados | a definir | Planejada | — |
-| RNF-004 | Autorização verificada no servidor | a definir | Planejada | — |
-| RNF-005 | Proteção de dados pessoais | a definir | Planejada | — |
-| RNF-006 | Segurança de sessão | a definir | Planejada | — |
+| RNF-001 | Hash seguro de senha | 003 | Evidenciada na AGT-003 (ver limitações em docs/autenticacao.md) | server/auth/password.ts; tests/auth-validation.test.ts |
+| RNF-002 | Proteção de rotas administrativas | 003 | Evidenciada na AGT-003 (ver limitações em docs/autenticacao.md) | GET /api/admin/ping; tests/auth-api.test.ts |
+| RNF-003 | Validação de dados | 003 | Evidenciada na AGT-003 (ver limitações em docs/autenticacao.md) | server/auth/validation.ts; tests/auth-validation.test.ts |
+| RNF-004 | Autorização verificada no servidor | 003 | Evidenciada na AGT-003 (ver limitações em docs/autenticacao.md) | server/auth/routes.ts; tests/auth-api.test.ts |
+| RNF-005 | Proteção de dados pessoais | 003 | Evidenciada na AGT-003 (ver limitações em docs/autenticacao.md) | CPF mascarado; auditoria sem dados pessoais; tests/auth-api.test.ts |
+| RNF-006 | Segurança de sessão | 003 | Evidenciada na AGT-003 (ver limitações em docs/autenticacao.md) | cookie HttpOnly e hash do token; tests/auth-api.test.ts |
 | RNF-007 | Integridade dos dados | 002 | Evidenciada na AGT-002 | `server/db/migrations.ts` (restrições, chaves estrangeiras); `tests/db-schema.test.ts` |
 | RNF-008 | Prevenção de excedente de capacidade | 002 | Evidenciada na AGT-002 (estrutura; fluxo na AGT-008) | `CHECK` em `excursao`; `tests/db-schema.test.ts`, `tests/db-concorrencia.test.ts` |
 | RNF-009 | Consistência em operações críticas | 002 | Evidenciada na AGT-002 | `server/db/transaction.ts`; `tests/db-transaction-audit.test.ts` |
@@ -81,7 +81,7 @@ Cadeia (TCC, Seção 3.8): requisito → atividade AGT → instrução → execu
 | RNF-024 | Prevenção de regressões | 001 | Evidenciada na AGT-001 | Suíte automatizada (15 testes), de fundação |
 | RNF-025 | Controle de versão | 001 | Evidenciada na AGT-001 | Commits `4cd310c`, `d65d64f`; tag `agt-001-tentativa-1` |
 | RNF-026 | Rastreabilidade experimental | 001 | Evidenciada na AGT-001 | `TCC/registros-agente/AGT-001.md`, diário, `METRICAS.csv` |
-| RNF-027 | Registro (logs) de operações sem dados sensíveis | 001 | Prevista na AGT-001; sem evidência registrada | — |
+| RNF-027 | Registro (logs) de operações sem dados sensíveis | 001 | Prevista na AGT-001; evidência parcial na AGT-003 (auditoria e log da autenticação sem dados sensíveis) | `tests/auth-api.test.ts` |
 | RNF-028 | Minimização de dados pessoais coletados e exibidos | 001 | Prevista na AGT-001; sem evidência registrada | — |
 | RNF-029 | Qualidade estática (lint e verificação de tipos sem erros) | 001 | Evidenciada na AGT-001 | `npm run lint` e `npm run typecheck` sem erros |
 | RNF-030 | Revisão humana de implementações produzidas por IA | 018 | Planejada | — |

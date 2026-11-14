@@ -1,18 +1,15 @@
 import { createServer } from 'node:http';
 import type { IncomingMessage, Server, ServerResponse } from 'node:http';
+import type { AuthConfig } from './auth/config.ts';
+import { handleAuthRoute, sendJson } from './auth/routes.ts';
+import type { AuthService } from './auth/service.ts';
 
-function sendJson(res: ServerResponse, status: number, body: unknown, headers: Record<string, string> = {}): void {
-  const payload = JSON.stringify(body);
-  res.writeHead(status, {
-    'Content-Type': 'application/json; charset=utf-8',
-    'Content-Length': Buffer.byteLength(payload),
-    'Cache-Control': 'no-store',
-    ...headers,
-  });
-  res.end(payload);
+export interface AppOptions {
+  /** Servico de autenticacao; sem ele, as rotas de autenticacao respondem 503. */
+  auth?: { service: AuthService; config: AuthConfig };
 }
 
-function handle(req: IncomingMessage, res: ServerResponse): void {
+async function handle(req: IncomingMessage, res: ServerResponse, options: AppOptions): Promise<void> {
   const { pathname } = new URL(req.url ?? '/', 'http://localhost');
 
   if (pathname === '/api/health') {
@@ -24,10 +21,22 @@ function handle(req: IncomingMessage, res: ServerResponse): void {
     return;
   }
 
+  if (await handleAuthRoute(req, res, pathname, options.auth?.service, options.auth?.config)) {
+    return;
+  }
+
   sendJson(res, 404, { error: 'not_found' });
 }
 
 /** Cria o servidor HTTP da API sem iniciar a escuta (facilita os testes). */
-export function createApp(): Server {
-  return createServer(handle);
+export function createApp(options: AppOptions = {}): Server {
+  return createServer((req, res) => {
+    handle(req, res, options).catch(() => {
+      if (!res.headersSent) {
+        sendJson(res, 500, { error: 'erro_interno' });
+      } else {
+        res.destroy();
+      }
+    });
+  });
 }

@@ -30,13 +30,14 @@ Não há inferência estatística.
 
 ## 2. Experimento principal (Claude Code)
 
-n = 2 atividades concluídas e classificadas (de 18 previstas).
+n = 3 atividades concluídas e classificadas (de 18 previstas).
 
 | AGT | Atividade | Estado | Classe | Tentativas | Testes | Duração | Intervenção | Commit |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- |
 | 001 | Fundação técnica | Concluída | AP-3 | 2 | 13 (T1) e 15 (T2), todos aprovados | T1 3 min 13 s; T2 8 min 8 s (≈ 3 min 18 s sem pausas) | Sim: decisão de arquitetura | `4cd310c`, `d65d64f` |
 | 002 | Modelo de dados e persistência | Concluída | AP-2 | 1 | 57 (15 anteriores + 42 novos), todos aprovados | ≈ 4,2 min de implementação (espera de ≈ 1 h 15 min pela decisão do banco não contada) | Não (parada prevista na instrução) | `1c59330` |
-| 003 a 018 | Ver `docs/especificacao/07-PLANO-DE-ATIVIDADES.md` | Planejada | — | — | — | — | — | — |
+| 003 | Cadastro, autenticação e controle de acesso | Concluída | AP-3 | 1 | 100 (57 anteriores + 43 novos), todos aprovados | ≈ 6 min de implementação (espera pelas quatro decisões não contada) | Sim: decisão de arquitetura e segurança (quatro paradas previstas) | `COMMIT` |
+| 004 a 018 | Ver `docs/especificacao/07-PLANO-DE-ATIVIDADES.md` | Planejada | — | — | — | — | — | — |
 
 Distribuição descritiva: 1 AP-3 e 1 AP-2 (n = 2) no subconjunto avaliado, o que **não permite concluir
 nada sobre o desempenho do agente**. Perfil: tarefas fundacionais. Não há inferência estatística nem grupo

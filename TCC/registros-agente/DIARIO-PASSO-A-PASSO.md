@@ -944,3 +944,10 @@ nova. A classificação (AP-1, AP-2, AP-3 ou RP) cabe ao pesquisador; o agente n
 **Ações:** marcou os 19 critérios da Seção 4 (evidências: 100 testes, execução real, varredura); redigiu as Seções 11 a 14 do registro, avisando que o texto é do agente e que o código de segurança aguarda revisão; registrou AP-3 e intervenção Sim (decisão de arquitetura e segurança). Atualizou METRICAS.csv, quadro de resultados, matriz de rastreabilidade (RF-001 a 006, RNF-001 a 006, RNF-027 parcial) e criou docs/fichas-agt/principal/AGT-003.md.
 
 **Ponto de atenção:** o pesquisador não escreveu justificativa da classificação; o agente registrou que o critério coincide com o da AGT-001 (decisões do pesquisador, AP-3), o que deixa a AGT-002 (AP-2, parada equivalente) como inconsistência aberta.
+
+---
+
+## Entrada 42 — AGT-003: commit
+**Horário:** 2026-11-13T22:56:15-03:00 (comando date, logo após o commit).
+
+**Ações:** commit 0f6ba34 (identidade dos commits anteriores só no comando; configuração do Git não alterada). Um segundo commit grava o hash em AGT-003.md, METRICAS.csv, quadro e ficha.

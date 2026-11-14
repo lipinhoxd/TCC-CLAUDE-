@@ -60,6 +60,8 @@ prova ganho de produtividade.
 | **AP-3** | As verificações só foram atendidas com intervenção direta do pesquisador. |
 | **RP** | As verificações não foram atendidas pela abordagem utilizada. |
 
+Critério aplicado no experimento principal (decisão do pesquisador, 13/11/2026): quando a própria instrução manda parar e a atividade só prossegue com uma decisão do pesquisador (arquitetura, segurança ou escopo), há intervenção direta e a classificação é AP-3. AP-2 fica reservada às correções feitas pelo próprio agente em nova interação, sem decisão do pesquisador.
+
 ## 4. Ficha de avaliação (preencher por atividade)
 
 | Campo | Avaliador 1 (pesquisador) | Avaliador 2 (independente) |

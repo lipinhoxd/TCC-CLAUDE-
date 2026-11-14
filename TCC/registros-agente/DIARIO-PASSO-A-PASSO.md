@@ -962,3 +962,16 @@ nova. A classificação (AP-1, AP-2, AP-3 ou RP) cabe ao pesquisador; o agente n
 **Ações:** no Google Docs, ficha da AGT-003 no Apêndice E, linha do Quadro 2, parágrafo da Seção 5.3 e 13 substituições (Resumo, Abstract, 4.8, 5.1, 6.1 a 6.4, Cap. 7, Apêndice D), cada uma aplicada uma vez e conferida por nova leitura. Corrigiu também o trecho "será definido na AGT-002" (4.8), que ficara desatualizado. Publicou uma página de relatório da AGT-003 (link entregue ao pesquisador). Registrou a nova preferência do pesquisador na memória.
 
 **Pendente:** atualizar o sumário do Docs (só o pesquisador); revisão do código de segurança; critério único de AP-2 e AP-3.
+
+---
+
+## Entrada 44 — Critério único de classificação, revisão aprovada e situações confirmadas
+**Horário:** 2026-11-13T23:05:38-03:00 (comando date, após as edições no Docs e na página de relatório).
+
+**Pedido do pesquisador:** "Pode colocar esse critério único, a revisão do código está aprovada, confirmam as situações provisórias, isso, pode seguir com a pendência." O agente perguntou qual critério usar (não havia texto proposto); resposta: "Decisão sua na instrução = AP-3".
+
+**Ações:** (1) registrou o critério na rubrica (docs/rubrica-avaliacao.md) e aplicou às AGT-001 a AGT-003; a AGT-002 passou de AP-2 para AP-3 e de "sem intervenção" para "Sim: decisão de arquitetura", com a classificação inicial mantida como histórico nos registros e na ficha. (2) Registrou a aprovação da revisão do código de segurança (AGT-003) e a confirmação das situações provisórias (AGT-002, banco-de-dados.md, fichas). (3) Atualizou METRICAS.csv e o quadro. (4) No Google Docs: 22 substituições e a célula do Quadro 2, todas aplicadas e conferidas por nova leitura; o TCC passou a registrar o critério como possível viés (definido depois da primeira classificação da AGT-002). (5) Atualizou a página de relatório.
+
+**Ponto de atenção:** o critério foi fixado depois da classificação inicial da AGT-002; isso está declarado no TCC (6.3).
+
+**Pendente (pesquisador):** escopo da AGT-004 em diante; verificação real do telefone e envio do token; sumário do Docs; DOIs das referências 1 e 8; segundo avaliador.

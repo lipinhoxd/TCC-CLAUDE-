@@ -50,7 +50,7 @@ ISO 8601 **UTC** terminado em `Z` (RN-039; `CHECK` de formato); datas de calend�
 
 Situações da excursão (`rascunho`, `publicada`, `encerrada`, `cancelada`), de pagamento, retenção e
 reembolso não estão definidas na especificação (a RN-037 está como "[confirmar]"). São valores
-**provisórios** escolhidos nesta atividade; a revisão do pesquisador deve confirmá-los.
+**provisórios** escolhidos nesta atividade; o pesquisador os confirmou em 13/11/2026.
 
 ## Capacidade e concorrência (RN-021, RN-040, RNF-008)
 

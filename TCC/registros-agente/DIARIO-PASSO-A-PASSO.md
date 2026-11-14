@@ -1032,3 +1032,10 @@ nova. A classificação (AP-1, AP-2, AP-3 ou RP) cabe ao pesquisador; o agente n
 **Pedido do pesquisador:** "Sim para tudo." (marcar critérios, aprovar a revisão do código, commitar e transcrever no Google Docs).
 
 **Ações:** marcou os 20 critérios da Seção 4 de AGT-004.md; redigiu a Seção 11 (texto do agente, com a aprovação da revisão registrada); atualizou a ficha. Em seguida, commit e transcrição no Google Docs.
+
+---
+
+## Entrada 50 — AGT-004: commit
+**Horário:** 2026-11-13T23:41:03-03:00 (comando date, logo após o commit).
+
+**Ações:** commit e05db42 (identidade dos commits anteriores só no comando); segundo commit grava o hash em AGT-004.md, METRICAS.csv, quadro e ficha.

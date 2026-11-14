@@ -3,7 +3,7 @@ import { loadWebConfig } from '../src/config/env.ts';
 
 describe('loadWebConfig', () => {
   it('usa o nome padrao quando VITE_APP_NAME nao e informado', () => {
-    expect(loadWebConfig({})).toEqual({ appName: 'Plataforma de Excursões' });
+    expect(loadWebConfig({})).toEqual({ appName: 'BPM Trip' });
   });
 
   it('usa VITE_APP_NAME quando informado', () => {
@@ -11,7 +11,7 @@ describe('loadWebConfig', () => {
   });
 
   it('ignora valor vazio ou que nao seja texto', () => {
-    expect(loadWebConfig({ VITE_APP_NAME: '   ' }).appName).toBe('Plataforma de Excursões');
-    expect(loadWebConfig({ VITE_APP_NAME: 42 }).appName).toBe('Plataforma de Excursões');
+    expect(loadWebConfig({ VITE_APP_NAME: '   ' }).appName).toBe('BPM Trip');
+    expect(loadWebConfig({ VITE_APP_NAME: 42 }).appName).toBe('BPM Trip');
   });
 });

@@ -2,7 +2,7 @@ export interface WebConfig {
   appName: string;
 }
 
-const DEFAULT_APP_NAME = 'Plataforma de Excursões';
+const DEFAULT_APP_NAME = 'BPM Trip';
 
 /** Le as variaveis publicas (VITE_*) expostas ao navegador. */
 export function loadWebConfig(env: Record<string, unknown> = import.meta.env): WebConfig {

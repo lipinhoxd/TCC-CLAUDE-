@@ -975,3 +975,60 @@ nova. A classificação (AP-1, AP-2, AP-3 ou RP) cabe ao pesquisador; o agente n
 **Ponto de atenção:** o critério foi fixado depois da classificação inicial da AGT-002; isso está declarado no TCC (6.3).
 
 **Pendente (pesquisador):** escopo da AGT-004 em diante; verificação real do telefone e envio do token; sumário do Docs; DOIs das referências 1 e 8; segundo avaliador.
+
+---
+
+## Entrada 45 — Rascunho da instrução da AGT-004
+**Horário:** 2026-11-13T23:13:01-03:00 (comando date; arquivo gravado entre 23:11:34 e este horário).
+
+**Pedido do pesquisador:** "Vamos então" (seguir com a AGT-004).
+
+**Ações:** leu o plano (07), RF-007, RF-008, os RNF de interface, a visão geral, os fluxos, CLAUDE.md e src/ atual. Criou TCC/registros-agente/AGT-004.md com a instrução (Seção 5), 20 critérios de aceitação, cinco perguntas ao pesquisador e quatro paradas para decisão humana (roteamento, estilização, identidade visual e textos). Não consultou o piloto. Publicou uma página de revisão da instrução. Nenhum código criado, nenhum commit, Google Docs não alterado.
+
+**Ponto de escopo declarado:** o plano lista só RF-007 e RF-008, mas o estado autenticado exige telas de cadastro, login e saída; a instrução as inclui, sobre a API da AGT-003, sem recuperação de acesso nem edição de perfil (decisão a confirmar pelo pesquisador).
+
+**Pendente:** aprovação ou correções do pesquisador.
+
+---
+
+## Entrada 46 — AGT-004: aprovação e parada das quatro decisões
+**Horário:** aprovação registrada às 2026-11-13T23:24:33-03:00 (comando date, após a resposta "aprovado").
+
+**Pedido do pesquisador:** "aprovado." (instrução da AGT-004 com as opções adotadas).
+
+**Ações:** marcou a instrução como aprovada em AGT-004.md. Examinou src/, vite.config.ts (o proxy de /api para a API já existe desde a AGT-001), tests/ (teste existente espera <h1> com o nome do app), index.html e as dependências. Apresentou ao pesquisador as quatro decisões com opções e recomendação. Nenhum arquivo de código criado, nenhum commit, Google Docs não alterado.
+
+**Pendente:** decisões 1 a 4 do pesquisador.
+
+---
+
+## Entrada 47 — AGT-004: decisões, implementação e verificação
+**Horário:** decisões respondidas antes de 23:28:31-03:00 (primeiro comando após a resposta); implementação verificada às 23:35:00-03:00; registro gravado às 2026-11-13T23:36:13-03:00 (comando date).
+
+**Pedido do pesquisador:** "Moi, dois A, A3, recomendada. A4, A. Todas as" (lido como: 1A, 2A, 3 recomendada, 4A, ou seja, todas as recomendadas).
+
+**Ações:** instalou jsdom 31.0.1, @testing-library/react 16.3.3 e @testing-library/dom 10.4.2 (desenvolvimento). Criou roteador próprio, cliente de API, contexto de sessão, layout, páginas institucionais, cadastro e login, CSS, 40 testes novos e docs/interface-publica.md; ajustou o nome padrão para "BPM Trip" (e 3 expectativas em tests/web-config.test.ts). Rodou API, Vite e Edge sem cabeça e percorreu páginas, menu, cadastro, login e saída com dados fictícios. Preencheu as Seções 6 a 10 de AGT-004.md. Nenhum commit; Google Docs não alterado; nenhuma classificação.
+
+**Erros do agente:** dois avisos de lint e um seletor ambíguo de teste, corrigidos; aviso do jsdom sobre navegação, corrigido no teste.
+
+**Pendente:** avaliação humana, classificação, marcação dos critérios, commit e transcrição para o Google Docs, todos do pesquisador.
+
+---
+
+## Entrada 48 — AGT-004: classificação AP-3
+**Horário:** 2026-11-13T23:39:25-03:00 (comando date).
+
+**Pedido do pesquisador:** "AP3" (resposta ao relatório da AGT-004).
+
+**Ações:** registrou a classificação AP-3 e a intervenção humana "Sim" (Seções 12 e 13 de AGT-004.md); acrescentou a linha da AGT-004 a METRICAS.csv (commit PENDENTE) e ao quadro de resultados; criou docs/fichas-agt/principal/AGT-004.md; atualizou a matriz de rastreabilidade (RF-007, RF-008, RNF-010, RNF-013 a RNF-016 evidenciados; RNF-017 parcial). Não marcou os critérios da Seção 4, não registrou aprovação da revisão do código, não commitou e não alterou o Google Docs, porque o pesquisador não pediu.
+
+**Pendente (pesquisador):** marcar critérios e aprovar a revisão do código; pedir o commit; pedir a transcrição no Google Docs.
+
+---
+
+## Entrada 49 — AGT-004: critérios, revisão aprovada e commit
+**Horário:** início às 2026-11-13T23:40:49-03:00 (comando date); hora do commit na Entrada 50.
+
+**Pedido do pesquisador:** "Sim para tudo." (marcar critérios, aprovar a revisão do código, commitar e transcrever no Google Docs).
+
+**Ações:** marcou os 20 critérios da Seção 4 de AGT-004.md; redigiu a Seção 11 (texto do agente, com a aprovação da revisão registrada); atualizou a ficha. Em seguida, commit e transcrição no Google Docs.

@@ -14,8 +14,8 @@ Cadeia (TCC, Seção 3.8): requisito → atividade AGT → instrução → execu
 | RF-004 | Controle de acesso por perfil | 003 | Evidenciada na AGT-003 | `server/auth/routes.ts`; `tests/auth-api.test.ts` |
 | RF-005 | Perfil do usuário (consulta e edição) | 003 | Evidenciada na AGT-003 | `PATCH /api/me`; `tests/auth-api.test.ts` |
 | RF-006 | Recuperação de acesso | 003 | Evidenciada na AGT-003 | `recovery/request e recovery/confirm`; `tests/auth-api.test.ts` |
-| RF-007 | Estrutura pública: Home, Excursões, Sobre, Como funciona e Contato | 004 | Planejada | — |
-| RF-008 | Navegação pública (cabeçalho, rodapé, Cadastro e Login visíveis, estado autenticado) | 004 | Planejada | — |
+| RF-007 | Estrutura pública: Home, Excursões, Sobre, Como funciona e Contato | 004 | Evidenciada na AGT-004 | `src/pages/InfoPages.tsx`; `tests/web-navegacao.test.tsx` |
+| RF-008 | Navegação pública (cabeçalho, rodapé, Cadastro e Login visíveis, estado autenticado) | 004 | Evidenciada na AGT-004 | `src/Layout.tsx`, `src/session.tsx`; `tests/web-sessao.test.tsx` |
 | RF-009 | Cadastro de excursão | 005 | Planejada | — |
 | RF-010 | Edição de excursão | 005 | Planejada | — |
 | RF-011 | Configuração de capacidade | 005 | Planejada | — |
@@ -64,14 +64,14 @@ Cadeia (TCC, Seção 3.8): requisito → atividade AGT → instrução → execu
 | RNF-007 | Integridade dos dados | 002 | Evidenciada na AGT-002 | `server/db/migrations.ts` (restrições, chaves estrangeiras); `tests/db-schema.test.ts` |
 | RNF-008 | Prevenção de excedente de capacidade | 002 | Evidenciada na AGT-002 (estrutura; fluxo na AGT-008) | `CHECK` em `excursao`; `tests/db-schema.test.ts`, `tests/db-concorrencia.test.ts` |
 | RNF-009 | Consistência em operações críticas | 002 | Evidenciada na AGT-002 | `server/db/transaction.ts`; `tests/db-transaction-audit.test.ts` |
-| RNF-010 | Tratamento de falhas | a definir | Planejada | — |
+| RNF-010 | Tratamento de falhas | 004 | Evidenciada na AGT-004 (ver limitações em docs/interface-publica.md) | estados de erro e de rede em `src/pages/AuthPages.tsx`; `tests/web-sessao.test.tsx` |
 | RNF-011 | Desempenho das consultas públicas | a definir | Planejada | — |
 | RNF-012 | Desempenho das operações de reserva e pagamento | a definir | Planejada | — |
-| RNF-013 | Interface compreensível | a definir | Planejada | — |
-| RNF-014 | Consistência visual | a definir | Planejada | — |
-| RNF-015 | Feedback ao usuário | a definir | Planejada | — |
-| RNF-016 | Responsividade | a definir | Planejada | — |
-| RNF-017 | Compatibilidade com navegadores modernos | a definir | Planejada | — |
+| RNF-013 | Interface compreensível | 004 | Evidenciada na AGT-004 (ver limitações em docs/interface-publica.md) | rótulos, foco, link de pular; `tests/web-navegacao.test.tsx` |
+| RNF-014 | Consistência visual | 004 | Evidenciada na AGT-004 (ver limitações em docs/interface-publica.md) | variáveis de CSS em `src/styles.css` |
+| RNF-015 | Feedback ao usuário | 004 | Evidenciada na AGT-004 (ver limitações em docs/interface-publica.md) | avisos e mensagens por campo; `tests/web-sessao.test.tsx` |
+| RNF-016 | Responsividade | 004 | Evidenciada na AGT-004 (ver limitações em docs/interface-publica.md) | verificada em 390 px e 1280 px no navegador |
+| RNF-017 | Compatibilidade com navegadores modernos | 004 | Parcial na AGT-004: só Microsoft Edge (Chromium) verificado | verificação em navegador; ver docs/interface-publica.md |
 | RNF-018 | Organização do código | 001 | Evidenciada na AGT-001 | Pastas `src/`, `server/`, `tests/` |
 | RNF-019 | Padronização | 001 | Evidenciada na AGT-001 | `eslint.config.mjs`, `tsconfig.json`, `.editorconfig`; lint sem avisos |
 | RNF-020 | Modularidade | 001 | Evidenciada na AGT-001 | `server/config.ts`, `server/app.ts`, `server/main.ts`; `src/config/env.ts` |

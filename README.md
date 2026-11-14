@@ -34,7 +34,7 @@ npm run dev                  # front-end em http://127.0.0.1:5173 (terminal 2)
 ```
 
 Verificação da API: `GET http://127.0.0.1:3001/api/health` deve responder `{"status":"ok"}`.
-Em desenvolvimento, o front-end encaminha as chamadas a `/api` para a API.
+Em desenvolvimento, o front-end encaminha as chamadas a `/api` para a API (mesma origem, necessária para o cookie de sessão).
 
 ## Comandos
 
@@ -55,6 +55,10 @@ SQLite via `node:sqlite` (módulo do Node.js), SQL direto e migrações versiona
 `server/db/migrations.ts`. O arquivo fica em `data/excursoes.sqlite` (não versionado; mude com
 `DATABASE_PATH`). Para recriar o banco local: `npm run db:reset`. Detalhes, esquema e a estratégia
 de concorrência em [docs/banco-de-dados.md](docs/banco-de-dados.md).
+
+## Interface pública
+
+Páginas Home, Excursões, Sobre, Como funciona e Contato, cabeçalho e rodapé, cadastro, login e saída, em React com roteador próprio e CSS puro. Textos provisórios. Detalhes, rotas e limitações em [docs/interface-publica.md](docs/interface-publica.md).
 
 ## Autenticação
 

@@ -951,3 +951,14 @@ nova. A classificação (AP-1, AP-2, AP-3 ou RP) cabe ao pesquisador; o agente n
 **Horário:** 2026-11-13T22:56:15-03:00 (comando date, logo após o commit).
 
 **Ações:** commit 0f6ba34 (identidade dos commits anteriores só no comando; configuração do Git não alterada). Um segundo commit grava o hash em AGT-003.md, METRICAS.csv, quadro e ficha.
+
+---
+
+## Entrada 43 — AGT-003: transcrição no Google Docs e página de relatório
+**Horário:** 2026-11-13T22:59:41-03:00 (comando date, após a transcrição).
+
+**Pedido do pesquisador:** "pode transcrever no Google Docs"; e, no meio do turno, que tudo o que o agente fizer venha com um link para ele ver e com mais detalhes.
+
+**Ações:** no Google Docs, ficha da AGT-003 no Apêndice E, linha do Quadro 2, parágrafo da Seção 5.3 e 13 substituições (Resumo, Abstract, 4.8, 5.1, 6.1 a 6.4, Cap. 7, Apêndice D), cada uma aplicada uma vez e conferida por nova leitura. Corrigiu também o trecho "será definido na AGT-002" (4.8), que ficara desatualizado. Publicou uma página de relatório da AGT-003 (link entregue ao pesquisador). Registrou a nova preferência do pesquisador na memória.
+
+**Pendente:** atualizar o sumário do Docs (só o pesquisador); revisão do código de segurança; critério único de AP-2 e AP-3.

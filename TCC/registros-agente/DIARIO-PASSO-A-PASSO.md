@@ -1039,3 +1039,12 @@ nova. A classificação (AP-1, AP-2, AP-3 ou RP) cabe ao pesquisador; o agente n
 **Horário:** 2026-11-13T23:41:03-03:00 (comando date, logo após o commit).
 
 **Ações:** commit e05db42 (identidade dos commits anteriores só no comando); segundo commit grava o hash em AGT-004.md, METRICAS.csv, quadro e ficha.
+
+---
+
+## Entrada 51 — AGT-004: transcrição no Google Docs
+**Horário:** 2026-11-13T23:43:53-03:00 (comando date, após a conferência por nova leitura do documento).
+
+**Ações:** no Google Docs, ficha da AGT-004 no Apêndice E, linha do Quadro 2 (AP-3, 1 tentativa, 140 testes, intervenção Sim, commit e05db42), parágrafo da Seção 5.3 e 13 substituições (Resumo, Abstract, 5.1, 6.1 a 6.4, Cap. 7, Apêndice D), cada uma aplicada uma vez e conferida; o texto do critério único (6.3) passou a falar "atividades do experimento principal". Atualizou a página de relatório da AGT-004. Commits: e05db42 e fdc2bd7.
+
+**Pendente (pesquisador):** atualizar o sumário do Docs; escopo da AGT-005 em diante; verificação real do telefone e envio do token; DOIs das referências 1 e 8; segundo avaliador.

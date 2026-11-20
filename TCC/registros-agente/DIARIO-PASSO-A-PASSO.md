@@ -1121,3 +1121,12 @@ nova. A classificação (AP-1, AP-2, AP-3 ou RP) cabe ao pesquisador; o agente n
 **Horário:** 2026-11-19T22:32:44-03:00 (comando date, logo após o commit).
 
 **Ações:** commit 614e11d (identidade dos commits anteriores só no comando); segundo commit grava o hash em AGT-005.md, METRICAS.csv, quadro e ficha.
+
+---
+
+## Entrada 59 — AGT-005: transcrição no Google Docs
+**Horário:** 2026-11-19T22:35:45-03:00 (comando date, após a conferência por nova leitura do documento).
+
+**Ações:** no Google Docs, ficha da AGT-005 no Apêndice E, linha do Quadro 2 (AP-3, 1 tentativa, 238 testes, intervenção Sim, commit 614e11d), parágrafo da Seção 5.3 e 13 substituições (Resumo, Abstract, 5.1, 6.1 a 6.4, Cap. 7, Apêndice D), cada uma aplicada uma vez e conferida. Antes do lote, a leitura mostrou o documento com o mesmo tamanho da última leitura (sem edição do pesquisador entre as duas) e todas as âncoras do checklist foram encontradas uma única vez. Seguiu o método do ESTADO-GOOGLE-DOCS.md (uma leitura para os índices, substituições por texto, uma leitura de conferência) e atualizou esse arquivo com o checklist da AGT-006. Commits: 614e11d e 799dd9d.
+
+**Pendente (pesquisador):** atualizar o sumário do Docs; diagramas (precisam de hospedagem externa, a decidir); verificação real do telefone e envio do token; DOIs das referências 1 e 8; segundo avaliador; decisões da AGT-006.

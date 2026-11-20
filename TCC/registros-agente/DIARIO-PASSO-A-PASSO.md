@@ -1114,3 +1114,10 @@ nova. A classificação (AP-1, AP-2, AP-3 ou RP) cabe ao pesquisador; o agente n
 **Pedido do pesquisador:** "classifica AP2 AP3, pode classificar como AP3. Aprova a revisão do código e pode fazer o commit e a transcrição no Google Docs." O agente leu como AP-3, com aprovação da revisão do código, do commit e da transcrição.
 
 **Ações:** marcou os 23 critérios da Seção 4 de AGT-005.md; redigiu a Seção 11 (texto do agente, com a aprovação registrada), 12 (Sim) e 13 (AP-3); acrescentou a linha da AGT-005 a METRICAS.csv e ao quadro; atualizou a matriz (RF-009 a RF-013 evidenciados, RF-014 e RF-042 parciais); criou docs/fichas-agt/principal/AGT-005.md. Na verificação final, um teste da AGT-005 falhou de forma intermitente (corrida entre a carga da tela de edição e o teste); corrigiu o teste, rodou 8 vezes seguidas sem falha e registrou o fato na Seção 9 do registro. Em seguida, commit e transcrição no Google Docs.
+
+---
+
+## Entrada 58 — AGT-005: commit
+**Horário:** 2026-11-19T22:32:44-03:00 (comando date, logo após o commit).
+
+**Ações:** commit 614e11d (identidade dos commits anteriores só no comando); segundo commit grava o hash em AGT-005.md, METRICAS.csv, quadro e ficha.

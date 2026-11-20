@@ -1130,3 +1130,58 @@ nova. A classificação (AP-1, AP-2, AP-3 ou RP) cabe ao pesquisador; o agente n
 **Ações:** no Google Docs, ficha da AGT-005 no Apêndice E, linha do Quadro 2 (AP-3, 1 tentativa, 238 testes, intervenção Sim, commit 614e11d), parágrafo da Seção 5.3 e 13 substituições (Resumo, Abstract, 5.1, 6.1 a 6.4, Cap. 7, Apêndice D), cada uma aplicada uma vez e conferida. Antes do lote, a leitura mostrou o documento com o mesmo tamanho da última leitura (sem edição do pesquisador entre as duas) e todas as âncoras do checklist foram encontradas uma única vez. Seguiu o método do ESTADO-GOOGLE-DOCS.md (uma leitura para os índices, substituições por texto, uma leitura de conferência) e atualizou esse arquivo com o checklist da AGT-006. Commits: 614e11d e 799dd9d.
 
 **Pendente (pesquisador):** atualizar o sumário do Docs; diagramas (precisam de hospedagem externa, a decidir); verificação real do telefone e envio do token; DOIs das referências 1 e 8; segundo avaliador; decisões da AGT-006.
+
+---
+
+## Entrada 60 — Rascunho da instrução da AGT-006
+**Horário:** 2026-11-19T22:40:38-03:00 (comando date; arquivo gravado entre 22:39:29 e este horário).
+
+**Pedido do pesquisador:** "Vamos." (seguir com a AGT-006).
+
+**Ações:** leu RF-015 a RF-017, o fluxo de consulta (05) e o estado atual de src/, vite.config.ts e das rotas. Criou TCC/registros-agente/AGT-006.md com a instrução (Seção 5), 20 critérios de aceitação, seis perguntas ao pesquisador e três paradas para decisão humana (quais excursões listar e como; disponibilidade e dados expostos; imagens e dados de demonstração). Não consultou o piloto. Publicou página de revisão. Nenhum código criado, nenhum commit, Google Docs não alterado.
+
+**Pontos declarados no rascunho:** (1) a retenção temporária de vaga só existe na AGT-008, então a disponibilidade exibida pode ficar acima da real durante um checkout; (2) rascunho e cancelada respondem 404 no detalhe, para não revelar existência; (3) nenhuma regra de negócio nova; "encerrada" segue a definição da AGT-005; (4) a pasta imagens/ ainda não existe, e a instrução manda o agente decidir isso com o pesquisador.
+
+**Pendente:** aprovação ou correções do pesquisador.
+
+---
+
+## Entrada 61 — AGT-006: aprovação e parada das decisões
+**Horário:** 2026-11-19T22:42:34-03:00 (comando date, após a resposta).
+
+**Pedido do pesquisador:** "Certo, pode manter suas escolhas. Somente as excursões publicadas, tá? As ativas, no caso. Disponibilidade e dados expostos. Verdade vagas. Ok, pode manter assim. Aprova. Aceitar tudo." O agente leu: instrução aprovada; parada 1 respondida em parte (só excursões publicadas, sem encerradas); parada 2 respondida em parte (mostrar vagas); parada 3 (imagens e dados de demonstração) não respondida, e os detalhes de ordenação, limite, esgotada, capacidade e campos expostos ainda dependem de confirmação.
+
+**Ações:** marcou a instrução como aprovada em AGT-006.md, registrando a interpretação acima. Apresentou as três decisões com opções e recomendação, partindo do que o pesquisador já disse. Nenhum código criado, nenhum commit, Google Docs não alterado.
+
+**Pendente:** confirmação das decisões 1 a 3.
+
+---
+
+## Entrada 62 — AGT-006: decisões e início da implementação
+**Horário:** 2026-11-19T22:43:52-03:00 (comando date).
+
+**Pedido do pesquisador:** "todas as recomendadas".
+
+**Decisões registradas:** (1) só excursões publicadas na lista e no detalhe; as publicadas com data final já passada (Brasília) ficam ocultas (404); ordem da data inicial mais próxima para a mais distante; até 100 por resposta, sem paginação; (2) número exato de vagas livres, "Esgotada" quando zero, capacidade total e ocupação não expostas, parcelamento e prazo mostrados quando habilitado, campos públicos: id, nome, descrição, imagem, local, ponto de embarque, datas, partida (UTC e Brasília), preço em centavos, parcelamento, prazo da 2ª parcela e vagas disponíveis; (3) imagens em public/imagens servidas pelo Vite, bloco de cor sem arquivo quando não houver imagem, e script npm run seed:demo com excursões fictícias.
+
+---
+
+## Entrada 63 — AGT-006: implementação e verificação
+**Horário:** decisões respondidas e início às 2026-11-19T22:43:52-03:00; implementação verificada às 22:50:44-03:00; registro gravado às 2026-11-19T22:51:51-03:00 (comando date).
+
+**Pedido do pesquisador:** "todas as recomendadas" nas três decisões da AGT-006.
+
+**Ações:** criou server/excursoes/publico.ts e rotas-publicas.ts (GET público de lista e detalhe), liga em app.ts, a página de lista e de detalhe, o script npm run seed:demo e public/imagens/; escreveu 39 testes novos e reescreveu um (277 no total). Rodou API, Vite e Edge sem cabeça e percorreu como visitante a API, a lista, o detalhe, o esgotado, o rascunho e o encerrado (404), o celular, a imagem real e a ausente, e o administrador logado, com dados fictícios do seed. Escreveu docs/consulta-publica.md e preencheu as Seções 6 a 10 de AGT-006.md. Nenhuma dependência nem migração nova. Nenhum commit; Google Docs não alterado; nenhuma classificação.
+
+**Erros do agente:** a barra invertida de uma regex de src/App.tsx se perdeu de novo na inserção por script (segunda vez; corrigida antes dos testes de rota); um teste de data ajustado; um teste que assumia a ordem das chamadas; um erro no script de navegador; cartões limitados a 44 rem por uma regra antiga (corrigido).
+
+**Pendente (pesquisador):** avaliação, classificação, critérios, revisão do código, commit e transcrição no Docs.
+
+---
+
+## Entrada 64 — AGT-006: classificação AP-3, fechamento padrão e commit
+**Horário:** início às 2026-11-19T22:54:41-03:00 (comando date); hora do commit na Entrada 65.
+
+**Pedido do pesquisador:** "ap 3, e sim para todos os agentes sempre o mesmo processo". O agente leu: classificação AP-3 e autorização permanente para repetir, a cada AGT, o fechamento (critérios, revisão do código aprovada, commit e transcrição no Google Docs). Registrou isso na memória e no registro.
+
+**Ações:** checagem completa antes do commit (lint, tipos, testes e build): 277 testes aprovados, sem falhas. Marcou os 20 critérios da Seção 4 de AGT-006.md; redigiu as Seções 11 a 13; acrescentou a linha da AGT-006 a METRICAS.csv e ao quadro; atualizou a matriz (RF-015 e RF-016 evidenciados, RF-017 parcial); criou docs/fichas-agt/principal/AGT-006.md.

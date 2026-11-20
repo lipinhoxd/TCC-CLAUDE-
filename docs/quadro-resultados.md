@@ -30,7 +30,7 @@ Não há inferência estatística.
 
 ## 2. Experimento principal (Claude Code)
 
-n = 5 atividades concluídas e classificadas (de 18 previstas).
+n = 6 atividades concluídas e classificadas (de 18 previstas).
 
 | AGT | Atividade | Estado | Classe | Tentativas | Testes | Duração | Intervenção | Commit |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- |
@@ -39,9 +39,10 @@ n = 5 atividades concluídas e classificadas (de 18 previstas).
 | 003 | Cadastro, autenticação e controle de acesso | Concluída | AP-3 | 1 | 100 (57 anteriores + 43 novos), todos aprovados | ≈ 6 min de implementação (espera pelas quatro decisões não contada) | Sim: decisão de arquitetura e segurança (quatro paradas previstas) | `0f6ba34` |
 | 004 | Estrutura pública | Concluída | AP-3 | 1 | 140 (100 anteriores + 40 novos), todos aprovados | ≈ 6,5 min de implementação (espera pelas quatro decisões não contada) | Sim: decisão de arquitetura, dependências e conteúdo (quatro paradas previstas) | `e05db42` |
 | 005 | Gerenciamento administrativo de excursões | Concluída | AP-3 | 1 | 238 (140 anteriores + 98 novos), todos aprovados | ≈ 13,5 min de implementação (espera pelas três decisões não contada) | Sim: decisão de regras de negócio e arquitetura (três paradas previstas) | `614e11d` |
-| 006 a 018 | Ver `docs/especificacao/07-PLANO-DE-ATIVIDADES.md` | Planejada | — | — | — | — | — | — |
+| 006 | Consulta e detalhamento | Concluída | AP-3 | 1 | 277 (238 anteriores + 39 novos; 1 reescrito), todos aprovados | ≈ 7 min de implementação (espera pelas decisões não contada) | Sim: decisão sobre o que o público vê (três paradas previstas) | `COMMIT` |
+| 007 a 018 | Ver `docs/especificacao/07-PLANO-DE-ATIVIDADES.md` | Planejada | — | — | — | — | — | — |
 
-Distribuição descritiva: 5 AP-3 (n = 5) no subconjunto avaliado, o que **não permite concluir
+Distribuição descritiva: 6 AP-3 (n = 6) no subconjunto avaliado, o que **não permite concluir
 nada sobre o desempenho do agente**. As três atividades seguem um critério único (decisão do pesquisador exigida pela instrução = AP-3; ver `docs/rubrica-avaliacao.md`). Perfil: tarefas fundacionais. Não há inferência estatística nem grupo
 de controle.
 

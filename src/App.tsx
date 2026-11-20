@@ -3,7 +3,8 @@ import { loadWebConfig } from './config/env.ts';
 import { Layout } from './Layout.tsx';
 import { AdminExcursoes, FormularioExcursao } from './pages/AdminExcursoes.tsx';
 import { Cadastro, Login } from './pages/AuthPages.tsx';
-import { ComoFunciona, Contato, Excursoes, Home, NaoEncontrada, Sobre } from './pages/InfoPages.tsx';
+import { DetalhePublico, ListaPublica } from './pages/ExcursoesPublicas.tsx';
+import { ComoFunciona, Contato, Home, NaoEncontrada, Sobre } from './pages/InfoPages.tsx';
 import { RouterProvider, matchPath, useRouter } from './router.tsx';
 import { SessionProvider } from './session.tsx';
 import { AppNameProvider } from './ui.tsx';
@@ -24,9 +25,14 @@ function EditarExcursao({ params }: PageProps) {
   return id === null ? <NaoEncontrada /> : <FormularioExcursao id={id} />;
 }
 
+function DetalheExcursao({ params }: PageProps) {
+  const id = /^\d{1,15}$/.test(params['id'] ?? '') ? Number(params['id']) : null;
+  return id === null ? <NaoEncontrada /> : <DetalhePublico id={id} />;
+}
+
 export const ROUTES: Record<string, ComponentType<PageProps>> = {
   '/': Home,
-  '/excursoes': Excursoes,
+  '/excursoes': ListaPublica,
   '/sobre': Sobre,
   '/como-funciona': ComoFunciona,
   '/contato': Contato,
@@ -36,7 +42,10 @@ export const ROUTES: Record<string, ComponentType<PageProps>> = {
   '/admin/excursoes/nova': () => <FormularioExcursao />,
 };
 
-export const DYNAMIC_ROUTES: [string, ComponentType<PageProps>][] = [['/admin/excursoes/:id', EditarExcursao]];
+export const DYNAMIC_ROUTES: [string, ComponentType<PageProps>][] = [
+  ['/excursoes/:id', DetalheExcursao],
+  ['/admin/excursoes/:id', EditarExcursao],
+];
 
 function Routes() {
   const { path } = useRouter();

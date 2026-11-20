@@ -49,6 +49,7 @@ Em desenvolvimento, o front-end encaminha as chamadas a `/api` para a API (mesma
 | `npm run db:migrate` | Cria o banco local (se não existir) e aplica as migrações pendentes. |
 | `npm run db:reset` | Apaga o banco local e o recria do zero pelas migrações. |
 | `npm run admin:create` | Cria o administrador a partir das variáveis `ADMIN_*` (ver `.env.example`). |
+| `npm run seed:demo` | Cria excursões fictícias de demonstração (só desenvolvimento; exige o administrador). |
 
 ## Banco de dados
 
@@ -60,6 +61,10 @@ de concorrência em [docs/banco-de-dados.md](docs/banco-de-dados.md).
 ## Interface pública
 
 Páginas Home, Excursões, Sobre, Como funciona e Contato, cabeçalho e rodapé, cadastro, login e saída, em React com roteador próprio e CSS puro. Textos provisórios. Detalhes, rotas e limitações em [docs/interface-publica.md](docs/interface-publica.md).
+
+## Consulta pública de excursões
+
+Lista e detalhe das excursões publicadas (`/excursoes`, `/excursoes/:id`) e API pública de leitura (`GET /api/excursoes`). Para ver com dados fictícios: `npm run admin:create` e `npm run seed:demo`. Imagens em `public/imagens/`. Detalhes e limitações em [docs/consulta-publica.md](docs/consulta-publica.md).
 
 ## Administração de excursões
 

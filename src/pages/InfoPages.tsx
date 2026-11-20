@@ -42,25 +42,6 @@ export function Home() {
   );
 }
 
-export function Excursoes() {
-  usePageTitle('Excursões');
-  return (
-    <>
-      <h1>Excursões</h1>
-      <section className="empty-state" aria-labelledby="excursoes-vazio">
-        <h2 id="excursoes-vazio">Nenhuma excursão para mostrar ainda</h2>
-        <p>
-          As excursões publicadas aparecerão aqui, com datas, preço e vagas disponíveis. Esta página ainda não consulta
-          excursões.
-        </p>
-        <p>
-          <Link to="/como-funciona">Veja como funciona a reserva</Link>
-        </p>
-      </section>
-    </>
-  );
-}
-
 export function Sobre() {
   const appName = useAppName();
   usePageTitle('Sobre');

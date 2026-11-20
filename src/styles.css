@@ -592,3 +592,137 @@ main > dl {
 .history li {
   margin-bottom: 0.7rem;
 }
+
+/* Consulta publica de excursoes (AGT-006) */
+.excursao-lista {
+  max-width: none;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(16rem, 1fr));
+  gap: 1rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.excursao-card {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  overflow: hidden;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+}
+
+.excursao-corpo {
+  padding: 0.9rem 1rem 1rem;
+}
+
+.excursao-corpo h2 {
+  margin: 0 0 0.3rem;
+  font-size: 1.15rem;
+}
+
+.excursao-corpo p {
+  margin: 0.25rem 0;
+}
+
+.excursao-meta {
+  color: var(--muted);
+}
+
+.excursao-imagem {
+  display: block;
+  width: 100%;
+  height: 9.5rem;
+  object-fit: cover;
+}
+
+.excursao-imagem-grande {
+  height: auto;
+  max-height: 20rem;
+  max-width: 44rem;
+  border-radius: var(--radius);
+}
+
+.img-placeholder {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem;
+  color: #fff;
+  font-weight: 700;
+  text-align: center;
+  text-wrap: balance;
+}
+
+.excursao-imagem-grande.img-placeholder {
+  height: 12rem;
+}
+
+.cor-0 {
+  background: #0f5c6e;
+}
+
+.cor-1 {
+  background: #7a3b00;
+}
+
+.cor-2 {
+  background: #2f5d34;
+}
+
+.cor-3 {
+  background: #4b3a8c;
+}
+
+.vagas {
+  display: inline-block;
+  padding: 0.1rem 0.6rem;
+  border: 1px solid var(--success);
+  border-radius: 999px;
+  color: var(--success);
+  font-size: 0.92rem;
+  font-weight: 600;
+}
+
+.vagas-esgotada {
+  border-color: var(--error);
+  color: var(--error);
+}
+
+.excursao-destaque {
+  font-size: 1.25rem;
+}
+
+.excursao-descricao {
+  max-width: 44rem;
+  white-space: pre-line;
+}
+
+.detalhes {
+  display: grid;
+  grid-template-columns: max-content 1fr;
+  gap: 0.5rem 1.25rem;
+  max-width: 44rem;
+  margin-block: 1rem;
+}
+
+.detalhes dt {
+  font-weight: 600;
+}
+
+.detalhes dd {
+  margin: 0;
+}
+
+@media (max-width: 47.99rem) {
+  .detalhes {
+    grid-template-columns: 1fr;
+    gap: 0.1rem;
+  }
+
+  .detalhes dd {
+    margin-bottom: 0.6rem;
+  }
+}

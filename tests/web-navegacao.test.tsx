@@ -60,10 +60,12 @@ describe('estrutura publica (RF-007)', () => {
     expect(window.location.pathname).toBe('/');
   });
 
-  it('Excursoes mostra o estado vazio e nao consulta dados de excursoes', async () => {
-    const calls = await open('/excursoes');
-    expect(screen.getByText('Nenhuma excursão para mostrar ainda')).not.toBeNull();
-    expect(calls.map((c) => c.path)).toEqual(['/api/me']);
+  it('Excursoes consulta a lista publica e mostra o estado vazio quando nao ha excursoes publicadas', async () => {
+    const calls = mockApi({ ...visitor, 'GET /api/excursoes': () => json(200, { excursoes: [] }) });
+    render(<App appName="BPM Trip" initialPath="/excursoes" />);
+    await screen.findByRole('link', { name: 'Login' });
+    expect(await screen.findByText('Nenhuma excursão disponível no momento')).not.toBeNull();
+    expect(calls.map((c) => c.path).sort()).toEqual(['/api/excursoes', '/api/me']);
   });
 
   it('Como funciona descreve o fluxo em lista ordenada', async () => {

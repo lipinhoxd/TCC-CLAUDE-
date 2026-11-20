@@ -22,9 +22,9 @@ Cadeia (TCC, Seção 3.8): requisito → atividade AGT → instrução → execu
 | RF-012 | Configuração de preço | 005 | Evidenciada na AGT-005 | `server/excursoes/validation.ts`, `shared/dinheiro.ts`; `tests/excursoes-api.test.ts`, `tests/dinheiro-rota.test.ts` |
 | RF-013 | Habilitação de pagamento em duas parcelas e prazo da segunda | 005 | Evidenciada na AGT-005 | `server/excursoes/validation.ts`, `shared/fuso.ts`; `tests/excursoes-api.test.ts`, `tests/fuso.test.ts` |
 | RF-014 | Publicação e situação da excursão | 005/006 | Parcial na AGT-005 (parte administrativa; exibição pública é da AGT-006) | `server/excursoes/service.ts` (situações); `tests/excursoes-api.test.ts` |
-| RF-015 | Listagem pública de excursões | 006 | Planejada | — |
-| RF-016 | Detalhamento da excursão | 006 | Planejada | — |
-| RF-017 | Exibição de disponibilidade de vagas | 006/008 | Planejada | — |
+| RF-015 | Listagem pública de excursões | 006 | Evidenciada na AGT-006 | `server/excursoes/publico.ts`, `src/pages/ExcursoesPublicas.tsx`; `tests/consulta-publica.test.ts`, `tests/web-publico.test.tsx` |
+| RF-016 | Detalhamento da excursão | 006 | Evidenciada na AGT-006 | `GET /api/excursoes/:id`; `tests/consulta-publica.test.ts`, `tests/web-publico.test.tsx` |
+| RF-017 | Exibição de disponibilidade de vagas | 006/008 | Parcial na AGT-006 (capacidade menos vagas ocupadas; a retenção temporária é da AGT-008) | `vagasDisponiveis` em `server/excursoes/publico.ts`; `tests/consulta-publica.test.ts` |
 | RF-018 | Solicitação de reserva individual | 007 | Planejada | — |
 | RF-019 | Verificação de disponibilidade na reserva | 007/008 | Planejada | — |
 | RF-020 | Checkout obrigatório | 007 | Planejada | — |

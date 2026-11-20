@@ -104,6 +104,16 @@ export class ExcursaoService {
   private readonly db: DatabaseSync;
   private readonly relogio: () => Date;
 
+  /** Conexao usada pela consulta publica (so leitura; ver publico.ts). */
+  get banco(): DatabaseSync {
+    return this.db;
+  }
+
+  /** Instante atual segundo o relogio do servico. */
+  agora(): Date {
+    return this.relogio();
+  }
+
   constructor(db: DatabaseSync, now?: () => Date) {
     this.db = db;
     this.relogio = now ?? (() => new Date());

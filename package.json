@@ -36,6 +36,7 @@
     "check": "npm run lint && npm run test && npm run build",
     "db:migrate": "node --env-file-if-exists=.env.local server/db/cli.ts migrate",
     "db:reset": "node --env-file-if-exists=.env.local server/db/cli.ts reset",
-    "admin:create": "node --env-file-if-exists=.env.local server/auth/admin-cli.ts"
+    "admin:create": "node --env-file-if-exists=.env.local server/auth/admin-cli.ts",
+    "seed:demo": "node --env-file-if-exists=.env.local server/excursoes/demo-cli.ts"
   }
 }

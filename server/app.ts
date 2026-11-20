@@ -4,6 +4,7 @@ import type { AuthConfig } from './auth/config.ts';
 import { handleAuthRoute, sendJson } from './auth/routes.ts';
 import type { AuthService } from './auth/service.ts';
 import { handleExcursaoRoute } from './excursoes/routes.ts';
+import { handleConsultaPublica } from './excursoes/rotas-publicas.ts';
 import type { ExcursaoService } from './excursoes/service.ts';
 
 export interface AppOptions {
@@ -26,6 +27,10 @@ async function handle(req: IncomingMessage, res: ServerResponse, options: AppOpt
   }
 
   if (await handleAuthRoute(req, res, pathname, options.auth?.service, options.auth?.config)) {
+    return;
+  }
+
+  if (handleConsultaPublica(req, res, pathname, options.excursoes)) {
     return;
   }
 

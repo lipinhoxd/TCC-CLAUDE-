@@ -1048,3 +1048,69 @@ nova. A classificação (AP-1, AP-2, AP-3 ou RP) cabe ao pesquisador; o agente n
 **Ações:** no Google Docs, ficha da AGT-004 no Apêndice E, linha do Quadro 2 (AP-3, 1 tentativa, 140 testes, intervenção Sim, commit e05db42), parágrafo da Seção 5.3 e 13 substituições (Resumo, Abstract, 5.1, 6.1 a 6.4, Cap. 7, Apêndice D), cada uma aplicada uma vez e conferida; o texto do critério único (6.3) passou a falar "atividades do experimento principal". Atualizou a página de relatório da AGT-004. Commits: e05db42 e fdc2bd7.
 
 **Pendente (pesquisador):** atualizar o sumário do Docs; escopo da AGT-005 em diante; verificação real do telefone e envio do token; DOIs das referências 1 e 8; segundo avaliador.
+
+---
+
+## Entrada 52 — Rascunho da instrução da AGT-005
+**Horário:** 2026-11-13T23:46:27-03:00 (comando date; arquivo gravado entre 23:44:36 e este horário).
+
+**Pedido do pesquisador:** "vamos" (seguir com a AGT-005).
+
+**Ações:** leu RF-009 a RF-014 e RF-042, RN-012, RN-013, RN-021, RN-033 a RN-039, o fluxo e as situações da excursão, o modelo de dados e docs/banco-de-dados.md. Criou TCC/registros-agente/AGT-005.md com a instrução (Seção 5), 23 critérios de aceitação, quatro perguntas ao pesquisador e três paradas para decisão humana (matriz de situações, regras de edição e validação, referência de imagem). Não consultou o piloto. Publicou página de revisão da instrução. Nenhum código criado, nenhum commit, Google Docs não alterado.
+
+**Pontos declarados no rascunho:** (1) a atividade depende de RN-036 e RN-037, marcadas "[confirmar]" na especificação; o rascunho diz que a aprovação do pesquisador as confirma como escritas, sem alterar o texto da especificação; (2) a matriz de situações da excursão também é "[confirmar]" e o esquema atual não tem "concluída"; (3) o plano não dá a nenhuma outra atividade a tela de cadastro e edição de excursões, então a instrução inclui uma interface administrativa mínima (a confirmar).
+
+**Pendente:** aprovação ou correções do pesquisador.
+
+---
+
+## Entrada 53 — AGT-005: aprovação e parada das três decisões
+**Horário:** 2026-11-13T23:47:25-03:00 (comando date, após a resposta "aprovo").
+
+**Pedido do pesquisador:** "aprovo" (instrução da AGT-005 com as opções adotadas).
+
+**Ações:** marcou a instrução como aprovada em AGT-005.md e registrou que a aprovação confirma a RN-036 e a RN-037 como escritas (a especificação não foi editada, conforme a regra 5 da instrução). Examinou o esquema de excursao, reserva e retencao_vaga e as situações previstas em 05-FLUXOS-E-ESTADOS.md. Apresentou ao pesquisador as três decisões com opções e recomendação. Nenhum código criado, nenhum commit, Google Docs não alterado.
+
+**Pendente:** decisões 1 a 3 do pesquisador.
+
+---
+
+## Entrada 54 — Verificação do Google Docs e método de trabalho
+**Horário:** 2026-11-13T23:53:59-03:00 (comando date).
+
+**Pedido do pesquisador:** verificar se o Google Docs estava mesmo sendo atualizado; relatou que "aparece uma mensagem de erro". Depois colou o último trecho do TCC (Apêndice F) e pediu que o agente passe a continuar de onde parou, sem reler o TCC do zero.
+
+**Ações:** releu o documento e conferiu 22 pontos (Quadro 2 com 9 linhas, Resumo, Abstract, 5.1, 5.3, 6.1, 6.3, Cap. 7 e Apêndices D, E e F, sem restos de texto antigo); o trecho colado pelo pesquisador coincide com o Apêndice F já atualizado. Explicou que a mensagem vista é a do read_doc ("result exceeds maximum allowed tokens"), porque o documento passa de 800 mil caracteres e a ferramenta não tem opção para reduzir; as escritas retornaram sem erros. Criou TCC/registros-agente/ESTADO-GOOGLE-DOCS.md (o que já foi transcrito, onde fica cada coisa, checklist da AGT-005) e registrou a preferência na memória. Nenhuma edição no Docs nesta entrada; sem commit.
+
+**Pendente:** o pesquisador ainda não respondeu às três decisões da AGT-005.
+
+---
+
+## Entrada 55 — Auditoria do Docs e decisões da AGT-005
+**Horário:** 2026-11-13T23:55:55-03:00 (comando date).
+
+**Pedido do pesquisador:** "aplique tudo que não foi aplicado no Google Docs ... depois a gente retoma para o agente 5. Na verdade, pode ser todas as recomendadas."
+
+**Ações:** auditou o último estado lido do Docs (22 verificações de conteúdo mais uma busca por frases no futuro ou desatualizadas): nada pendente para as AGT-001 a AGT-004; os únicos itens ainda não aplicados são a AGT-005 (não executada) e os diagramas (precisam de hospedagem externa de imagem; o pesquisador pediu que se perguntasse antes). Registrou as decisões da AGT-005 como "todas as recomendadas": (1A) quatro situações, sem "concluída" agora, cancelar bloqueado com reserva ou retenção ativa; (2A) campos protegidos = preço, parcelamento, prazo, capacidade, datas e partida, com as validações recomendadas; (3A) imagem como caminho relativo validado. Iniciou a execução.
+
+---
+
+## Entrada 56 — AGT-005: implementação e verificação
+**Horário:** decisões respondidas antes de 2026-11-13T23:55:55-03:00 (primeiro comando após a resposta); implementação verificada às 2026-11-14T00:09:25-03:00; registro gravado às 2026-11-14T00:10:32-03:00 (comando date).
+
+**Pedido do pesquisador:** "todas as recomendadas" (1A, 2A, 3A) nas três decisões da AGT-005.
+
+**Ações:** criou shared/fuso.ts e shared/dinheiro.ts, server/excursoes (validação, serviço, rotas), extraiu authorize e sendError em server/auth/routes.ts (sem mudar comportamento; RN-044), ligou o serviço em app.ts e main.ts, criou a interface administrativa (lista, nova, edição, situação, histórico), estendeu o roteador (parâmetros e clearFlash) e escreveu 98 testes novos (238 no total). Rodou API, Vite e Edge sem cabeça e percorreu o fluxo do administrador, do visitante e do passageiro com dados fictícios, inclusive reserva e retenção ativas inseridas direto no banco. Escreveu docs/excursoes-admin.md e preencheu as Seções 6 a 10 de AGT-005.md. Nenhuma dependência nova nem migração nova. Nenhum commit; Google Docs não alterado; nenhuma classificação.
+
+**Erros do agente:** erro de tipo, cinco avisos de lint, barra invertida perdida numa regex de src/App.tsx (corrigida antes dos testes), três erros de teste e um defeito de usabilidade (aviso de criação ficava ao lado de "Alterações salvas"), todos corrigidos.
+
+**Pendente (pesquisador):** avaliação, classificação, critérios, revisão do código, commit e transcrição no Docs.
+
+---
+
+## Entrada 57 — AGT-005: classificação AP-3, critérios, revisão aprovada e commit
+**Horário:** início às 2026-11-19T22:29:55-03:00 (comando date); verificação final e preparo do commit até 2026-11-19T22:32:43-03:00.
+
+**Pedido do pesquisador:** "classifica AP2 AP3, pode classificar como AP3. Aprova a revisão do código e pode fazer o commit e a transcrição no Google Docs." O agente leu como AP-3, com aprovação da revisão do código, do commit e da transcrição.
+
+**Ações:** marcou os 23 critérios da Seção 4 de AGT-005.md; redigiu a Seção 11 (texto do agente, com a aprovação registrada), 12 (Sim) e 13 (AP-3); acrescentou a linha da AGT-005 a METRICAS.csv e ao quadro; atualizou a matriz (RF-009 a RF-013 evidenciados, RF-014 e RF-042 parciais); criou docs/fichas-agt/principal/AGT-005.md. Na verificação final, um teste da AGT-005 falhou de forma intermitente (corrida entre a carga da tela de edição e o teste); corrigiu o teste, rodou 8 vezes seguidas sem falha e registrou o fato na Seção 9 do registro. Em seguida, commit e transcrição no Google Docs.

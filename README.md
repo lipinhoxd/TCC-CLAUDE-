@@ -14,6 +14,7 @@ com o Codex, está no repositório `TCC-IA-EXCURSOES` (tag `piloto-codex`).
 | --- | --- |
 | `src/` | Front-end (React + Vite + TypeScript). |
 | `server/` | API em Node.js (TypeScript executado diretamente pelo Node, sem framework). |
+| `shared/` | Funções puras usadas pelo servidor e pela interface (fuso de Brasília, reais e centavos). |
 | `tests/` | Testes automatizados (Vitest). |
 | `docs/especificacao/` | Especificação (requisitos, regras de negócio, fluxos, dados, plano de atividades). |
 | `TCC/` | Registros do experimento: atividades, métricas, evidências e documentos metodológicos. |
@@ -59,6 +60,10 @@ de concorrência em [docs/banco-de-dados.md](docs/banco-de-dados.md).
 ## Interface pública
 
 Páginas Home, Excursões, Sobre, Como funciona e Contato, cabeçalho e rodapé, cadastro, login e saída, em React com roteador próprio e CSS puro. Textos provisórios. Detalhes, rotas e limitações em [docs/interface-publica.md](docs/interface-publica.md).
+
+## Administração de excursões
+
+Área só para o administrador (`/admin/excursoes`) e API `/api/admin/excursoes`: cadastro em Rascunho, edição com bloqueio por reserva ou retenção ativa, publicação, mudança de situação, histórico. Detalhes, regras e limitações em [docs/excursoes-admin.md](docs/excursoes-admin.md).
 
 ## Autenticação
 

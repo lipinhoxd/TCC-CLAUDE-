@@ -13,6 +13,8 @@ interface RouterValue {
   path: string;
   flash: string | null;
   navigate: (to: string, options?: NavigateOptions) => void;
+  /** Remove o aviso de uma so exibicao (ex.: quando a propria pagina mostra um aviso mais recente). */
+  clearFlash: () => void;
 }
 
 const RouterContext = createContext<RouterValue | null>(null);
@@ -22,6 +24,31 @@ export function normalizePath(path: string): string {
   const clean = path.split(/[?#]/)[0] ?? '/';
   const withSlash = clean.startsWith('/') ? clean : `/${clean}`;
   return withSlash.length > 1 ? withSlash.replace(/\/+$/, '') || '/' : '/';
+}
+
+/** Casa "/admin/excursoes/:id" com um caminho real e devolve os parametros, ou null se nao casar. */
+export function matchPath(pattern: string, path: string): Record<string, string> | null {
+  const modelo = pattern.split('/');
+  const real = path.split('/');
+  if (modelo.length !== real.length) {
+    return null;
+  }
+  const params: Record<string, string> = {};
+  for (let i = 0; i < modelo.length; i += 1) {
+    const parte = modelo[i] ?? '';
+    const valor = real[i] ?? '';
+    if (parte.startsWith(':')) {
+      if (valor === '') return null;
+      try {
+        params[parte.slice(1)] = decodeURIComponent(valor);
+      } catch {
+        return null;
+      }
+    } else if (parte !== valor) {
+      return null;
+    }
+  }
+  return params;
 }
 
 function browserPath(): string {
@@ -58,7 +85,8 @@ export function RouterProvider({ children, initialPath }: RouterProviderProps) {
     setFlash(options.flash ?? null);
   }, []);
 
-  const value = useMemo(() => ({ path, flash, navigate }), [path, flash, navigate]);
+  const clearFlash = useCallback(() => setFlash(null), []);
+  const value = useMemo(() => ({ path, flash, navigate, clearFlash }), [path, flash, navigate, clearFlash]);
   return <RouterContext.Provider value={value}>{children}</RouterContext.Provider>;
 }
 

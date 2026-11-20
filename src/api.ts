@@ -15,7 +15,7 @@ export interface ApiResult<T> {
 }
 
 export async function apiRequest<T = Record<string, unknown>>(
-  method: 'GET' | 'POST',
+  method: 'GET' | 'POST' | 'PATCH',
   path: string,
   body?: unknown,
 ): Promise<ApiResult<T>> {

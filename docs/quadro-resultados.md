@@ -30,7 +30,7 @@ Não há inferência estatística.
 
 ## 2. Experimento principal (Claude Code)
 
-n = 4 atividades concluídas e classificadas (de 18 previstas).
+n = 5 atividades concluídas e classificadas (de 18 previstas).
 
 | AGT | Atividade | Estado | Classe | Tentativas | Testes | Duração | Intervenção | Commit |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- |
@@ -38,9 +38,10 @@ n = 4 atividades concluídas e classificadas (de 18 previstas).
 | 002 | Modelo de dados e persistência | Concluída | AP-3 | 1 | 57 (15 anteriores + 42 novos), todos aprovados | ≈ 4,2 min de implementação (espera de ≈ 1 h 15 min pela decisão do banco não contada) | Sim: decisão de arquitetura (escolha do banco; antes registrada como AP-2 e sem intervenção) | `1c59330` |
 | 003 | Cadastro, autenticação e controle de acesso | Concluída | AP-3 | 1 | 100 (57 anteriores + 43 novos), todos aprovados | ≈ 6 min de implementação (espera pelas quatro decisões não contada) | Sim: decisão de arquitetura e segurança (quatro paradas previstas) | `0f6ba34` |
 | 004 | Estrutura pública | Concluída | AP-3 | 1 | 140 (100 anteriores + 40 novos), todos aprovados | ≈ 6,5 min de implementação (espera pelas quatro decisões não contada) | Sim: decisão de arquitetura, dependências e conteúdo (quatro paradas previstas) | `e05db42` |
-| 005 a 018 | Ver `docs/especificacao/07-PLANO-DE-ATIVIDADES.md` | Planejada | — | — | — | — | — | — |
+| 005 | Gerenciamento administrativo de excursões | Concluída | AP-3 | 1 | 238 (140 anteriores + 98 novos), todos aprovados | ≈ 13,5 min de implementação (espera pelas três decisões não contada) | Sim: decisão de regras de negócio e arquitetura (três paradas previstas) | `COMMIT` |
+| 006 a 018 | Ver `docs/especificacao/07-PLANO-DE-ATIVIDADES.md` | Planejada | — | — | — | — | — | — |
 
-Distribuição descritiva: 4 AP-3 (n = 4) no subconjunto avaliado, o que **não permite concluir
+Distribuição descritiva: 5 AP-3 (n = 5) no subconjunto avaliado, o que **não permite concluir
 nada sobre o desempenho do agente**. As três atividades seguem um critério único (decisão do pesquisador exigida pela instrução = AP-3; ver `docs/rubrica-avaliacao.md`). Perfil: tarefas fundacionais. Não há inferência estatística nem grupo
 de controle.
 

@@ -47,7 +47,7 @@ function sessionCookie(config: AuthConfig, value: string, maxAgeSeconds: number)
   return `${SESSION_COOKIE}=${value}; HttpOnly; SameSite=Strict; Path=/; Max-Age=${maxAgeSeconds}${secure}`;
 }
 
-async function readJson(req: IncomingMessage): Promise<unknown> {
+export async function readJson(req: IncomingMessage): Promise<unknown> {
   const contentType = req.headers['content-type'] ?? '';
   if (!/^application\/json\s*(;|$)/i.test(contentType)) {
     throw new HttpError(415, 'content_type_nao_suportado');
@@ -163,6 +163,41 @@ const ROUTES: Route[] = [
   },
 ];
 
+/**
+ * Autorizacao por perfil, verificada no servidor a cada requisicao (RF-004, RNF-004). Extraida de
+ * handleAuthRoute na AGT-005 para ser reutilizada, sem mudar o comportamento: 401 sem sessao valida,
+ * 403 se o perfil nao estiver na lista.
+ */
+export function authorize(req: IncomingMessage, service: AuthService, roles: Perfil[]): AuthContext {
+  const auth = service.authenticate(readCookie(req, SESSION_COOKIE));
+  if (auth === null) {
+    throw new HttpError(401, 'nao_autenticado');
+  }
+  if (!roles.includes(auth.user.perfil)) {
+    throw new HttpError(403, 'acesso_negado');
+  }
+  return auth;
+}
+
+/** Responde a um erro de rota: HttpError vira a resposta padronizada; o resto vira 500 sem detalhes. */
+export function sendError(req: IncomingMessage, res: ServerResponse, pathname: string, error: unknown): void {
+  if (error instanceof HttpError) {
+    const headers: Record<string, string> = {};
+    if (error.retryAfterSeconds !== undefined) {
+      headers['Retry-After'] = String(error.retryAfterSeconds);
+    }
+    const body: Record<string, unknown> = { error: error.code };
+    if (error.fields !== undefined) {
+      body['fields'] = error.fields;
+    }
+    sendJson(res, error.status, body, headers);
+  } else {
+    // Registra so o tipo do erro: mensagens internas podem conter dados do banco ou da requisicao.
+    console.error(`Erro interno em ${req.method} ${pathname}: ${error instanceof Error ? error.name : 'erro'}`);
+    sendJson(res, 500, { error: 'erro_interno' });
+  }
+}
+
 /** Trata as rotas de autenticacao e acesso; retorna false se o caminho nao for nenhuma delas. */
 export async function handleAuthRoute(
   req: IncomingMessage,
@@ -185,33 +220,10 @@ export async function handleAuthRoute(
     return true;
   }
   try {
-    let auth: AuthContext | null = null;
-    if (route.roles !== undefined) {
-      auth = service.authenticate(readCookie(req, SESSION_COOKIE));
-      if (auth === null) {
-        throw new HttpError(401, 'nao_autenticado');
-      }
-      if (!route.roles.includes(auth.user.perfil)) {
-        throw new HttpError(403, 'acesso_negado');
-      }
-    }
+    const auth = route.roles === undefined ? null : authorize(req, service, route.roles);
     await route.handler({ req, res, service, config }, auth);
   } catch (error) {
-    if (error instanceof HttpError) {
-      const headers: Record<string, string> = {};
-      if (error.retryAfterSeconds !== undefined) {
-        headers['Retry-After'] = String(error.retryAfterSeconds);
-      }
-      const body: Record<string, unknown> = { error: error.code };
-      if (error.fields !== undefined) {
-        body['fields'] = error.fields;
-      }
-      sendJson(res, error.status, body, headers);
-    } else {
-      // Registra so o tipo do erro: mensagens internas podem conter dados do banco ou da requisicao.
-      console.error(`Erro interno em ${req.method} ${pathname}: ${error instanceof Error ? error.name : 'erro'}`);
-      sendJson(res, 500, { error: 'erro_interno' });
-    }
+    sendError(req, res, pathname, error);
   }
   return true;
 }

@@ -1,9 +1,10 @@
 import type { ComponentType } from 'react';
 import { loadWebConfig } from './config/env.ts';
 import { Layout } from './Layout.tsx';
+import { AdminExcursoes, FormularioExcursao } from './pages/AdminExcursoes.tsx';
 import { Cadastro, Login } from './pages/AuthPages.tsx';
 import { ComoFunciona, Contato, Excursoes, Home, NaoEncontrada, Sobre } from './pages/InfoPages.tsx';
-import { RouterProvider, useRouter } from './router.tsx';
+import { RouterProvider, matchPath, useRouter } from './router.tsx';
 import { SessionProvider } from './session.tsx';
 import { AppNameProvider } from './ui.tsx';
 
@@ -13,7 +14,17 @@ interface AppProps {
   initialPath?: string;
 }
 
-export const ROUTES: Record<string, ComponentType> = {
+/** Parametros extraidos da URL (ex.: o id em /admin/excursoes/:id); as paginas estaticas os ignoram. */
+export interface PageProps {
+  params: Record<string, string>;
+}
+
+function EditarExcursao({ params }: PageProps) {
+  const id = /^\d{1,15}$/.test(params['id'] ?? '') ? Number(params['id']) : null;
+  return id === null ? <NaoEncontrada /> : <FormularioExcursao id={id} />;
+}
+
+export const ROUTES: Record<string, ComponentType<PageProps>> = {
   '/': Home,
   '/excursoes': Excursoes,
   '/sobre': Sobre,
@@ -21,12 +32,24 @@ export const ROUTES: Record<string, ComponentType> = {
   '/contato': Contato,
   '/cadastro': Cadastro,
   '/login': Login,
+  '/admin/excursoes': AdminExcursoes,
+  '/admin/excursoes/nova': () => <FormularioExcursao />,
 };
+
+export const DYNAMIC_ROUTES: [string, ComponentType<PageProps>][] = [['/admin/excursoes/:id', EditarExcursao]];
 
 function Routes() {
   const { path } = useRouter();
-  const Page = ROUTES[path] ?? NaoEncontrada;
-  return <Page />;
+  const fixa = ROUTES[path];
+  if (fixa !== undefined) {
+    const Pagina = fixa;
+    return <Pagina params={{}} />;
+  }
+  for (const [padrao, Pagina] of DYNAMIC_ROUTES) {
+    const params = matchPath(padrao, path);
+    if (params !== null) return <Pagina params={params} />;
+  }
+  return <NaoEncontrada />;
 }
 
 export function App({ appName = loadWebConfig().appName, initialPath }: AppProps) {

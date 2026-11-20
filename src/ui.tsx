@@ -1,5 +1,5 @@
 import { createContext, useContext, useEffect } from 'react';
-import type { InputHTMLAttributes, ReactNode } from 'react';
+import type { InputHTMLAttributes, ReactNode, TextareaHTMLAttributes } from 'react';
 
 const AppNameContext = createContext('BPM Trip');
 export const AppNameProvider = AppNameContext.Provider;
@@ -59,6 +59,82 @@ export function Field({ name, label, hint, error, ...input }: FieldProps) {
         aria-invalid={error ? true : undefined}
         aria-describedby={describedBy || undefined}
       />
+      {error ? (
+        <span className="field-error" id={errorId}>
+          {error}
+        </span>
+      ) : null}
+    </div>
+  );
+}
+
+interface TextAreaProps extends Omit<TextareaHTMLAttributes<HTMLTextAreaElement>, 'id' | 'name'> {
+  name: string;
+  label: string;
+  hint?: string;
+  error?: string | undefined;
+}
+
+/** Area de texto com rotulo, dica e erro ligados ao controle por aria. */
+export function TextAreaField({ name, label, hint, error, ...area }: TextAreaProps) {
+  const hintId = `${name}-hint`;
+  const errorId = `${name}-error`;
+  const describedBy = [hint ? hintId : null, error ? errorId : null].filter(Boolean).join(' ');
+  return (
+    <div className="field">
+      <label htmlFor={name}>{label}</label>
+      {hint ? (
+        <span className="hint" id={hintId}>
+          {hint}
+        </span>
+      ) : null}
+      <textarea
+        {...area}
+        id={name}
+        name={name}
+        rows={area.rows ?? 4}
+        aria-invalid={error ? true : undefined}
+        aria-describedby={describedBy || undefined}
+      />
+      {error ? (
+        <span className="field-error" id={errorId}>
+          {error}
+        </span>
+      ) : null}
+    </div>
+  );
+}
+
+interface CheckboxProps extends Omit<InputHTMLAttributes<HTMLInputElement>, 'id' | 'name' | 'type'> {
+  name: string;
+  label: string;
+  hint?: string;
+  error?: string | undefined;
+}
+
+/** Caixa de selecao com rotulo ao lado, dica e erro ligados por aria. */
+export function CheckboxField({ name, label, hint, error, ...input }: CheckboxProps) {
+  const hintId = `${name}-hint`;
+  const errorId = `${name}-error`;
+  const describedBy = [hint ? hintId : null, error ? errorId : null].filter(Boolean).join(' ');
+  return (
+    <div className="field field-check">
+      <div className="check-row">
+        <input
+          {...input}
+          type="checkbox"
+          id={name}
+          name={name}
+          aria-invalid={error ? true : undefined}
+          aria-describedby={describedBy || undefined}
+        />
+        <label htmlFor={name}>{label}</label>
+      </div>
+      {hint ? (
+        <span className="hint" id={hintId}>
+          {hint}
+        </span>
+      ) : null}
       {error ? (
         <span className="field-error" id={errorId}>
           {error}

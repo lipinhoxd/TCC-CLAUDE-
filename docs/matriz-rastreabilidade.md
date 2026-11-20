@@ -16,12 +16,12 @@ Cadeia (TCC, Seção 3.8): requisito → atividade AGT → instrução → execu
 | RF-006 | Recuperação de acesso | 003 | Evidenciada na AGT-003 | `recovery/request e recovery/confirm`; `tests/auth-api.test.ts` |
 | RF-007 | Estrutura pública: Home, Excursões, Sobre, Como funciona e Contato | 004 | Evidenciada na AGT-004 | `src/pages/InfoPages.tsx`; `tests/web-navegacao.test.tsx` |
 | RF-008 | Navegação pública (cabeçalho, rodapé, Cadastro e Login visíveis, estado autenticado) | 004 | Evidenciada na AGT-004 | `src/Layout.tsx`, `src/session.tsx`; `tests/web-sessao.test.tsx` |
-| RF-009 | Cadastro de excursão | 005 | Planejada | — |
-| RF-010 | Edição de excursão | 005 | Planejada | — |
-| RF-011 | Configuração de capacidade | 005 | Planejada | — |
-| RF-012 | Configuração de preço | 005 | Planejada | — |
-| RF-013 | Habilitação de pagamento em duas parcelas e prazo da segunda | 005 | Planejada | — |
-| RF-014 | Publicação e situação da excursão | 005/006 | Planejada | — |
+| RF-009 | Cadastro de excursão | 005 | Evidenciada na AGT-005 | `server/excursoes/service.ts`; `tests/excursoes-api.test.ts`, `tests/web-admin.test.tsx` |
+| RF-010 | Edição de excursão | 005 | Evidenciada na AGT-005 | `server/excursoes/service.ts` (PATCH); `tests/excursoes-api.test.ts` |
+| RF-011 | Configuração de capacidade | 005 | Evidenciada na AGT-005 | `server/excursoes/validation.ts`; `tests/excursoes-api.test.ts` |
+| RF-012 | Configuração de preço | 005 | Evidenciada na AGT-005 | `server/excursoes/validation.ts`, `shared/dinheiro.ts`; `tests/excursoes-api.test.ts`, `tests/dinheiro-rota.test.ts` |
+| RF-013 | Habilitação de pagamento em duas parcelas e prazo da segunda | 005 | Evidenciada na AGT-005 | `server/excursoes/validation.ts`, `shared/fuso.ts`; `tests/excursoes-api.test.ts`, `tests/fuso.test.ts` |
+| RF-014 | Publicação e situação da excursão | 005/006 | Parcial na AGT-005 (parte administrativa; exibição pública é da AGT-006) | `server/excursoes/service.ts` (situações); `tests/excursoes-api.test.ts` |
 | RF-015 | Listagem pública de excursões | 006 | Planejada | — |
 | RF-016 | Detalhamento da excursão | 006 | Planejada | — |
 | RF-017 | Exibição de disponibilidade de vagas | 006/008 | Planejada | — |
@@ -49,7 +49,7 @@ Cadeia (TCC, Seção 3.8): requisito → atividade AGT → instrução → execu
 | RF-039 | Alteração manual de situação, quando autorizada | 012 | Planejada | — |
 | RF-040 | Comunicação transacional ao passageiro (simulada/configurável) | 015 | Planejada | — |
 | RF-041 | Painel administrativo consolidado | 016 | Planejada | — |
-| RF-042 | Histórico e auditoria de operações administrativas e automáticas | 005/016 | Planejada | — |
+| RF-042 | Histórico e auditoria de operações administrativas e automáticas | 005/016 | Parcial na AGT-005 (excursões; auditoria de reservas e processos automáticos fica para as demais) | `GET /api/admin/excursoes/:id/historico`; `tests/excursoes-api.test.ts` |
 
 ## Requisitos não funcionais
 

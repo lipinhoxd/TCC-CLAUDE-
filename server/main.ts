@@ -3,6 +3,7 @@ import { loadAuthConfig } from './auth/config.ts';
 import { AuthService } from './auth/service.ts';
 import { fileOutbox, noOutbox } from './auth/support.ts';
 import { loadServerConfig } from './config.ts';
+import { ExcursaoService } from './excursoes/service.ts';
 import { loadDatabaseConfig } from './db/config.ts';
 import { openDatabase } from './db/connection.ts';
 import { runMigrations } from './db/migrate.ts';
@@ -17,7 +18,7 @@ const service = new AuthService({
   config: authConfig,
   outbox: authConfig.recoveryOutboxPath === null ? noOutbox : fileOutbox(authConfig.recoveryOutboxPath),
 });
-const server = createApp({ auth: { service, config: authConfig } });
+const server = createApp({ auth: { service, config: authConfig }, excursoes: new ExcursaoService(db) });
 
 server.listen(port, host, () => {
   console.log(`API em http://${host}:${port}`);

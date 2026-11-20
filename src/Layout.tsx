@@ -4,6 +4,8 @@ import { Link, useRouter } from './router.tsx';
 import { useSession } from './session.tsx';
 import { Notice, useAppName } from './ui.tsx';
 
+export const ADMIN_ITEM = { to: '/admin/excursoes', label: 'Administração' } as const;
+
 export const NAV_ITEMS = [
   { to: '/', label: 'Home' },
   { to: '/excursoes', label: 'Excursões' },
@@ -62,7 +64,9 @@ function AuthArea() {
 export function Layout({ children }: { children: ReactNode }) {
   const appName = useAppName();
   const { path, flash } = useRouter();
-  const { checkFailed } = useSession();
+  const { checkFailed, user } = useSession();
+  // Conveniencia de navegacao: o servidor continua sendo a autoridade sobre o acesso.
+  const itensMenu = user?.perfil === 'administrador' ? [...NAV_ITEMS, ADMIN_ITEM] : NAV_ITEMS;
   const [menuOpen, setMenuOpen] = useState(false);
   const mainRef = useRef<HTMLElement>(null);
   const firstRender = useRef(true);
@@ -99,7 +103,7 @@ export function Layout({ children }: { children: ReactNode }) {
           <div id="menu-principal" className={menuOpen ? 'menu open' : 'menu'}>
             <nav aria-label="Principal">
               <ul>
-                {NAV_ITEMS.map((item) => (
+                {itensMenu.map((item) => (
                   <li key={item.to}>
                     <Link to={item.to} indicateCurrent>
                       {item.label}

@@ -62,6 +62,10 @@ de concorrência em [docs/banco-de-dados.md](docs/banco-de-dados.md).
 
 Páginas Home, Excursões, Sobre, Como funciona e Contato, cabeçalho e rodapé, cadastro, login e saída, em React com roteador próprio e CSS puro. Textos provisórios. Detalhes, rotas e limitações em [docs/interface-publica.md](docs/interface-publica.md).
 
+## Reservas
+
+O passageiro reserva uma vaga no detalhe da excursão e chega ao checkout (`/reservas/:id/checkout`); pode desistir enquanto não houver pagamento. Ainda não há pagamento nem retenção de vaga. Regras, rotas e limitações em [docs/reservas.md](docs/reservas.md).
+
 ## Consulta pública de excursões
 
 Lista e detalhe das excursões publicadas (`/excursoes`, `/excursoes/:id`) e API pública de leitura (`GET /api/excursoes`). Para ver com dados fictícios: `npm run admin:create` e `npm run seed:demo`. Imagens em `public/imagens/`. Detalhes e limitações em [docs/consulta-publica.md](docs/consulta-publica.md).

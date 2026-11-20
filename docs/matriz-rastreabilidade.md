@@ -25,9 +25,9 @@ Cadeia (TCC, Seção 3.8): requisito → atividade AGT → instrução → execu
 | RF-015 | Listagem pública de excursões | 006 | Evidenciada na AGT-006 | `server/excursoes/publico.ts`, `src/pages/ExcursoesPublicas.tsx`; `tests/consulta-publica.test.ts`, `tests/web-publico.test.tsx` |
 | RF-016 | Detalhamento da excursão | 006 | Evidenciada na AGT-006 | `GET /api/excursoes/:id`; `tests/consulta-publica.test.ts`, `tests/web-publico.test.tsx` |
 | RF-017 | Exibição de disponibilidade de vagas | 006/008 | Parcial na AGT-006 (capacidade menos vagas ocupadas; a retenção temporária é da AGT-008) | `vagasDisponiveis` em `server/excursoes/publico.ts`; `tests/consulta-publica.test.ts` |
-| RF-018 | Solicitação de reserva individual | 007 | Planejada | — |
-| RF-019 | Verificação de disponibilidade na reserva | 007/008 | Planejada | — |
-| RF-020 | Checkout obrigatório | 007 | Planejada | — |
+| RF-018 | Solicitação de reserva individual | 007 | Evidenciada na AGT-007 | `server/reservas/service.ts`, `src/pages/Reservas.tsx`; `tests/reservas-api.test.ts`, `tests/web-reservas.test.tsx` |
+| RF-019 | Verificação de disponibilidade na reserva | 007/008 | Parcial na AGT-007 (disponibilidade na solicitação, sem retenção; a retenção é da AGT-008) | `solicitar` em `server/reservas/service.ts`; `tests/reservas-api.test.ts` |
+| RF-020 | Checkout obrigatório | 007 | Evidenciada na AGT-007 (checkout sem pagamento) | `/reservas/:id/checkout`; `tests/web-reservas.test.tsx` |
 | RF-021 | Retenção temporária de vaga durante o checkout | 008 | Planejada | — |
 | RF-022 | Expiração da retenção | 008/014 | Planejada | — |
 | RF-023 | Pagamento integral | 009 | Planejada | — |

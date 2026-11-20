@@ -5,6 +5,7 @@ import { AdminExcursoes, FormularioExcursao } from './pages/AdminExcursoes.tsx';
 import { Cadastro, Login } from './pages/AuthPages.tsx';
 import { DetalhePublico, ListaPublica } from './pages/ExcursoesPublicas.tsx';
 import { ComoFunciona, Contato, Home, NaoEncontrada, Sobre } from './pages/InfoPages.tsx';
+import { Checkout } from './pages/Reservas.tsx';
 import { RouterProvider, matchPath, useRouter } from './router.tsx';
 import { SessionProvider } from './session.tsx';
 import { AppNameProvider } from './ui.tsx';
@@ -30,6 +31,11 @@ function DetalheExcursao({ params }: PageProps) {
   return id === null ? <NaoEncontrada /> : <DetalhePublico id={id} />;
 }
 
+function CheckoutReserva({ params }: PageProps) {
+  const id = /^\d{1,15}$/.test(params['id'] ?? '') ? Number(params['id']) : null;
+  return id === null ? <NaoEncontrada /> : <Checkout id={id} />;
+}
+
 export const ROUTES: Record<string, ComponentType<PageProps>> = {
   '/': Home,
   '/excursoes': ListaPublica,
@@ -44,6 +50,7 @@ export const ROUTES: Record<string, ComponentType<PageProps>> = {
 
 export const DYNAMIC_ROUTES: [string, ComponentType<PageProps>][] = [
   ['/excursoes/:id', DetalheExcursao],
+  ['/reservas/:id/checkout', CheckoutReserva],
   ['/admin/excursoes/:id', EditarExcursao],
 ];
 

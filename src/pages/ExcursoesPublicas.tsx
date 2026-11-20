@@ -5,6 +5,7 @@ import type { ExcursaoPublica } from '../publico/excursoes-publicas-api.ts';
 import { IMAGEM_VALIDA, consultaPublica } from '../publico/excursoes-publicas-api.ts';
 import { Link } from '../router.tsx';
 import { Notice, usePageTitle } from '../ui.tsx';
+import { AcaoReservar } from './Reservas.tsx';
 
 /** Consulta publica de excursoes (AGT-006, RF-015 a RF-017). So leitura; nenhum fluxo de reserva. */
 
@@ -168,9 +169,7 @@ export function DetalhePublico({ id }: { id: number }) {
         <dt>Disponibilidade</dt>
         <dd>{vagasTexto(e.vagas_disponiveis)}</dd>
       </dl>
-      <p className="notice notice-provisional">
-        Reserva: será habilitada em uma próxima etapa. Este texto é provisório.
-      </p>
+      <AcaoReservar excursao={e} />
     </>
   );
 }

@@ -195,13 +195,13 @@ describe('detalhe publico (RF-016, RF-017)', () => {
     expect(document.querySelector('.vagas-esgotada')).not.toBeNull();
   });
 
-  it('nao ha botao nem link de reserva, so um texto provisorio identificado', async () => {
+  it('o visitante nao ve botao de reserva: so o convite para entrar ou criar conta', async () => {
     mockApi({ ...visitante, 'GET /api/excursoes/7': () => json(200, { excursao: publica() }) });
     abrir('/excursoes/7');
-    await screen.findByRole('heading', { level: 1 });
-    expect(screen.queryByRole('button', { name: /reserv/i })).toBeNull();
-    expect(screen.queryByRole('link', { name: /reservar/i })).toBeNull();
-    expect(screen.getByText(/Reserva: será habilitada em uma próxima etapa\. Este texto é provisório\./)).not.toBeNull();
+    expect(await screen.findByText('Para reservar, é preciso ter conta.')).not.toBeNull();
+    expect(screen.queryByRole('button', { name: /reservar/i })).toBeNull();
+    expect(screen.getByRole('link', { name: 'Entrar' }).getAttribute('href')).toBe('/login');
+    expect(screen.getByRole('link', { name: 'Criar conta' }).getAttribute('href')).toBe('/cadastro');
   });
 
   it('excursao inexistente ou nao publicada (404) vira "nao encontrada", com caminho de volta', async () => {

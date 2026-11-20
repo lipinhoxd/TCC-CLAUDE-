@@ -1,0 +1,79 @@
+# Reservas (AGT-007)
+
+Solicitação de reserva individual do passageiro e checkout (RF-018, RF-020 e a parte do RF-019 que usa só a
+disponibilidade atual), sobre as tabelas `reserva`, `excursao` e `auditoria`. **Não há pagamento, retenção
+temporária de vaga, expiração nem ocupação de vaga**: criar a reserva não altera `vagas_ocupadas` e não cria linhas em
+`pagamento` nem em `retencao_vaga`. O fluxo só se completa com as AGT-008 a AGT-010.
+
+## Decisões do pesquisador (19/11/2026, "todas as recomendadas")
+
+| Ponto | Decisão |
+| --- | --- |
+| Quando a reserva existe | Ao solicitar: nasce em "Aguardando pagamento" (RN-023). O checkout é a página seguinte. |
+| Desistência | O passageiro pode desistir enquanto a reserva aguardar pagamento **e** não houver nenhum pagamento. Ela vira "Cancelada" (auditada), e o índice único deixa de bloqueá-lo. |
+| Reservas pendentes | No máximo **3** em "Aguardando pagamento" por passageiro (a 4ª recebe 409). Uma reserva abandonada fica até o passageiro desistir ou até a expiração das AGT-008 e AGT-014. |
+| Parcelas | Primeira = metade do total arredondada para baixo; segunda = total menos a primeira. O centavo que sobra de um total ímpar fica na última parcela, e a soma é sempre igual ao total (R$ 150,01 vira R$ 75,00 e R$ 75,01). |
+| Modalidade | Escolhida na solicitação (integral por padrão) e **sem troca** depois; para mudar, desiste e reserva de novo. Parcelada só se a excursão a habilita e o prazo da segunda parcela (23:59:59 da data configurada, em Brasília) ainda não passou. |
+| Disponibilidade | Solicitação recusada (409 `sem_vagas`) com zero vagas livres. Várias reservas pendentes podem existir para a mesma última vaga, com aviso no checkout; a consulta pública (AGT-006) não desconta as pendentes. |
+
+## Quem pode o quê
+
+Só o perfil **passageiro**, verificado no servidor a cada requisição e **antes** de ler o corpo (função `authorize` da
+AGT-003): visitante recebe 401 e administrador 403. O passageiro vem da sessão; o corpo não escolhe o passageiro, a
+situação nem valores (`campo_nao_permitido`).
+
+## Rotas
+
+| Método e caminho | Resultado |
+| --- | --- |
+| `POST /api/reservas` | Corpo `{ "excursao_id": 7, "modalidade": "integral" \| "parcelada" }` (modalidade opcional). 201 com a reserva. |
+| `GET /api/reservas/:id` | A própria reserva, com o resumo de valores. De outra pessoa ou inexistente: 404 `nao_encontrada` (a mesma resposta). |
+| `POST /api/reservas/:id/desistir` | Cancela a reserva sem pagamento. 200 com a reserva. |
+
+Não há `GET /api/reservas` (lista): "minhas reservas" é a AGT-011.
+
+Resposta da reserva: `id`, `situacao`, `modalidade`, `criada_em`, `excursao` (`id`, `nome`, datas, `partida_brasilia`),
+`valores` (`total_centavos` e `parcelas`, cada uma com `valor_centavos` e `vencimento`) e `pode_desistir`. Não traz dados
+do passageiro, capacidade nem ocupação.
+
+Erros: `{ "error": "<codigo>" }`, com `fields` quando houver. Códigos: `validacao` (400; campos `excursao_id`,
+`modalidade`: `parcelamento_indisponivel`, `prazo_da_segunda_parcela_vencido`), `excursao_nao_encontrada` (404: não
+publicada, já terminada ou inexistente, como na consulta pública), `reservas_encerradas` (409: a partida já passou),
+`reserva_ativa_existente` (409, com `fields.reserva_id`), `limite_de_reservas_pendentes`, `sem_vagas`,
+`reserva_nao_cancelavel` e `reserva_com_pagamento` (409).
+
+## Regras aplicadas na solicitação (dentro de uma transação `BEGIN IMMEDIATE`)
+
+1. Excursão publicada e não terminada (mesma visibilidade da consulta pública) e partida no futuro.
+2. Uma reserva não cancelada por passageiro e excursão (RN-009): pedido repetido ou simultâneo recebe 409 com o número da
+   reserva existente. A violação do índice `uq_reserva_ativa` é tratada como o mesmo 409, caso a verificação seja contornada.
+3. Limite de 3 pendentes por passageiro.
+4. Vagas livres (capacidade menos ocupadas) maiores que zero.
+5. Modalidade parcelada permitida pela excursão e dentro do prazo.
+
+## Interface
+
+| Caminho | O que mostra |
+| --- | --- |
+| `/excursoes/:id` | Bloco **Reservar**: o passageiro escolhe a forma de pagamento e reserva; o visitante vê "Entrar" e "Criar conta"; o administrador não vê o bloco; excursão esgotada mostra um aviso, sem botão. |
+| `/reservas/:id/checkout` | Resumo (excursão, datas, partida, modalidade, situação), tabela de parcelas com vencimento e total, o aviso de que a vaga só é garantida após o pagamento confirmado, o texto provisório sobre o pagamento e o botão de desistir (com confirmação). |
+
+## Efeitos em outras atividades
+
+- **RN-036 (AGT-005):** com uma reserva em "Aguardando pagamento", a excursão passa a ter reserva ativa: preço, capacidade, parcelamento,
+  prazo, datas e partida ficam bloqueados, e cancelar ou despublicar a excursão fica recusado (testado).
+- **Consulta pública (AGT-006):** inalterada. As vagas mostradas não descontam reservas pendentes.
+- **Mudanças em código de outras atividades:** nenhuma regra alterada. `app.ts` e `main.ts` ligam o serviço; `server/excursoes/publico.ts`
+  e `server/excursoes/validation.ts` têm funções reaproveitadas (`vagasDisponiveis`, `instantePrazo`); `shared/dinheiro.ts` ganhou `dividirEmDuas`;
+  o bloco de reserva substituiu o texto provisório do detalhe da excursão.
+
+## Limitações conhecidas
+
+1. **Vagas:** a reserva não segura a vaga. Duas pessoas podem reservar a última vaga ao mesmo tempo; a proteção real vem na confirmação do
+   pagamento (AGT-009) e na retenção (AGT-008). Um passageiro pode chegar ao pagamento e descobrir que a vaga acabou (RF-026, RN-022).
+2. **Pagamento:** não existe. O checkout termina em "Aguardando pagamento" com texto provisório.
+3. **Reserva abandonada:** continua pendente (e ocupa um dos 3 lugares do passageiro) até ele desistir; não há expiração antes das AGT-008 e AGT-014.
+4. **Sem troca de modalidade:** para mudar, é preciso desistir e reservar de novo.
+5. **Sem lista de reservas** do passageiro (AGT-011) e sem administração de reservas (AGT-012).
+6. **Reserva de excursão que depois deixa de ser publicada:** o passageiro ainda vê a própria reserva; as consequências (cancelamento da excursão) são da AGT-013.
+7. Sem limite de requisições nas rotas e verificação em navegador só no Microsoft Edge (Chromium), sem leitor de tela.

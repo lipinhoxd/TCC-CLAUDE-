@@ -1201,3 +1201,58 @@ nova. A classificação (AP-1, AP-2, AP-3 ou RP) cabe ao pesquisador; o agente n
 **Ações:** no Google Docs, ficha da AGT-006 no Apêndice E, linha do Quadro 2 (AP-3, 1 tentativa, 277 testes, intervenção Sim, commit a9d06a1), parágrafo da Seção 5.3 e 13 substituições (Resumo, Abstract, 5.1, 6.1 a 6.4, Cap. 7, Apêndice D), cada uma aplicada uma vez e conferida. Antes do lote, a leitura mostrou o documento com o mesmo tamanho da leitura anterior (sem edição do pesquisador entre elas) e as 12 âncoras do checklist foram encontradas uma única vez. Atualizou o ESTADO-GOOGLE-DOCS.md com o checklist da AGT-007. Commits: a9d06a1 e becd3d7.
 
 **Pendente (pesquisador):** atualizar o sumário do Docs; diagramas (hospedagem externa de imagem, a decidir); verificação real do telefone e envio do token; DOIs das referências 1 e 8; segundo avaliador; instrução da AGT-007.
+
+---
+
+## Entrada 67 — Rascunho da instrução da AGT-007
+**Horário:** 2026-11-19T23:29:15-03:00 (comando date; arquivo gravado entre 23:27:41 e este horário).
+
+**Pedido do pesquisador:** "vamos" (seguir com a AGT-007).
+
+**Ações:** leu RF-018 a RF-020, RN-009 a RN-021 e RN-023, os fluxos, o modelo de dados e docs/banco-de-dados.md. Criou TCC/registros-agente/AGT-007.md com a instrução (Seção 5), 23 critérios de aceitação, seis perguntas ao pesquisador e três paradas para decisão humana (ciclo da reserva, do checkout e da desistência; modalidade e valores com arredondamento; disponibilidade sem retenção). Não consultou o piloto. Publicou página de revisão. Nenhum código criado, nenhum commit, Google Docs não alterado.
+
+**Pontos declarados no rascunho:** (1) a atividade toca em reservas, vagas e dinheiro (RN-044), então toda decisão em aberto é do pesquisador; (2) não cria pagamento nem retenção nem ocupa vaga, de modo que o fluxo só se completa nas AGT-008 a AGT-010, e duas pessoas podem reservar a última vaga ao mesmo tempo até a retenção existir; (3) a especificação não define em que momento a reserva existe, como sair de um checkout abandonado, o arredondamento de centavos ímpares nas parcelas nem o limite de reservas pendentes; (4) nenhuma RN marcada "[confirmar]" é usada.
+
+**Pendente:** aprovação ou correções do pesquisador.
+
+---
+
+## Entrada 68 — AGT-007: aprovação e parada das três decisões
+**Horário:** 2026-11-19T23:34:09-03:00 (comando date, após a resposta "aprovo").
+
+**Pedido do pesquisador:** "aprovo" (instrução da AGT-007 com as opções adotadas).
+
+**Ações:** marcou a instrução como aprovada em AGT-007.md. Releu o esquema de reserva, pagamento e retencao_vaga (índice único uq_reserva_ativa, CHECK de ocupação) e as regras RN-009 a RN-023. Apresentou ao pesquisador as três decisões com opções e recomendação. Nenhum código criado, nenhum commit, Google Docs não alterado.
+
+**Pendente:** decisões 1 a 3 do pesquisador.
+
+---
+
+## Entrada 69 — AGT-007: decisões e início da implementação
+**Horário:** 2026-11-19T23:36:26-03:00 (comando date).
+
+**Pedido do pesquisador:** "ok" (resposta ao pedido de "todas as recomendadas" ou correções). O agente leu como aceitação de todas as recomendações e registrou a interpretação.
+
+**Decisões registradas:** (1) a reserva é criada ao solicitar, em Aguardando pagamento; o passageiro pode desistir enquanto não houver pagamento (vira Cancelada, com auditoria, e libera o índice único); no máximo 3 reservas pendentes por passageiro; a reserva abandonada fica até a desistência ou até a expiração das AGT-008 e AGT-014; (2) primeira parcela = metade do total arredondada para baixo, segunda = total menos a primeira (o centavo que sobra fica na última); modalidade escolhida na solicitação e sem troca depois; parcelada só se a excursão a habilita e o prazo da segunda parcela não passou; resumo com total, modalidade, parcelas e vencimento; (3) solicitação recusada com zero vagas livres, várias reservas pendentes permitidas para a última vaga com aviso no checkout, e consulta pública inalterada.
+
+---
+
+## Entrada 70 — AGT-007: implementação e verificação
+**Horário:** decisões respondidas e início às 2026-11-19T23:36:26-03:00; checagem completa aprovada às 23:41:45-03:00; percurso em navegador real em seguida; registro gravado às 2026-11-19T23:44:43-03:00 (comando date).
+
+**Pedido do pesquisador:** "ok" (aceitação das recomendações das três decisões da AGT-007).
+
+**Ações:** criou server/reservas (serviço e rotas do passageiro), a divisão em duas parcelas em shared/dinheiro.ts, o bloco Reservar no detalhe da excursão e a página de checkout; escreveu 49 testes novos e reescreveu 1 (326 no total). Rodou API, Vite e Edge sem cabeça e percorreu visitante, administrador e duas passageiras com dados fictícios, conferindo no banco que nenhuma linha foi criada em pagamento nem em retencao_vaga e que vagas_ocupadas não mudou. Escreveu docs/reservas.md e preencheu as Seções 6 a 10 de AGT-007.md. Nenhuma dependência nem migração nova. Nenhum commit; Google Docs não alterado; nenhuma classificação.
+
+**Erros do agente:** a barra invertida de uma regex de src/App.tsx se perdeu pela terceira vez na inserção por script (corrigida antes dos testes de rota; passei a usar a ferramenta de edição direta nesses casos); seis testes assumiam que o endereço do navegador muda com o caminho inicial; um erro de tipo no auxiliar de um teste.
+
+**Pendente (pesquisador):** classificação (o fechamento padrão roda quando ela chegar).
+
+---
+
+## Entrada 71 — AGT-007: classificação AP-3, fechamento padrão e commit
+**Horário:** início às 2026-11-19T23:46:31-03:00 (comando date); hora do commit na Entrada 72.
+
+**Pedido do pesquisador:** "AP3, tá? E depois que você finalizar, a gente para por aqui e continuamos amanhã." Vale a autorização permanente de 19/11/2026 para o fechamento padrão.
+
+**Ações:** checagem completa antes do commit (lint, tipos, testes e build): 326 testes aprovados, sem falhas. Marcou os 23 critérios da Seção 4 de AGT-007.md; redigiu as Seções 11 a 13; acrescentou a linha da AGT-007 a METRICAS.csv e ao quadro; atualizou a matriz (RF-018 e RF-020 evidenciados, RF-019 parcial); criou docs/fichas-agt/principal/AGT-007.md.

@@ -1,0 +1,81 @@
+import { NetworkError, apiRequest } from '../api.ts';
+
+/** Cliente das reservas do passageiro (AGT-007). O servidor decide tudo; aqui so se envia e se mostra. */
+
+export type Modalidade = 'integral' | 'parcelada';
+
+export interface ParcelaReserva {
+  parcela: 'unica' | 'primeira' | 'segunda';
+  valor_centavos: number;
+  vencimento: string | null;
+}
+
+export interface Reserva {
+  id: number;
+  situacao: 'aguardando_pagamento' | 'pronto_para_embarque' | 'concluida' | 'cancelada';
+  modalidade: Modalidade;
+  criada_em: string;
+  excursao: {
+    id: number;
+    nome: string;
+    data_inicial: string;
+    data_final: string;
+    partida_brasilia: { data: string; hora: string };
+  };
+  valores: { total_centavos: number; parcelas: ParcelaReserva[] };
+  pode_desistir: boolean;
+}
+
+export type ResultadoReserva =
+  | { ok: true; reserva: Reserva }
+  | { ok: false; motivo: 'acesso' | 'rede' | 'nao_encontrada' | 'erro' }
+  | { ok: false; motivo: 'recusa'; status: number; codigo: string; campos: Record<string, string> };
+
+interface Corpo {
+  reserva?: Reserva;
+  error?: string;
+  fields?: Record<string, string>;
+}
+
+async function chamar(metodo: 'GET' | 'POST', caminho: string, corpo?: unknown): Promise<ResultadoReserva> {
+  try {
+    const r = await apiRequest<Corpo>(metodo, caminho, corpo);
+    if (r.status >= 200 && r.status < 300 && r.data?.reserva !== undefined) return { ok: true, reserva: r.data.reserva };
+    if (r.status === 401 || r.status === 403) return { ok: false, motivo: 'acesso' };
+    if (r.status === 404 && r.data?.error === 'nao_encontrada') return { ok: false, motivo: 'nao_encontrada' };
+    if ((r.status === 400 || r.status === 404 || r.status === 409) && r.data?.error !== undefined) {
+      return { ok: false, motivo: 'recusa', status: r.status, codigo: r.data.error, campos: r.data.fields ?? {} };
+    }
+    return { ok: false, motivo: 'erro' };
+  } catch (erro) {
+    return { ok: false, motivo: erro instanceof NetworkError ? 'rede' : 'erro' };
+  }
+}
+
+export const reservasApi = {
+  solicitar: (excursaoId: number, modalidade: Modalidade) => chamar('POST', '/api/reservas', { excursao_id: excursaoId, modalidade }),
+  obter: (id: number) => chamar('GET', `/api/reservas/${id}`),
+  desistir: (id: number) => chamar('POST', `/api/reservas/${id}/desistir`),
+};
+
+export const ROTULO_SITUACAO_RESERVA: Record<Reserva['situacao'], string> = {
+  aguardando_pagamento: 'Aguardando pagamento',
+  pronto_para_embarque: 'Pronto para embarque',
+  concluida: 'Concluída',
+  cancelada: 'Cancelada',
+};
+
+export const MENSAGEM_RESERVA: Record<string, string> = {
+  sem_vagas: 'Esta excursão está esgotada.',
+  limite_de_reservas_pendentes: 'Você já tem 3 reservas aguardando pagamento. Conclua ou desista de uma antes de reservar outra.',
+  reservas_encerradas: 'As reservas desta excursão estão encerradas.',
+  excursao_nao_encontrada: 'Esta excursão não foi encontrada ou não está disponível.',
+  reserva_nao_cancelavel: 'Esta reserva não pode mais ser cancelada por aqui.',
+  reserva_com_pagamento: 'Esta reserva já tem pagamento e não pode ser cancelada por aqui.',
+};
+
+export const MENSAGEM_MODALIDADE: Record<string, string> = {
+  parcelamento_indisponivel: 'Esta excursão não permite pagamento em duas parcelas.',
+  prazo_da_segunda_parcela_vencido: 'O prazo da segunda parcela já passou. Escolha o pagamento integral.',
+  invalido: 'Escolha uma forma de pagamento válida.',
+};

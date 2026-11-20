@@ -26,3 +26,13 @@ export function centavosParaReais(centavos: number): string {
 
 /** "R$ 1.234,56" a partir de centavos. */
 export const formatarReais = (centavos: number): string => `R$ ${centavosParaReais(centavos)}`;
+
+/**
+ * Divide o total em duas parcelas (RN-012): a primeira recebe a metade arredondada para baixo e a segunda,
+ * o restante, de modo que o centavo que sobra de um total impar fica na ultima parcela e a soma e sempre
+ * igual ao total (decisao do pesquisador na AGT-007; a primeira parcela nao e reembolsavel, RN-020).
+ */
+export function dividirEmDuas(totalCentavos: number): { primeira: number; segunda: number } {
+  const primeira = Math.floor(totalCentavos / 2);
+  return { primeira, segunda: totalCentavos - primeira };
+}

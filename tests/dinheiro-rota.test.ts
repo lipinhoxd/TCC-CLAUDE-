@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { centavosParaReais, formatarReais, reaisParaCentavos } from '../shared/dinheiro.ts';
+import { centavosParaReais, dividirEmDuas, formatarReais, reaisParaCentavos } from '../shared/dinheiro.ts';
 import { matchPath, normalizePath } from '../src/router.tsx';
 
 describe('reais e centavos (RN-038)', () => {
@@ -26,6 +26,19 @@ describe('reais e centavos (RN-038)', () => {
     expect(formatarReais(10_000_000)).toBe('R$ 100.000,00');
     for (const c of [1, 99, 100, 123456, 9_999_999, 10_000_000]) {
       expect(reaisParaCentavos(centavosParaReais(c))).toBe(c);
+    }
+  });
+});
+
+describe('divisao em duas parcelas (RN-012)', () => {
+  it('a primeira e a metade para baixo, a segunda e o restante, e a soma e o total', () => {
+    expect(dividirEmDuas(150000)).toEqual({ primeira: 75000, segunda: 75000 });
+    expect(dividirEmDuas(15001)).toEqual({ primeira: 7500, segunda: 7501 });
+    expect(dividirEmDuas(1)).toEqual({ primeira: 0, segunda: 1 });
+    for (const total of [2, 3, 99, 12345, 10_000_000]) {
+      const { primeira, segunda } = dividirEmDuas(total);
+      expect(primeira + segunda).toBe(total);
+      expect(segunda - primeira).toBeLessThanOrEqual(1);
     }
   });
 });

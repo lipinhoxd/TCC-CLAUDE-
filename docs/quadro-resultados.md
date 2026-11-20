@@ -40,7 +40,7 @@ n = 7 atividades concluídas e classificadas (de 18 previstas).
 | 004 | Estrutura pública | Concluída | AP-3 | 1 | 140 (100 anteriores + 40 novos), todos aprovados | ≈ 6,5 min de implementação (espera pelas quatro decisões não contada) | Sim: decisão de arquitetura, dependências e conteúdo (quatro paradas previstas) | `e05db42` |
 | 005 | Gerenciamento administrativo de excursões | Concluída | AP-3 | 1 | 238 (140 anteriores + 98 novos), todos aprovados | ≈ 13,5 min de implementação (espera pelas três decisões não contada) | Sim: decisão de regras de negócio e arquitetura (três paradas previstas) | `614e11d` |
 | 006 | Consulta e detalhamento | Concluída | AP-3 | 1 | 277 (238 anteriores + 39 novos; 1 reescrito), todos aprovados | ≈ 7 min de implementação (espera pelas decisões não contada) | Sim: decisão sobre o que o público vê (três paradas previstas) | `a9d06a1` |
-| 007 | Reservas | Concluída | AP-3 | 1 | 326 (277 anteriores + 49 novos; 1 reescrito), todos aprovados | ≈ 5,3 min de implementação (espera pelas decisões não contada) | Sim: decisão sobre reservas, vagas e dinheiro (três paradas previstas) | `COMMIT` |
+| 007 | Reservas | Concluída | AP-3 | 1 | 326 (277 anteriores + 49 novos; 1 reescrito), todos aprovados | ≈ 5,3 min de implementação (espera pelas decisões não contada) | Sim: decisão sobre reservas, vagas e dinheiro (três paradas previstas) | `5c86513` |
 | 008 a 018 | Ver `docs/especificacao/07-PLANO-DE-ATIVIDADES.md` | Planejada | — | — | — | — | — | — |
 
 Distribuição descritiva: 7 AP-3 (n = 7) no subconjunto avaliado, o que **não permite concluir

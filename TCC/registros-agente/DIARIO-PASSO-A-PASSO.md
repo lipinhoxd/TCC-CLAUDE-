@@ -1256,3 +1256,10 @@ nova. A classificação (AP-1, AP-2, AP-3 ou RP) cabe ao pesquisador; o agente n
 **Pedido do pesquisador:** "AP3, tá? E depois que você finalizar, a gente para por aqui e continuamos amanhã." Vale a autorização permanente de 19/11/2026 para o fechamento padrão.
 
 **Ações:** checagem completa antes do commit (lint, tipos, testes e build): 326 testes aprovados, sem falhas. Marcou os 23 critérios da Seção 4 de AGT-007.md; redigiu as Seções 11 a 13; acrescentou a linha da AGT-007 a METRICAS.csv e ao quadro; atualizou a matriz (RF-018 e RF-020 evidenciados, RF-019 parcial); criou docs/fichas-agt/principal/AGT-007.md.
+
+---
+
+## Entrada 72 — AGT-007: commit
+**Horário:** 2026-11-19T23:46:32-03:00 (comando date, logo após o commit).
+
+**Ações:** commit 5c86513 (identidade dos commits anteriores só no comando); segundo commit grava o hash em AGT-007.md, METRICAS.csv, quadro e ficha.

@@ -1192,3 +1192,12 @@ nova. A classificação (AP-1, AP-2, AP-3 ou RP) cabe ao pesquisador; o agente n
 **Horário:** 2026-11-19T22:54:42-03:00 (comando date, logo após o commit).
 
 **Ações:** commit a9d06a1 (identidade dos commits anteriores só no comando); segundo commit grava o hash em AGT-006.md, METRICAS.csv, quadro e ficha.
+
+---
+
+## Entrada 66 — AGT-006: transcrição no Google Docs
+**Horário:** 2026-11-19T22:57:21-03:00 (comando date, após a conferência por nova leitura do documento).
+
+**Ações:** no Google Docs, ficha da AGT-006 no Apêndice E, linha do Quadro 2 (AP-3, 1 tentativa, 277 testes, intervenção Sim, commit a9d06a1), parágrafo da Seção 5.3 e 13 substituições (Resumo, Abstract, 5.1, 6.1 a 6.4, Cap. 7, Apêndice D), cada uma aplicada uma vez e conferida. Antes do lote, a leitura mostrou o documento com o mesmo tamanho da leitura anterior (sem edição do pesquisador entre elas) e as 12 âncoras do checklist foram encontradas uma única vez. Atualizou o ESTADO-GOOGLE-DOCS.md com o checklist da AGT-007. Commits: a9d06a1 e becd3d7.
+
+**Pendente (pesquisador):** atualizar o sumário do Docs; diagramas (hospedagem externa de imagem, a decidir); verificação real do telefone e envio do token; DOIs das referências 1 e 8; segundo avaliador; instrução da AGT-007.

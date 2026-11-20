@@ -1263,3 +1263,14 @@ nova. A classificação (AP-1, AP-2, AP-3 ou RP) cabe ao pesquisador; o agente n
 **Horário:** 2026-11-19T23:46:32-03:00 (comando date, logo após o commit).
 
 **Ações:** commit 5c86513 (identidade dos commits anteriores só no comando); segundo commit grava o hash em AGT-007.md, METRICAS.csv, quadro e ficha.
+
+---
+
+## Entrada 73 — AGT-007: transcrição no Google Docs
+**Horário:** 2026-11-19T23:48:58-03:00 (comando date, após a conferência por nova leitura do documento).
+
+**Ações:** no Google Docs, ficha da AGT-007 no Apêndice E, linha do Quadro 2 (AP-3, 1 tentativa, 326 testes, intervenção Sim, commit 5c86513), parágrafo da Seção 5.3 e 13 substituições (Resumo, Abstract, 5.1, 6.1 a 6.4, Cap. 7, Apêndice D), cada uma aplicada uma vez e conferida. Antes do lote, a leitura mostrou o documento com o mesmo tamanho da leitura anterior (sem edição do pesquisador entre elas) e as 12 âncoras do checklist foram encontradas uma única vez. Atualizou o ESTADO-GOOGLE-DOCS.md com o checklist da AGT-008. Commits: 5c86513 e b258e66.
+
+**Encerramento da sessão:** a pedido do pesquisador, parou aqui; continuam amanhã.
+
+**Pendente (pesquisador):** atualizar o sumário do Docs; diagramas (hospedagem externa de imagem, a decidir); verificação real do telefone e envio do token; DOIs das referências 1 e 8; segundo avaliador; instrução da AGT-008 (retenção de vaga, a próxima do plano), com o prazo de corte de 24/11/2026 se aproximando.

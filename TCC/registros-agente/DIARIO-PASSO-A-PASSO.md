@@ -1185,3 +1185,10 @@ nova. A classificação (AP-1, AP-2, AP-3 ou RP) cabe ao pesquisador; o agente n
 **Pedido do pesquisador:** "ap 3, e sim para todos os agentes sempre o mesmo processo". O agente leu: classificação AP-3 e autorização permanente para repetir, a cada AGT, o fechamento (critérios, revisão do código aprovada, commit e transcrição no Google Docs). Registrou isso na memória e no registro.
 
 **Ações:** checagem completa antes do commit (lint, tipos, testes e build): 277 testes aprovados, sem falhas. Marcou os 20 critérios da Seção 4 de AGT-006.md; redigiu as Seções 11 a 13; acrescentou a linha da AGT-006 a METRICAS.csv e ao quadro; atualizou a matriz (RF-015 e RF-016 evidenciados, RF-017 parcial); criou docs/fichas-agt/principal/AGT-006.md.
+
+---
+
+## Entrada 65 — AGT-006: commit
+**Horário:** 2026-11-19T22:54:42-03:00 (comando date, logo após o commit).
+
+**Ações:** commit a9d06a1 (identidade dos commits anteriores só no comando); segundo commit grava o hash em AGT-006.md, METRICAS.csv, quadro e ficha.

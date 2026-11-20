@@ -1274,3 +1274,8 @@ nova. A classificação (AP-1, AP-2, AP-3 ou RP) cabe ao pesquisador; o agente n
 **Encerramento da sessão:** a pedido do pesquisador, parou aqui; continuam amanhã.
 
 **Pendente (pesquisador):** atualizar o sumário do Docs; diagramas (hospedagem externa de imagem, a decidir); verificação real do telefone e envio do token; DOIs das referências 1 e 8; segundo avaliador; instrução da AGT-008 (retenção de vaga, a próxima do plano), com o prazo de corte de 24/11/2026 se aproximando.
+
+### Entrada 74 — 2026-11-20T00:13:18-03:00
+- Acrescentada ao final do CLAUDE.md a seção "Padrão de escrita e formatação do TCC (Google Docs)", conforme texto do pesquisador.
+- Criado TCC/registros-agente/PROXIMOS-PASSOS.md (a colagem terminava truncada em "Aprovação da instrução da AGT-00"; completado como AGT-008).
+- Sem commit (aguarda pedido explícito do pesquisador).

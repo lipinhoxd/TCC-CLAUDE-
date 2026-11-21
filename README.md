@@ -64,7 +64,7 @@ Páginas Home, Excursões, Sobre, Como funciona e Contato, cabeçalho e rodapé,
 
 ## Reservas
 
-O passageiro reserva uma vaga no detalhe da excursão e chega ao checkout (`/reservas/:id/checkout`); pode desistir enquanto não houver pagamento. Abrir o checkout retém a vaga por 15 minutos (`RETENCAO_MINUTOS`); a retenção expirada libera a vaga. Ainda não há pagamento. Regras, rotas e limitações em [docs/reservas.md](docs/reservas.md).
+O passageiro reserva uma vaga no detalhe da excursão e chega ao checkout (`/reservas/:id/checkout`); pode desistir enquanto não houver pagamento. Abrir o checkout retém a vaga por 15 minutos (`RETENCAO_MINUTOS`); a retenção expirada libera a vaga. O pagamento integral usa um provedor **simulado** fora de produção (`PAGAMENTO_SIMULADO`); em produção não há provedor. O parcelado ainda não existe. Regras, rotas e limitações em [docs/reservas.md](docs/reservas.md).
 
 ## Consulta pública de excursões
 

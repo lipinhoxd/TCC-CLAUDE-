@@ -30,7 +30,7 @@ Não há inferência estatística.
 
 ## 2. Experimento principal (Claude Code)
 
-n = 8 atividades concluídas e classificadas (de 18 previstas).
+n = 9 atividades concluídas e classificadas (de 18 previstas).
 
 | AGT | Atividade | Estado | Classe | Tentativas | Testes | Duração | Intervenção | Commit |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- |
@@ -42,9 +42,10 @@ n = 8 atividades concluídas e classificadas (de 18 previstas).
 | 006 | Consulta e detalhamento | Concluída | AP-3 | 1 | 277 (238 anteriores + 39 novos; 1 reescrito), todos aprovados | ≈ 7 min de implementação (espera pelas decisões não contada) | Sim: decisão sobre o que o público vê (três paradas previstas) | `a9d06a1` |
 | 007 | Reservas | Concluída | AP-3 | 1 | 326 (277 anteriores + 49 novos; 1 reescrito), todos aprovados | ≈ 5,3 min de implementação (espera pelas decisões não contada) | Sim: decisão sobre reservas, vagas e dinheiro (três paradas previstas) | `5c86513` |
 | 008 | Capacidade e retenção temporária de vagas | Concluída | AP-3 | 1 | 372 (326 anteriores + 46 novos; 1 reescrito de outra atividade e 3 ajustados), todos aprovados | ≈ 17,6 min (inclui documentação, mutações e percurso em navegador; espera pelas decisões não contada) | Sim: decisão sobre vagas e concorrência (três paradas previstas) | `23e87fb` |
-| 009 a 018 | Ver `docs/especificacao/07-PLANO-DE-ATIVIDADES.md` | Planejada | — | — | — | — | — | — |
+| 009 | Pagamento integral | Concluída | AP-3 | 1 | 420 (372 anteriores + 48 novos; 2 atualizados de outras atividades), todos aprovados | ≈ 14,8 min (inclui documentação, mutações e percurso em navegador; espera pelas decisões não contada) | Sim: decisão sobre pagamento e vagas (três paradas previstas) | `HASH_A_PREENCHER` |
+| 010 a 018 | Ver `docs/especificacao/07-PLANO-DE-ATIVIDADES.md` | Planejada | — | — | — | — | — | — |
 
-Distribuição descritiva: 8 AP-3 (n = 8) no subconjunto avaliado, o que **não permite concluir
+Distribuição descritiva: 9 AP-3 (n = 9) no subconjunto avaliado, o que **não permite concluir
 nada sobre o desempenho do agente**. As atividades seguem um critério único (decisão do pesquisador exigida pela instrução = AP-3; ver `docs/rubrica-avaliacao.md`). Perfil: tarefas fundacionais. Não há inferência estatística nem grupo
 de controle.
 

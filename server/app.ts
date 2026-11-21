@@ -5,6 +5,7 @@ import { handleAuthRoute, sendJson } from './auth/routes.ts';
 import type { AuthService } from './auth/service.ts';
 import { handleExcursaoRoute } from './excursoes/routes.ts';
 import { handleConsultaPublica } from './excursoes/rotas-publicas.ts';
+import type { PagamentoService } from './pagamentos/service.ts';
 import { handleReservaRoute } from './reservas/routes.ts';
 import type { ReservaService } from './reservas/service.ts';
 import type { ExcursaoService } from './excursoes/service.ts';
@@ -16,6 +17,8 @@ export interface AppOptions {
   excursoes?: ExcursaoService;
   /** Servico de reservas (AGT-007); as rotas tambem exigem o servico de autenticacao. */
   reservas?: ReservaService;
+  /** Servico de pagamento integral (AGT-009); as rotas de reserva que o usam respondem 503 sem ele. */
+  pagamentos?: PagamentoService;
 }
 
 async function handle(req: IncomingMessage, res: ServerResponse, options: AppOptions): Promise<void> {
@@ -38,7 +41,7 @@ async function handle(req: IncomingMessage, res: ServerResponse, options: AppOpt
     return;
   }
 
-  if (await handleReservaRoute(req, res, pathname, options.auth?.service, options.reservas)) {
+  if (await handleReservaRoute(req, res, pathname, options.auth?.service, options.reservas, options.pagamentos)) {
     return;
   }
 

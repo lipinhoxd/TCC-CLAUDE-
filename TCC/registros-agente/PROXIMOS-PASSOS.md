@@ -23,7 +23,7 @@
 ## Depende dos pesquisadores
 - Classificação de cada atividade nova (sempre dos pesquisadores).
 - Segundo avaliador (não designado).
-- Versão da ferramenta Claude Code: [DADO NÃO REGISTRADO]; nenhum arquivo do repositório a registra.
+- Versão da ferramenta Claude Code das AGT-001 a AGT-008: [DADO NÃO REGISTRADO]; nenhum arquivo do repositório a registra (a extensão instalada em 20/11/2026 é a 2.1.325, mas isso não prova a versão das execuções anteriores). A partir da AGT-009, o agente registra no `AGT-XXX.md` e na ficha a versão da extensão vista na pasta de extensões do VS Code no início da atividade (hoje 2.1.325).
 - Aprovação da instrução da AGT-008.
 - Confirmar (ou corrigir) a leitura do "ok" de 20/11/2026 como "recomendadas" em P1 a P6 (primeira opção de cada).
 

@@ -5,6 +5,7 @@ import { HttpError } from '../auth/support.ts';
 import { registrarAuditoria } from '../db/audit.ts';
 import { withTransaction } from '../db/transaction.ts';
 import { instantePrazo } from '../excursoes/validation.ts';
+import type { ProvedorPagamento } from '../pagamentos/provedor.ts';
 import { disponibilidade, expirarVencidas } from '../vagas/disponibilidade.ts';
 import { RETENCAO_PADRAO_MINUTOS } from './config.ts';
 
@@ -18,6 +19,8 @@ import { RETENCAO_PADRAO_MINUTOS } from './config.ts';
  * Decisoes do pesquisador na AGT-008: a retencao comeca ao abrir o checkout e dura 15 min (configuravel); pode ser
  * retomada depois de expirada, se houver vaga; a expiracao e avaliada na leitura e na gravacao; a reserva continua
  * aguardando pagamento quando a retencao expira; desistir cancela a retencao ativa.
+ * AGT-009: a reserva mostra o pagamento integral (server/pagamentos/); a desistencia fica bloqueada com pagamento pendente
+ * ou confirmado (um pagamento recusado nao impede desistir).
  */
 
 export const LIMITE_PENDENTES = 3;
@@ -40,6 +43,14 @@ export interface RetencaoDto {
   segundos_restantes: number;
 }
 
+export interface PagamentoDto {
+  situacao: 'pendente' | 'confirmado' | 'falhou' | 'estornado';
+  valor_centavos: number;
+  confirmado_em: string | null;
+  /** Confirmado sem vaga disponivel: aguarda tratamento da administracao (RN-022, RF-026). */
+  requer_tratamento_administrativo: boolean;
+}
+
 export interface ReservaDto {
   id: number;
   situacao: string;
@@ -56,6 +67,12 @@ export interface ReservaDto {
   pode_desistir: boolean;
   /** Retencao mais recente da reserva, ou null se o checkout ainda nao foi iniciado. */
   retencao: RetencaoDto | null;
+  /** Pagamento integral da reserva (parcela unica), ou null se ainda nao foi iniciado. */
+  pagamento: PagamentoDto | null;
+  /** Ha provedor de pagamento neste ambiente e a reserva e integral. */
+  pagamento_disponivel: boolean;
+  /** O provedor e o simulado (rotas de aprovar e recusar existem so fora de producao). */
+  pagamento_simulado: boolean;
 }
 
 type Row = Record<string, unknown>;
@@ -84,11 +101,25 @@ export class ReservaService {
   private readonly db: DatabaseSync;
   private readonly relogio: () => Date;
   private readonly retencaoMs: number;
+  private readonly provedor: ProvedorPagamento | undefined;
 
-  constructor(db: DatabaseSync, now?: () => Date, retencaoMs: number = RETENCAO_PADRAO_MINUTOS * 60_000) {
+  constructor(db: DatabaseSync, now?: () => Date, retencaoMs: number = RETENCAO_PADRAO_MINUTOS * 60_000, provedor?: ProvedorPagamento) {
     this.db = db;
     this.relogio = now ?? (() => new Date());
     this.retencaoMs = retencaoMs;
+    this.provedor = provedor;
+  }
+
+  /** Pagamento integral da reserva, se existir. */
+  private pagamentoDe(reservaId: number): PagamentoDto | null {
+    const p = this.db.prepare("SELECT situacao, valor_centavos, confirmado_em, pendencia_administrativa FROM pagamento WHERE reserva_id = ? AND parcela = 'unica'").get(reservaId);
+    if (p === undefined) return null;
+    return {
+      situacao: p['situacao'] as PagamentoDto['situacao'],
+      valor_centavos: Number(p['valor_centavos']),
+      confirmado_em: p['confirmado_em'] === null ? null : t(p['confirmado_em']),
+      requer_tratamento_administrativo: p['pendencia_administrativa'] !== null,
+    };
   }
 
   /** Retencao mais recente da reserva; a ativa com prazo vencido aparece como expirada, sem gravar nada na leitura. */
@@ -110,7 +141,9 @@ export class ReservaService {
     const total = Number(excursao['preco_centavos']);
     const partida = utcParaBrasilia(t(excursao['partida_utc']));
     const situacao = t(reserva['situacao']);
-    const comPagamento = this.db.prepare('SELECT 1 AS x FROM pagamento WHERE reserva_id = ? LIMIT 1').get(Number(reserva['id'])) !== undefined;
+    const pagamento = this.pagamentoDe(Number(reserva['id']));
+    // Pagamento pendente ou confirmado impede desistir; o recusado (falhou) nao.
+    const comPagamento = pagamento !== null && (pagamento.situacao === 'pendente' || pagamento.situacao === 'confirmado');
     return {
       id: Number(reserva['id']),
       situacao,
@@ -129,6 +162,9 @@ export class ReservaService {
       },
       pode_desistir: situacao === 'aguardando_pagamento' && !comPagamento,
       retencao: this.retencaoDe(Number(reserva['id'])),
+      pagamento,
+      pagamento_disponivel: this.provedor !== undefined && modalidade === 'integral',
+      pagamento_simulado: this.provedor?.simulado === true,
     };
   }
 
@@ -273,7 +309,7 @@ export class ReservaService {
       const reserva = this.db.prepare('SELECT * FROM reserva WHERE id = ? AND usuario_id = ?').get(reservaId, passageiroId);
       if (reserva === undefined) throw new HttpError(404, 'nao_encontrada');
       if (t(reserva['situacao']) !== 'aguardando_pagamento') throw new HttpError(409, 'reserva_nao_cancelavel');
-      if (this.db.prepare('SELECT 1 AS x FROM pagamento WHERE reserva_id = ? LIMIT 1').get(reservaId) !== undefined) {
+      if (this.db.prepare("SELECT 1 AS x FROM pagamento WHERE reserva_id = ? AND situacao IN ('pendente', 'confirmado') LIMIT 1").get(reservaId) !== undefined) {
         throw new HttpError(409, 'reserva_com_pagamento');
       }
       expirarVencidas(this.db, agora, { reservaId });

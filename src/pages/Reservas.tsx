@@ -12,6 +12,7 @@ import { Notice, usePageTitle } from '../ui.tsx';
 /**
  * Reserva do passageiro (AGT-007): botao no detalhe da excursao e pagina de checkout. Sem pagamento ainda.
  * AGT-008: abrir o checkout inicia a retencao temporaria da vaga; a tela mostra o tempo restante e, expirada, oferece retomar.
+ * AGT-009: pagamento integral no checkout (provedor simulado fora de producao); reserva paga fica pronta para embarque.
  */
 
 const AVISO_VAGA = 'A vaga só é garantida após o pagamento confirmado.';
@@ -127,7 +128,7 @@ export function formatarRestante(segundos: number): string {
   return `${String(Math.floor(s / 60)).padStart(2, '0')}:${String(s % 60).padStart(2, '0')}`;
 }
 
-/** Pagina de checkout: resumo da reserva e retencao da vaga. O pagamento ainda nao existe (AGT-009 e AGT-010). */
+/** Pagina de checkout: resumo da reserva, retencao da vaga e pagamento integral. O parcelado e da AGT-010. */
 export function Checkout({ id }: { id: number }) {
   usePageTitle('Checkout');
   const { status, user } = useSession();
@@ -143,6 +144,7 @@ export function Checkout({ id }: { id: number }) {
   const [aviso, setAviso] = useState<{ tipo: 'success' | 'error'; texto: string } | null>(null);
   const [confirmar, setConfirmar] = useState(false);
   const [ocupado, setOcupado] = useState(false);
+  const [pagando, setPagando] = useState(false);
   const pode = status === 'ready' && user?.perfil === 'passageiro';
 
   useEffect(() => {
@@ -177,7 +179,7 @@ export function Checkout({ id }: { id: number }) {
   useEffect(() => {
     if (reserva === null || autoIniciou.current) return;
     autoIniciou.current = true;
-    if (reserva.situacao === 'aguardando_pagamento' && reserva.retencao?.situacao !== 'ativa') void iniciar();
+    if (reserva.situacao === 'aguardando_pagamento' && reserva.pagamento?.situacao !== 'confirmado' && reserva.retencao?.situacao !== 'ativa') void iniciar();
   }, [reserva]);
 
   // O servidor informa os segundos restantes; a contagem na tela usa o relogio local a partir dessa medida.
@@ -241,8 +243,41 @@ export function Checkout({ id }: { id: number }) {
     }
   };
 
+  /** Resposta comum do pagamento: atualiza a reserva ou explica a recusa, sem vazar detalhes. */
+  const tratarPagamento = (r: Awaited<ReturnType<typeof reservasApi.pagar>>, aoSucesso?: string) => {
+    if (r.ok) {
+      setReserva(r.reserva);
+      setSemVaga(false);
+      if (aoSucesso !== undefined) setAviso({ tipo: 'success', texto: aoSucesso });
+    } else if (r.motivo === 'recusa') {
+      setAviso({ tipo: 'error', texto: MENSAGEM_RESERVA[r.codigo] ?? 'Não foi possível concluir o pagamento.' });
+    } else if (r.motivo === 'acesso') {
+      setNegado(true);
+    } else {
+      setAviso({ tipo: 'error', texto: r.motivo === 'rede' ? 'Sem conexão com o servidor. Tente novamente.' : 'Algo deu errado. Tente novamente em instantes.' });
+    }
+  };
+
+  const pagar = async () => {
+    setAviso(null);
+    setPagando(true);
+    tratarPagamento(await reservasApi.pagar(id));
+    setPagando(false);
+  };
+
+  const simular = async (resultado: 'aprovado' | 'recusado') => {
+    setAviso(null);
+    setPagando(true);
+    tratarPagamento(await reservasApi.simular(id, resultado));
+    setPagando(false);
+  };
+
   const e = reserva.excursao;
-  const aguardando = reserva.situacao === 'aguardando_pagamento';
+  const aguardandoPagamento = reserva.situacao === 'aguardando_pagamento';
+  const pag = reserva.pagamento;
+  const confirmado = pag?.situacao === 'confirmado';
+  // O bloco da retencao so aparece enquanto o pagamento nao foi confirmado.
+  const aguardando = aguardandoPagamento && !confirmado;
   const retida = aguardando && fimLocal !== null && restante > 0;
   const expirou = aguardando && !retida && !iniciando && !semVaga && (reserva.retencao?.situacao === 'expirada' || (fimLocal !== null && restante <= 0));
   return (
@@ -335,8 +370,51 @@ export function Checkout({ id }: { id: number }) {
               </button>
             </p>
           ) : null}
-          <p className="notice notice-provisional">Pagamento: ainda não está disponível. Será habilitado em uma próxima etapa. Este texto é provisório.</p>
         </>
+      ) : null}
+      {reserva.situacao === 'pronto_para_embarque' ? <Notice kind="success">Pagamento confirmado. Sua reserva está pronta para embarque.</Notice> : null}
+      {aguardandoPagamento && confirmado ? (
+        <Notice kind="info">Recebemos o seu pagamento, mas a vaga não está mais disponível. A organização vai tratar o caso.</Notice>
+      ) : null}
+      {aguardando ? (
+        <section aria-labelledby="pagamento-titulo" className="panel">
+          <h2 id="pagamento-titulo">Pagamento</h2>
+          {reserva.modalidade === 'parcelada' ? (
+            <Notice kind="info">O pagamento em duas parcelas ainda não está disponível.</Notice>
+          ) : !reserva.pagamento_disponivel ? (
+            <Notice kind="info">O pagamento não está disponível neste ambiente.</Notice>
+          ) : (
+            <>
+              {pag?.situacao === 'falhou' ? <Notice kind="error">O pagamento foi recusado. Você pode tentar de novo enquanto a vaga estiver retida.</Notice> : null}
+              {pag?.situacao === 'pendente' ? (
+                <>
+                  <Notice kind="info">Pagamento de {formatarReais(pag.valor_centavos)} iniciado. Aguardando a confirmação.</Notice>
+                  {reserva.pagamento_simulado ? (
+                    <div className="opcoes">
+                      <p className="hint">Ambiente de demonstração: o provedor de pagamento é simulado. Escolha o resultado.</p>
+                      <button type="button" className="btn btn-primary" disabled={pagando} onClick={() => void simular('aprovado')}>
+                        Simular pagamento aprovado
+                      </button>{' '}
+                      <button type="button" className="btn btn-secondary" disabled={pagando} onClick={() => void simular('recusado')}>
+                        Simular pagamento recusado
+                      </button>
+                    </div>
+                  ) : null}
+                </>
+              ) : (
+                <>
+                  <p>
+                    Valor a pagar: <strong>{formatarReais(reserva.valores.total_centavos)}</strong>
+                  </p>
+                  <button type="button" className="btn btn-primary" disabled={pagando || !retida} onClick={() => void pagar()}>
+                    {pagando ? 'Pagando…' : 'Pagar'}
+                  </button>
+                  {!retida ? <p className="hint">Para pagar, a vaga precisa estar retida. Retome o checkout acima.</p> : null}
+                </>
+              )}
+            </>
+          )}
+        </section>
       ) : null}
       {reserva.pode_desistir ? (
         <section aria-labelledby="desistir-titulo" className="panel">

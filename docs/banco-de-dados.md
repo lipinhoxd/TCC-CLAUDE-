@@ -30,6 +30,10 @@ tabela `schema_migrations` guarda versão, nome, checksum (SHA-256) e data de ap
 não altera nada. Migração já aplicada **não é editada** (o checksum detecta); mudanças viram uma
 nova versão.
 
+**Versão 2 (AGT-009):** `pagamento.pendencia_administrativa` (texto, nulo ou `confirmacao_sem_vaga`) e o índice parcial
+`ix_pagamento_pendencia`. Sinaliza a confirmação financeira recebida sem vaga disponível (RN-022, RF-026), para a fila da administração
+(AGT-012 e AGT-013). Não altera linhas existentes; a migração 1 não foi editada.
+
 ## Esquema (versão 1)
 
 Tabelas `STRICT`, chaves estrangeiras ligadas em cada conexão (`PRAGMA foreign_keys = ON`).
@@ -66,7 +70,9 @@ reembolso não estão definidas na especificação (a RN-037 está como "[confir
 - **Implementado na AGT-008:** `server/vagas/disponibilidade.ts` (`disponibilidade`, `ocuparVaga`, `liberarVaga`, `expirarVencidas`).
   A retenção não altera `vagas_ocupadas`: a disponibilidade é capacidade menos ocupadas menos retenções `ativa` com `expira_em` no futuro.
   O banco ocupado além do `busy_timeout` de 5 s vira 503 `banco_ocupado` na API, sem nova tentativa automática.
-- **Pendente (AGT-009 e AGT-014):** a conversão da retenção em ocupação e a rotina agendada de expiração. O contador `vagas_ocupadas`
+- **Implementado na AGT-009:** `server/pagamentos/confirmacao.ts` converte a retenção em ocupação (`ocuparVaga` com a retenção consumida) na
+  mesma transação que marca o pagamento e a reserva. Detalhes em `docs/reservas.md`.
+- **Pendente (AGT-014):** a rotina agendada de expiração. O contador `vagas_ocupadas`
   é mantido pela aplicação (não há gatilho que o recalcule a partir de reservas e retenções).
 
 ## Camada de acesso

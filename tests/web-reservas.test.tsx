@@ -40,6 +40,9 @@ function reserva(extra: Record<string, unknown> = {}): Record<string, unknown> {
     valores: { total_centavos: 150001, parcelas: [{ parcela: 'unica', valor_centavos: 150001, vencimento: null }] },
     pode_desistir: true,
     retencao: { situacao: 'ativa', expira_em: '2026-11-19T12:10:00.000Z', segundos_restantes: 600 },
+    pagamento: null,
+    pagamento_disponivel: true,
+    pagamento_simulado: true,
     ...extra,
   };
 }
@@ -70,6 +73,8 @@ function abrir(caminho: string) {
 }
 const clicar = (nome: string | RegExp) => fireEvent.click(screen.getByRole('button', { name: nome }));
 const chamadas = (calls: RecordedCall[], metodo: string, caminho: string) => calls.filter((c) => c.method === metodo && c.path === caminho);
+/** O botao Pagar so habilita depois que a contagem da retencao comeca (um instante apos a carga da reserva). */
+const pagarHabilitado = () => waitFor(() => expect(screen.getByRole<HTMLButtonElement>('button', { name: 'Pagar' }).disabled).toBe(false));
 
 describe('botao de reserva no detalhe da excursao (RF-018)', () => {
   it('o passageiro ve as formas de pagamento, com o prazo da segunda parcela, e o aviso sobre a vaga', async () => {
@@ -197,8 +202,9 @@ describe('checkout (RF-020)', () => {
     expect(await screen.findByText(/A vaga só é garantida após o pagamento confirmado\./)).not.toBeNull();
     expect(screen.getByText('10:00')).not.toBeNull();
     expect(screen.queryByText(/ainda não segura a vaga/)).toBeNull();
-    expect(screen.getByText(/Pagamento: ainda não está disponível\. Será habilitado em uma próxima etapa\. Este texto é provisório\./)).not.toBeNull();
-    expect(screen.queryByRole('button', { name: /pagar/i })).toBeNull();
+    expect(screen.queryByText(/Este texto é provisório/)).toBeNull();
+    expect(screen.getByText('Valor a pagar:', { exact: false }).textContent).toContain('R$ 1.500,01');
+    expect(screen.getByRole<HTMLButtonElement>('button', { name: 'Pagar' }).disabled).toBe(false);
     expect(document.title).toBe('Checkout · BPM Trip');
   });
 
@@ -236,7 +242,7 @@ describe('checkout (RF-020)', () => {
     expect(screen.getByText('Esta reserva está cancelada.')).not.toBeNull();
     expect(screen.queryByRole('button', { name: 'Desistir da reserva' })).toBeNull();
     expect(document.querySelector('dl.detalhes')?.textContent).toContain('Cancelada');
-    expect(screen.queryByText(/Pagamento: ainda não está disponível/)).toBeNull();
+    expect(screen.queryByRole('button', { name: 'Pagar' })).toBeNull();
   });
 
   it('o servidor recusa a desistencia: a razao aparece e a reserva continua', async () => {
@@ -411,5 +417,147 @@ describe('retencao da vaga no checkout (AGT-008, RF-021)', () => {
     abrir('/reservas/31/checkout');
     expect(await screen.findByText('Acesso restrito a passageiros.')).not.toBeNull();
     expect(calls.some((c) => c.path.endsWith('/checkout'))).toBe(false);
+  });
+});
+
+const pagamento = (situacao: string, extra: Record<string, unknown> = {}) => ({
+  situacao,
+  valor_centavos: 150001,
+  confirmado_em: situacao === 'confirmado' ? '2026-11-19T12:05:00.000Z' : null,
+  requer_tratamento_administrativo: false,
+  ...extra,
+});
+const pronta = () =>
+  reserva({
+    situacao: 'pronto_para_embarque',
+    pode_desistir: false,
+    retencao: { situacao: 'confirmada', expira_em: '2026-11-19T12:10:00.000Z', segundos_restantes: 0 },
+    pagamento: pagamento('confirmado'),
+  });
+
+describe('pagamento integral no checkout (AGT-009, RF-023)', () => {
+  it('pagar inicia o pagamento, mostra o valor do servidor e oferece o resultado simulado', async () => {
+    const calls = mockApi({
+      ...comoPassageiro,
+      'GET /api/reservas/31': () => json(200, { reserva: reserva() }),
+      'POST /api/reservas/31/pagamento': () => json(200, { reserva: reserva({ pagamento: pagamento('pendente'), pode_desistir: false }) }),
+    });
+    abrir('/reservas/31/checkout');
+    expect(await screen.findByText(/Valor a pagar:/)).not.toBeNull();
+    await pagarHabilitado();
+    clicar('Pagar');
+    expect(await screen.findByText(/Pagamento de R\$ 1\.500,01 iniciado\. Aguardando a confirmação\./)).not.toBeNull();
+    expect(chamadas(calls, 'POST', '/api/reservas/31/pagamento')[0]?.body).toBeNull(); // o cliente nao envia valor nenhum
+    expect(screen.getByText(/Ambiente de demonstração: o provedor de pagamento é simulado/)).not.toBeNull();
+    expect(screen.getByRole('button', { name: 'Simular pagamento aprovado' })).not.toBeNull();
+    expect(screen.queryByRole('button', { name: 'Pagar' })).toBeNull();
+    expect(screen.queryByRole('button', { name: 'Desistir da reserva' })).toBeNull();
+  });
+
+  it('aprovado: a reserva fica pronta para embarque, sem tempo, sem pagar e sem desistir', async () => {
+    const calls = mockApi({
+      ...comoPassageiro,
+      'GET /api/reservas/31': () => json(200, { reserva: reserva({ pagamento: pagamento('pendente'), pode_desistir: false }) }),
+      'POST /api/reservas/31/pagamento/simulacao': () => json(200, { reserva: pronta() }),
+    });
+    abrir('/reservas/31/checkout');
+    await screen.findByRole('button', { name: 'Simular pagamento aprovado' });
+    clicar('Simular pagamento aprovado');
+    expect(await screen.findByText('Pagamento confirmado. Sua reserva está pronta para embarque.')).not.toBeNull();
+    expect(chamadas(calls, 'POST', '/api/reservas/31/pagamento/simulacao')[0]?.body).toEqual({ resultado: 'aprovado' });
+    expect(document.querySelector('dl.detalhes')?.textContent).toContain('Pronto para embarque');
+    for (const nome of ['Pagar', 'Desistir da reserva', 'Simular pagamento aprovado', /Retomar|Iniciar checkout/]) {
+      expect(screen.queryByRole('button', { name: nome })).toBeNull();
+    }
+    expect(screen.queryByRole('timer')).toBeNull();
+    expect(chamadas(calls, 'POST', '/api/reservas/31/checkout')).toHaveLength(0);
+  });
+
+  it('recusado: explica e deixa tentar de novo enquanto a vaga estiver retida', async () => {
+    mockApi({
+      ...comoPassageiro,
+      'GET /api/reservas/31': () => json(200, { reserva: reserva({ pagamento: pagamento('pendente'), pode_desistir: false }) }),
+      'POST /api/reservas/31/pagamento/simulacao': () => json(200, { reserva: reserva({ pagamento: pagamento('falhou') }) }),
+    });
+    abrir('/reservas/31/checkout');
+    await screen.findByRole('button', { name: 'Simular pagamento recusado' });
+    clicar('Simular pagamento recusado');
+    expect(await screen.findByText(/O pagamento foi recusado\. Você pode tentar de novo enquanto a vaga estiver retida\./)).not.toBeNull();
+    expect((await screen.findByRole<HTMLButtonElement>('button', { name: 'Pagar' })).disabled).toBe(false);
+    expect(screen.getByRole('button', { name: 'Desistir da reserva' })).not.toBeNull(); // o recusado nao impede desistir
+  });
+
+  it('sem retencao ativa o botao Pagar fica desligado e a tela manda retomar o checkout', async () => {
+    mockApi({
+      ...comoPassageiro,
+      'GET /api/reservas/31': () => json(200, { reserva: reserva({ retencao: { situacao: 'expirada', expira_em: '2026-11-19T11:00:00.000Z', segundos_restantes: 0 } }) }),
+      'POST /api/reservas/31/checkout': () => json(409, { error: 'sem_vagas' }),
+    });
+    abrir('/reservas/31/checkout');
+    await screen.findByText(/Não há vaga disponível agora/);
+    expect(screen.getByRole<HTMLButtonElement>('button', { name: 'Pagar' }).disabled).toBe(true);
+    expect(screen.getByText(/Para pagar, a vaga precisa estar retida/)).not.toBeNull();
+  });
+
+  it('o servidor recusa o pagamento: a razao aparece sem detalhes internos', async () => {
+    mockApi({
+      ...comoPassageiro,
+      'GET /api/reservas/31': () => json(200, { reserva: reserva() }),
+      'POST /api/reservas/31/pagamento': () => json(409, { error: 'retencao_inativa' }),
+    });
+    abrir('/reservas/31/checkout');
+    await pagarHabilitado();
+    clicar('Pagar');
+    expect((await screen.findByRole('alert')).textContent).toBe('A vaga não está mais retida para você. Retome o checkout antes de pagar.');
+    cleanup();
+    mockApi({ ...comoPassageiro, 'GET /api/reservas/31': () => json(200, { reserva: reserva() }), 'POST /api/reservas/31/pagamento': () => json(503, { error: 'pagamento_indisponivel' }) });
+    abrir('/reservas/31/checkout');
+    await pagarHabilitado();
+    clicar('Pagar');
+    expect((await screen.findByRole('alert')).textContent).toBe('O pagamento não está disponível neste ambiente.');
+    cleanup();
+    mockApi({ ...comoPassageiro, 'GET /api/reservas/31': () => json(200, { reserva: reserva() }), 'POST /api/reservas/31/pagamento': () => 'network' });
+    abrir('/reservas/31/checkout');
+    await pagarHabilitado();
+    clicar('Pagar');
+    expect((await screen.findByRole('alert')).textContent).toMatch(/Sem conexão com o servidor/);
+  });
+
+  it('reserva parcelada: avisa que o pagamento em parcelas ainda nao esta disponivel e nao oferece pagar', async () => {
+    mockApi({ ...comoPassageiro, 'GET /api/reservas/31': () => json(200, { reserva: { ...parcelada, pagamento_disponivel: false } }) });
+    abrir('/reservas/31/checkout');
+    expect(await screen.findByText('O pagamento em duas parcelas ainda não está disponível.')).not.toBeNull();
+    expect(screen.queryByRole('button', { name: 'Pagar' })).toBeNull();
+  });
+
+  it('sem provedor no ambiente: avisa e nao oferece pagar; sem simulacao nao mostra os botoes de resultado', async () => {
+    mockApi({ ...comoPassageiro, 'GET /api/reservas/31': () => json(200, { reserva: reserva({ pagamento_disponivel: false, pagamento_simulado: false }) }) });
+    abrir('/reservas/31/checkout');
+    expect(await screen.findByText('O pagamento não está disponível neste ambiente.')).not.toBeNull();
+    expect(screen.queryByRole('button', { name: 'Pagar' })).toBeNull();
+    cleanup();
+    mockApi({ ...comoPassageiro, 'GET /api/reservas/31': () => json(200, { reserva: reserva({ pagamento: pagamento('pendente'), pagamento_simulado: false, pode_desistir: false }) }) });
+    abrir('/reservas/31/checkout');
+    expect(await screen.findByText(/Aguardando a confirmação\./)).not.toBeNull();
+    expect(screen.queryByRole('button', { name: /Simular/ })).toBeNull();
+  });
+
+  it('confirmado sem vaga: mostra que a organizacao vai tratar o caso, sem prometer reembolso e sem reiniciar a retencao', async () => {
+    const calls = mockApi({
+      ...comoPassageiro,
+      'GET /api/reservas/31': () =>
+        json(200, {
+          reserva: reserva({
+            pagamento: pagamento('confirmado', { requer_tratamento_administrativo: true }),
+            pode_desistir: false,
+            retencao: { situacao: 'expirada', expira_em: '2026-11-19T11:00:00.000Z', segundos_restantes: 0 },
+          }),
+        }),
+    });
+    abrir('/reservas/31/checkout');
+    expect(await screen.findByText('Recebemos o seu pagamento, mas a vaga não está mais disponível. A organização vai tratar o caso.')).not.toBeNull();
+    expect(screen.queryByText(/reembolso/i)).toBeNull();
+    for (const nome of ['Pagar', /Retomar|Iniciar checkout|Tentar novamente/, 'Desistir da reserva']) expect(screen.queryByRole('button', { name: nome })).toBeNull();
+    expect(chamadas(calls, 'POST', '/api/reservas/31/checkout')).toHaveLength(0);
   });
 });

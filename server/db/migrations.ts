@@ -153,4 +153,15 @@ CREATE TABLE token_acesso (
 CREATE INDEX ix_token_acesso_usuario ON token_acesso (usuario_id);
 `,
   },
+  {
+    // AGT-009 (decisao 3 do pesquisador): confirmacao financeira recebida sem vaga disponivel (RN-022, RF-026) fica
+    // sinalizada no proprio pagamento, para a fila administrativa (AGT-012 e AGT-013). Nao altera linhas existentes.
+    version: 2,
+    name: 'pagamento_pendencia_administrativa',
+    sql: `
+ALTER TABLE pagamento ADD COLUMN pendencia_administrativa TEXT
+  CHECK (pendencia_administrativa IS NULL OR pendencia_administrativa = 'confirmacao_sem_vaga');
+CREATE INDEX ix_pagamento_pendencia ON pagamento (pendencia_administrativa) WHERE pendencia_administrativa IS NOT NULL;
+`,
+  },
 ];

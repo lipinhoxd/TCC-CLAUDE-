@@ -323,7 +323,7 @@ describe('privacidade entre passageiros e consulta da reserva', () => {
   it('a resposta nao contem dados de outras pessoas nem campos internos', async () => {
     const id = publicar();
     const r = reservaDe(await reservar(id));
-    expect(Object.keys(r).sort()).toEqual(['criada_em', 'excursao', 'id', 'modalidade', 'pode_desistir', 'retencao', 'situacao', 'valores']);
+    expect(Object.keys(r).sort()).toEqual(['criada_em', 'excursao', 'id', 'modalidade', 'pagamento', 'pagamento_disponivel', 'pagamento_simulado', 'pode_desistir', 'retencao', 'situacao', 'valores']);
     const texto = JSON.stringify(r);
     for (const proibido of ['ana.passageira', 'beatriz', '11144477735', 'usuario_id', 'vagas_ocupadas', 'capacidade', SENHA]) {
       expect(texto).not.toContain(proibido);

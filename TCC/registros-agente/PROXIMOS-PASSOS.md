@@ -1,10 +1,10 @@
 # Próximos passos (atualizado em 20/11/2026)
 
 ## Onde parou
-- **AGT-009 concluída e classificada AP-3 pelos pesquisadores (20/11/2026)**; commits c051823 e 8b1b1cf. **Transcrição no Docs pendente**: colar `TCC/relatorios/PROMPT-DOCS-AGT-009-2026-11-20.md` no assistente do Docs; depois o agente relê o Docs e confirma. A AGT-008 está transcrita e conferida (19 trocas e 3 inserções). Próxima atividade: AGT-010 (pagamento parcelado; RF-024, RF-027, RF-028; RN-012, RN-013, RN-017 a RN-020), sem instrução redigida.
-- Experimento principal: AGT-001 a AGT-007 concluídas, classificadas pelos pesquisadores (AP-3) e transcritas no Docs (7 das 18; n = 7). Piloto com o Codex (n = 5) é separado e nunca somado.
-- Próxima atividade: AGT-008 (capacidade e retenção temporária de vagas; RF-019, RF-021, RF-022; RN-014, RN-015, RN-021, RN-040). Não existe `AGT-008.md`: não há instrução redigida nem aprovada. O agente só redige a instrução quando os pesquisadores disserem "vamos".
-- Nada em andamento. Último commit de atividade: `5c86513` (AGT-007), com o hash em `b258e66`.
+- **AGT-009 concluída e classificada AP-3 pelos pesquisadores (20/11/2026)**; commits c051823 e 8b1b1cf. **Transcrita e conferida no Docs em 21/11/2026** (17 trocas e 3 inserções). Próxima atividade: AGT-010 (pagamento parcelado; RF-024, RF-027, RF-028; RN-012, RN-013, RN-017 a RN-020), sem instrução redigida.
+- Experimento principal: AGT-001 a AGT-009 concluídas e classificadas pelos pesquisadores (AP-3): 9 das 18 (n = 9). AGT-001 a AGT-009 transcritas e conferidas no Docs. Piloto com o Codex (n = 5) é separado e nunca somado.
+- Próxima atividade: AGT-010 (pagamento parcelado; RF-024, RF-027, RF-028; RN-012, RN-013, RN-017 a RN-020). Não existe `AGT-010.md`: não há instrução redigida nem aprovada. O agente só redige a instrução quando os pesquisadores disserem "vamos".
+- Nada em andamento. Último commit de atividade: `c051823` (AGT-009), com o hash em `8b1b1cf`.
 - Auditoria de sincronia do Docs contra o repositório feita em 20/11/2026: `TCC/relatorios/AUDITORIA-SINCRONIA-2026-11-20.md` (69 itens: 48 OK, 13 DIVERGE, 6 perguntas ao autor, 2 fora do alcance). O Docs não foi alterado pelo agente.
 
 ## Já aplicado no Docs (fora da sessão do agente)

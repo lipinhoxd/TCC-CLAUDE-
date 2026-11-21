@@ -1356,3 +1356,9 @@ nova. A classificação (AP-1, AP-2, AP-3 ou RP) cabe ao pesquisador; o agente n
 **Hora do sistema:** 2026-11-20T23:41:27-03:00
 
 **Ações:** o pesquisador respondeu "3" (2026-11-20T23:38:31-03:00), que o agente leu como AP-3 e avisou na mesma resposta (a mensagem anterior, "T.", fora interrompida e não foi registrada como classificação). Critérios marcados (24), Seções 11 a 14 e 16 preenchidas, METRICAS.csv, quadro, matriz (RF-023, 025, 026; RN-011, 016, 022) e ficha atualizados; checagem completa limpa (420 testes); commits c051823 (atividade) e 8b1b1cf (hash). Gerados o prompt do Docs (TCC/relatorios/PROMPT-DOCS-AGT-009-2026-11-20.md, 17 trocas e 3 inserções, âncoras conferidas) e a auditoria dos trechos tocados (TCC/relatorios/AUDITORIA-SINCRONIA-AGT-009-2026-11-20.md).
+
+## Entrada 87 — AGT-009: conferência do Docs
+
+**Hora do sistema:** 2026-11-21T11:24:55-03:00
+
+**Ações:** o pesquisador aplicou o prompt no assistente do Docs ("feito") e pediu para pular as pendências humanas. Releitura do Docs: 17 trocas e 3 inserções conferidas por script (textos exatos, ficha com 20 campos, Quadro 2 com 9 linhas do principal, mais 23 parágrafos de corpo) e a formatação comparada com a dos vizinhos. Atualizados o estado, os próximos passos e a auditoria.

@@ -31,3 +31,7 @@ As 17 trocas de texto foram conferidas por script contra o texto extraído do Do
 - Conferência pós-aplicação no Docs: pendente até o assistente do Docs aplicar o prompt.
 - Itens do repositório citados nas auditorias anteriores (ficha da AGT-003 e demais) já foram corrigidos e continuam coerentes.
 - Fora do alcance: o piloto (nada tocado).
+
+## Conferência pós-aplicação (2026-11-21T11:24:55-03:00)
+
+Releitura do Docs (890 linhas extraídas, 866 parágrafos de corpo): as 17 trocas e as 3 inserções estão aplicadas. Cada texto proposto aparece uma vez e nenhum texto atual restou fora do proposto; o parágrafo da Seção 5.3 é idêntico ao do prompt (3404 caracteres); a linha do Quadro 2 está presente (9 linhas do principal); a ficha tem título e 20 campos idênticos ao esperado, entre a ficha da AGT-008 e a do piloto; não há "$1" nem "n = 8"; "n = 9" aparece 6 vezes e "n = 5" 6 vezes. Formatação do novo parágrafo, do título e dos campos da ficha e da nova linha do Quadro 2 igual à dos vizinhos. Todos os itens U1 a U15 passam a OK no Docs.

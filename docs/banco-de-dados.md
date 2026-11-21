@@ -34,6 +34,10 @@ nova versão.
 `ix_pagamento_pendencia`. Sinaliza a confirmação financeira recebida sem vaga disponível (RN-022, RF-026), para a fila da administração
 (AGT-012 e AGT-013). Não altera linhas existentes; a migração 1 não foi editada.
 
+**Versão 3 (AGT-010):** `reserva.motivo_cancelamento` (texto, nulo ou `inadimplencia`). Marca a reserva parcelada cancelada pelo sistema no
+vencimento da segunda parcela (RN-019, RN-020, RN-032); a primeira parcela fica confirmada e não reembolsável. Não altera linhas existentes. A AGT-013
+reaproveita o motivo e, para novos motivos, precisará reconstruir a tabela, porque o SQLite não altera uma restrição `CHECK` no lugar.
+
 ## Esquema (versão 1)
 
 Tabelas `STRICT`, chaves estrangeiras ligadas em cada conexão (`PRAGMA foreign_keys = ON`).

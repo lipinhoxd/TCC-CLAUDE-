@@ -162,7 +162,7 @@ describe('solicitacao de reserva (RF-018, RF-019, RN-009, RN-023)', () => {
     const r = reservaDe(res);
     expect(r).toMatchObject({ situacao: 'aguardando_pagamento', modalidade: 'integral', pode_desistir: true });
     expect(r['excursao']).toMatchObject({ id, nome: 'Excursao Ficticia Serra', data_inicial: '2026-12-10', partida_brasilia: { data: '2026-12-10', hora: '07:00' } });
-    expect(r['valores']).toEqual({ total_centavos: 150000, parcelas: [{ parcela: 'unica', valor_centavos: 150000, vencimento: null }] });
+    expect(r['valores']).toEqual({ total_centavos: 150000, parcelas: [{ parcela: 'unica', valor_centavos: 150000, vencimento: null, situacao_pagamento: null }] });
     const linha = db.prepare('SELECT usuario_id, excursao_id, modalidade, situacao FROM reserva').get();
     expect(linha).toMatchObject({ usuario_id: anaId, excursao_id: id, modalidade: 'integral', situacao: 'aguardando_pagamento' });
   });
@@ -231,8 +231,8 @@ describe('solicitacao de reserva (RF-018, RF-019, RN-009, RN-023)', () => {
     expect(r['valores']).toEqual({
       total_centavos: 15001,
       parcelas: [
-        { parcela: 'primeira', valor_centavos: 7500, vencimento: null },
-        { parcela: 'segunda', valor_centavos: 7501, vencimento: '2026-12-05' },
+        { parcela: 'primeira', valor_centavos: 7500, vencimento: null, situacao_pagamento: null },
+        { parcela: 'segunda', valor_centavos: 7501, vencimento: '2026-12-05', situacao_pagamento: null },
       ],
     });
   });
@@ -323,7 +323,7 @@ describe('privacidade entre passageiros e consulta da reserva', () => {
   it('a resposta nao contem dados de outras pessoas nem campos internos', async () => {
     const id = publicar();
     const r = reservaDe(await reservar(id));
-    expect(Object.keys(r).sort()).toEqual(['criada_em', 'excursao', 'id', 'modalidade', 'pagamento', 'pagamento_disponivel', 'pagamento_simulado', 'pode_desistir', 'retencao', 'situacao', 'valores']);
+    expect(Object.keys(r).sort()).toEqual(['criada_em', 'excursao', 'id', 'modalidade', 'motivo_cancelamento', 'pagamento', 'pagamento_disponivel', 'pagamento_simulado', 'pode_desistir', 'proxima_parcela', 'retencao', 'situacao', 'valores']);
     const texto = JSON.stringify(r);
     for (const proibido of ['ana.passageira', 'beatriz', '11144477735', 'usuario_id', 'vagas_ocupadas', 'capacidade', SENHA]) {
       expect(texto).not.toContain(proibido);

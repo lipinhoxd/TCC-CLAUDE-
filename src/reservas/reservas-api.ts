@@ -8,6 +8,7 @@ export interface ParcelaReserva {
   parcela: 'unica' | 'primeira' | 'segunda';
   valor_centavos: number;
   vencimento: string | null;
+  situacao_pagamento?: Pagamento['situacao'] | null;
 }
 
 export interface Retencao {
@@ -16,7 +17,10 @@ export interface Retencao {
   segundos_restantes: number;
 }
 
+export type ParcelaPagamento = 'unica' | 'primeira' | 'segunda';
+
 export interface Pagamento {
+  parcela: ParcelaPagamento;
   situacao: 'pendente' | 'confirmado' | 'falhou' | 'estornado';
   valor_centavos: number;
   confirmado_em: string | null;
@@ -39,6 +43,8 @@ export interface Reserva {
   pode_desistir: boolean;
   retencao: Retencao | null;
   pagamento: Pagamento | null;
+  proxima_parcela: ParcelaPagamento | null;
+  motivo_cancelamento: 'inadimplencia' | null;
   pagamento_disponivel: boolean;
   pagamento_simulado: boolean;
 }
@@ -92,6 +98,8 @@ export const MENSAGEM_RESERVA: Record<string, string> = {
   sem_vagas: 'Não há vaga disponível agora: as vagas restantes estão retidas por outras pessoas ou esgotaram.',
   reserva_nao_pendente: 'Esta reserva não está mais aguardando pagamento.',
   retencao_inativa: 'A vaga não está mais retida para você. Retome o checkout antes de pagar.',
+  prazo_da_segunda_parcela_vencido: 'O prazo da segunda parcela venceu: a vaga foi liberada e a primeira parcela não é reembolsável.',
+  primeira_parcela_nao_confirmada: 'A primeira parcela ainda não foi confirmada.',
   pagamento_ja_confirmado: 'O pagamento desta reserva já foi confirmado.',
   pagamento_parcelado_indisponivel: 'O pagamento em duas parcelas ainda não está disponível.',
   pagamento_indisponivel: 'O pagamento não está disponível neste ambiente.',

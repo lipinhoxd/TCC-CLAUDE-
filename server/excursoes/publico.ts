@@ -1,6 +1,7 @@
 import type { DatabaseSync } from 'node:sqlite';
 import { utcParaBrasilia } from '../../shared/fuso.ts';
 import { sqlRetidas, vagasDisponiveis } from '../vagas/disponibilidade.ts';
+import { sqlVencidas } from '../vagas/vencimento.ts';
 import { IMAGEM_FORMATO } from './validation.ts';
 
 export { vagasDisponiveis };
@@ -10,6 +11,7 @@ export { vagasDisponiveis };
  * so excursoes publicadas e ainda nao terminadas (data final nao anterior a hoje, em Brasilia);
  * da data inicial mais proxima para a mais distante; ate 100 por resposta; vagas livres exatas.
  * AGT-008: as vagas livres descontam as retencoes ativas e nao expiradas (RF-017), pela mesma funcao das reservas.
+ * AGT-010: a vaga de uma reserva parcelada com a segunda parcela vencida ja conta como livre na leitura.
  */
 
 export const LIMITE_LISTA_PUBLICA = 100;
@@ -57,12 +59,12 @@ function paraPublica(row: Row): ExcursaoPublica {
     preco_centavos: Number(row['preco_centavos']),
     parcelamento_habilitado: parcelado,
     prazo_segunda_parcela: parcelado && prazo !== null ? utcParaBrasilia(t(prazo)).data : null,
-    vagas_disponiveis: vagasDisponiveis(Number(row['capacidade']), Number(row['vagas_ocupadas']), Number(row['retidas'])),
+    vagas_disponiveis: vagasDisponiveis(Number(row['capacidade']), Number(row['vagas_ocupadas']), Number(row['retidas']), Number(row['vencidas'])),
   };
 }
 
 /** Colunas lidas; a ultima, `retidas`, so alimenta o calculo de vagas e nunca sai na resposta. O "?" e o instante atual. */
-const COLUNAS = `id, nome, descricao, imagem_ref, local, ponto_embarque, data_inicial, data_final, partida_utc, capacidade, vagas_ocupadas, preco_centavos, parcelamento_habilitado, prazo_segunda_parcela_utc, ${sqlRetidas('excursao.id')} AS retidas`;
+const COLUNAS = `id, nome, descricao, imagem_ref, local, ponto_embarque, data_inicial, data_final, partida_utc, capacidade, vagas_ocupadas, preco_centavos, parcelamento_habilitado, prazo_segunda_parcela_utc, ${sqlRetidas('excursao.id')} AS retidas, ${sqlVencidas('excursao.id')} AS vencidas`;
 
 export function listarPublicas(db: DatabaseSync, agora: Date): ExcursaoPublica[] {
   const hoje = utcParaBrasilia(agora).data;
@@ -70,7 +72,7 @@ export function listarPublicas(db: DatabaseSync, agora: Date): ExcursaoPublica[]
     .prepare(
       `SELECT ${COLUNAS} FROM excursao WHERE situacao = 'publicada' AND data_final >= ? ORDER BY data_inicial ASC, id ASC LIMIT ?`,
     )
-    .all(agora.toISOString(), hoje, LIMITE_LISTA_PUBLICA)
+    .all(agora.toISOString(), agora.toISOString(), hoje, LIMITE_LISTA_PUBLICA)
     .map(paraPublica);
 }
 
@@ -79,6 +81,6 @@ export function obterPublica(db: DatabaseSync, id: number, agora: Date): Excursa
   const hoje = utcParaBrasilia(agora).data;
   const row = db
     .prepare(`SELECT ${COLUNAS} FROM excursao WHERE id = ? AND situacao = 'publicada' AND data_final >= ?`)
-    .get(agora.toISOString(), id, hoje);
+    .get(agora.toISOString(), agora.toISOString(), id, hoje);
   return row === undefined ? null : paraPublica(row);
 }

@@ -37,10 +37,12 @@ function reserva(extra: Record<string, unknown> = {}): Record<string, unknown> {
     modalidade: 'integral',
     criada_em: '2026-11-19T12:00:00.000Z',
     excursao: { id: 7, nome: 'Excursao Ficticia Serra', data_inicial: '2026-12-10', data_final: '2026-12-12', partida_brasilia: { data: '2026-12-10', hora: '07:00' } },
-    valores: { total_centavos: 150001, parcelas: [{ parcela: 'unica', valor_centavos: 150001, vencimento: null }] },
+    valores: { total_centavos: 150001, parcelas: [{ parcela: 'unica', valor_centavos: 150001, vencimento: null, situacao_pagamento: null }] },
     pode_desistir: true,
     retencao: { situacao: 'ativa', expira_em: '2026-11-19T12:10:00.000Z', segundos_restantes: 600 },
     pagamento: null,
+    proxima_parcela: 'unica',
+    motivo_cancelamento: null,
     pagamento_disponivel: true,
     pagamento_simulado: true,
     ...extra,
@@ -52,10 +54,11 @@ const parcelada = reserva({
   valores: {
     total_centavos: 150001,
     parcelas: [
-      { parcela: 'primeira', valor_centavos: 75000, vencimento: null },
-      { parcela: 'segunda', valor_centavos: 75001, vencimento: '2026-12-05' },
+      { parcela: 'primeira', valor_centavos: 75000, vencimento: null, situacao_pagamento: null },
+      { parcela: 'segunda', valor_centavos: 75001, vencimento: '2026-12-05', situacao_pagamento: null },
     ],
   },
+  proxima_parcela: 'primeira',
 });
 
 beforeEach(() => {
@@ -421,6 +424,7 @@ describe('retencao da vaga no checkout (AGT-008, RF-021)', () => {
 });
 
 const pagamento = (situacao: string, extra: Record<string, unknown> = {}) => ({
+  parcela: 'unica',
   situacao,
   valor_centavos: 150001,
   confirmado_em: situacao === 'confirmado' ? '2026-11-19T12:05:00.000Z' : null,
@@ -433,6 +437,8 @@ const pronta = () =>
     pode_desistir: false,
     retencao: { situacao: 'confirmada', expira_em: '2026-11-19T12:10:00.000Z', segundos_restantes: 0 },
     pagamento: pagamento('confirmado'),
+    proxima_parcela: null,
+    valores: { total_centavos: 150001, parcelas: [{ parcela: 'unica', valor_centavos: 150001, vencimento: null, situacao_pagamento: 'confirmado' }] },
   });
 
 describe('pagamento integral no checkout (AGT-009, RF-023)', () => {
@@ -523,13 +529,6 @@ describe('pagamento integral no checkout (AGT-009, RF-023)', () => {
     expect((await screen.findByRole('alert')).textContent).toMatch(/Sem conexão com o servidor/);
   });
 
-  it('reserva parcelada: avisa que o pagamento em parcelas ainda nao esta disponivel e nao oferece pagar', async () => {
-    mockApi({ ...comoPassageiro, 'GET /api/reservas/31': () => json(200, { reserva: { ...parcelada, pagamento_disponivel: false } }) });
-    abrir('/reservas/31/checkout');
-    expect(await screen.findByText('O pagamento em duas parcelas ainda não está disponível.')).not.toBeNull();
-    expect(screen.queryByRole('button', { name: 'Pagar' })).toBeNull();
-  });
-
   it('sem provedor no ambiente: avisa e nao oferece pagar; sem simulacao nao mostra os botoes de resultado', async () => {
     mockApi({ ...comoPassageiro, 'GET /api/reservas/31': () => json(200, { reserva: reserva({ pagamento_disponivel: false, pagamento_simulado: false }) }) });
     abrir('/reservas/31/checkout');
@@ -549,6 +548,8 @@ describe('pagamento integral no checkout (AGT-009, RF-023)', () => {
         json(200, {
           reserva: reserva({
             pagamento: pagamento('confirmado', { requer_tratamento_administrativo: true }),
+            proxima_parcela: null,
+            valores: { total_centavos: 150001, parcelas: [{ parcela: 'unica', valor_centavos: 150001, vencimento: null, situacao_pagamento: 'confirmado' }] },
             pode_desistir: false,
             retencao: { situacao: 'expirada', expira_em: '2026-11-19T11:00:00.000Z', segundos_restantes: 0 },
           }),
@@ -559,5 +560,166 @@ describe('pagamento integral no checkout (AGT-009, RF-023)', () => {
     expect(screen.queryByText(/reembolso/i)).toBeNull();
     for (const nome of ['Pagar', /Retomar|Iniciar checkout|Tentar novamente/, 'Desistir da reserva']) expect(screen.queryByRole('button', { name: nome })).toBeNull();
     expect(chamadas(calls, 'POST', '/api/reservas/31/checkout')).toHaveLength(0);
+  });
+});
+
+const parcelasDaReserva = (primeira: string | null, segunda: string | null) => ({
+  total_centavos: 150001,
+  parcelas: [
+    { parcela: 'primeira', valor_centavos: 75000, vencimento: null, situacao_pagamento: primeira },
+    { parcela: 'segunda', valor_centavos: 75001, vencimento: '2026-12-05', situacao_pagamento: segunda },
+  ],
+});
+const confirmadaAPrimeira = (extra: Record<string, unknown> = {}) =>
+  reserva({
+    modalidade: 'parcelada',
+    valores: parcelasDaReserva('confirmado', null),
+    proxima_parcela: 'segunda',
+    pagamento: null,
+    pode_desistir: false,
+    retencao: { situacao: 'confirmada', expira_em: '2026-11-19T12:10:00.000Z', segundos_restantes: 0 },
+    ...extra,
+  });
+
+describe('pagamento em duas parcelas no checkout (AGT-010, RF-024, RF-027)', () => {
+  it('a primeira parcela: valor da metade, a explicacao das duas parcelas e o botao exigem a vaga retida', async () => {
+    mockApi({ ...comoPassageiro, 'GET /api/reservas/31': () => json(200, { reserva: parcelada }) });
+    abrir('/reservas/31/checkout');
+    expect(await screen.findByText(/Pagamento em duas parcelas de 50%: a primeira agora, para ocupar a vaga, e a segunda até 05\/12\/2026\./)).not.toBeNull();
+    expect(screen.getByText('R$ 750,00', { selector: 'strong' })).not.toBeNull();
+    await waitFor(() => expect(screen.getByRole<HTMLButtonElement>('button', { name: 'Pagar a primeira parcela' }).disabled).toBe(false));
+    expect(screen.queryByText('O pagamento em duas parcelas ainda não está disponível.')).toBeNull();
+    expect(Array.from(document.querySelectorAll('tbody tr')).map((tr) => tr.textContent ?? '')[0]).toContain('—');
+  });
+
+  it('a primeira aprovada: a vaga e do passageiro, a reserva segue aguardando e aparece a segunda parcela', async () => {
+    const calls = mockApi({
+      ...comoPassageiro,
+      'GET /api/reservas/31': () => json(200, { reserva: { ...parcelada, pagamento: { ...pagamento('pendente'), parcela: 'primeira', valor_centavos: 75000 }, pode_desistir: false } }),
+      'POST /api/reservas/31/pagamento/simulacao': () => json(200, { reserva: confirmadaAPrimeira() }),
+    });
+    abrir('/reservas/31/checkout');
+    await screen.findByRole('button', { name: 'Simular pagamento aprovado' });
+    clicar('Simular pagamento aprovado');
+    expect(await screen.findByText('Primeira parcela confirmada: a vaga é sua. Falta a segunda parcela, até 05/12/2026.')).not.toBeNull();
+    expect(chamadas(calls, 'POST', '/api/reservas/31/pagamento/simulacao')[0]?.body).toEqual({ resultado: 'aprovado' });
+    expect(document.querySelector('dl.detalhes')?.textContent).toContain('Aguardando pagamento');
+    expect(screen.getByText('R$ 750,01', { selector: 'strong' })).not.toBeNull();
+    // a segunda parcela nao pede retencao, entao o botao esta habilitado sem tempo na tela
+    expect((await screen.findByRole<HTMLButtonElement>('button', { name: 'Pagar a segunda parcela' })).disabled).toBe(false);
+    expect(screen.queryByRole('timer')).toBeNull();
+    for (const nome of [/Retomar|Iniciar checkout|Tentar novamente/, 'Desistir da reserva']) expect(screen.queryByRole('button', { name: nome })).toBeNull();
+    const linhas = Array.from(document.querySelectorAll('tbody tr')).map((tr) => tr.textContent ?? '');
+    expect(linhas[0]).toContain('Pago');
+    expect(linhas[1]).toContain('—');
+  });
+
+  it('a segunda parcela: pagar, simular e quitar deixam a reserva pronta para embarque', async () => {
+    let etapa = 0;
+    const calls = mockApi({
+      ...comoPassageiro,
+      'GET /api/reservas/31': () => json(200, { reserva: confirmadaAPrimeira() }),
+      'POST /api/reservas/31/pagamento': () => {
+        etapa = 1;
+        return json(200, { reserva: confirmadaAPrimeira({ pagamento: { ...pagamento('pendente'), parcela: 'segunda', valor_centavos: 75001 }, valores: parcelasDaReserva('confirmado', 'pendente') }) });
+      },
+      'POST /api/reservas/31/pagamento/simulacao': () => {
+        etapa = 2;
+        return json(200, {
+          reserva: reserva({
+            situacao: 'pronto_para_embarque',
+            modalidade: 'parcelada',
+            valores: parcelasDaReserva('confirmado', 'confirmado'),
+            proxima_parcela: null,
+            pagamento: { ...pagamento('confirmado'), parcela: 'segunda', valor_centavos: 75001 },
+            pode_desistir: false,
+            retencao: { situacao: 'confirmada', expira_em: '2026-11-19T12:10:00.000Z', segundos_restantes: 0 },
+          }),
+        });
+      },
+    });
+    abrir('/reservas/31/checkout');
+    await screen.findByRole('button', { name: 'Pagar a segunda parcela' });
+    await waitFor(() => expect(screen.getByRole<HTMLButtonElement>('button', { name: 'Pagar a segunda parcela' }).disabled).toBe(false));
+    clicar('Pagar a segunda parcela');
+    expect(await screen.findByText(/Pagamento de R\$ 750,01 iniciado\./)).not.toBeNull();
+    expect(etapa).toBe(1);
+    expect(chamadas(calls, 'POST', '/api/reservas/31/pagamento')[0]?.body).toBeNull();
+    clicar('Simular pagamento aprovado');
+    expect(await screen.findByText('Pagamento confirmado. Sua reserva está pronta para embarque.')).not.toBeNull();
+    expect(etapa).toBe(2);
+    expect(screen.queryByRole('button', { name: /Pagar|Simular/ })).toBeNull();
+    expect(Array.from(document.querySelectorAll('tbody tr')).map((tr) => tr.textContent ?? '').slice(0, 2).every((l) => l.includes('Pago'))).toBe(true);
+  });
+
+  it('a segunda recusada: explica e deixa tentar de novo ate o fim do prazo', async () => {
+    mockApi({
+      ...comoPassageiro,
+      'GET /api/reservas/31': () => json(200, { reserva: confirmadaAPrimeira({ pagamento: { ...pagamento('falhou'), parcela: 'segunda', valor_centavos: 75001 }, valores: parcelasDaReserva('confirmado', 'falhou') }) }),
+    });
+    abrir('/reservas/31/checkout');
+    expect(await screen.findByText(/O pagamento foi recusado\. Você pode tentar de novo até o fim do prazo\./)).not.toBeNull();
+    expect(screen.getByRole('button', { name: 'Pagar a segunda parcela' })).not.toBeNull();
+    expect(Array.from(document.querySelectorAll('tbody tr')).map((tr) => tr.textContent ?? '')[1]).toContain('Recusado');
+  });
+
+  it('vencido o prazo: a reserva aparece cancelada por inadimplencia, sem pagar e sem desistir', async () => {
+    const calls = mockApi({
+      ...comoPassageiro,
+      'GET /api/reservas/31': () =>
+        json(200, {
+          reserva: reserva({
+            situacao: 'cancelada',
+            modalidade: 'parcelada',
+            valores: parcelasDaReserva('confirmado', null),
+            proxima_parcela: null,
+            motivo_cancelamento: 'inadimplencia',
+            pagamento: null,
+            pode_desistir: false,
+            retencao: { situacao: 'confirmada', expira_em: '2026-11-19T12:10:00.000Z', segundos_restantes: 0 },
+          }),
+        }),
+    });
+    abrir('/reservas/31/checkout');
+    expect(await screen.findByText('O prazo da segunda parcela venceu: a vaga foi liberada e a primeira parcela não é reembolsável.')).not.toBeNull();
+    expect(screen.queryByText('Esta reserva está cancelada.')).toBeNull();
+    for (const nome of [/Pagar/, 'Desistir da reserva', /Retomar|Iniciar checkout/]) expect(screen.queryByRole('button', { name: nome })).toBeNull();
+    expect(chamadas(calls, 'POST', '/api/reservas/31/checkout')).toHaveLength(0);
+  });
+
+  it('segunda parcela confirmada depois do prazo: a organizacao vai tratar o caso, sem prometer reembolso', async () => {
+    mockApi({
+      ...comoPassageiro,
+      'GET /api/reservas/31': () =>
+        json(200, {
+          reserva: reserva({
+            situacao: 'cancelada',
+            modalidade: 'parcelada',
+            valores: parcelasDaReserva('confirmado', 'confirmado'),
+            proxima_parcela: null,
+            motivo_cancelamento: 'inadimplencia',
+            pagamento: { ...pagamento('confirmado', { requer_tratamento_administrativo: true }), parcela: 'segunda', valor_centavos: 75001 },
+            pode_desistir: false,
+            retencao: { situacao: 'confirmada', expira_em: '2026-11-19T12:10:00.000Z', segundos_restantes: 0 },
+          }),
+        }),
+    });
+    abrir('/reservas/31/checkout');
+    expect(await screen.findByText('Recebemos o pagamento da segunda parcela depois do prazo. A organização vai tratar o caso.')).not.toBeNull();
+    expect(screen.getByText(/o prazo da segunda parcela venceu/i)).not.toBeNull();
+    expect(screen.queryByText(/será reembolsad|reembolso garantido/i)).toBeNull();
+  });
+
+  it('o servidor recusa a segunda parcela vencida: a razao aparece', async () => {
+    mockApi({
+      ...comoPassageiro,
+      'GET /api/reservas/31': () => json(200, { reserva: confirmadaAPrimeira() }),
+      'POST /api/reservas/31/pagamento': () => json(409, { error: 'prazo_da_segunda_parcela_vencido' }),
+    });
+    abrir('/reservas/31/checkout');
+    await screen.findByRole('button', { name: 'Pagar a segunda parcela' });
+    await waitFor(() => expect(screen.getByRole<HTMLButtonElement>('button', { name: 'Pagar a segunda parcela' }).disabled).toBe(false));
+    clicar('Pagar a segunda parcela');
+    expect((await screen.findByRole('alert')).textContent).toBe('O prazo da segunda parcela venceu: a vaga foi liberada e a primeira parcela não é reembolsável.');
   });
 });

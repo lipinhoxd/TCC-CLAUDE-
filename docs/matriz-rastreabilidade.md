@@ -1,6 +1,6 @@
 # Matriz de rastreabilidade (requisito → atividade → evidência)
 
-Atualizada em 20/11/2026 (AGT-009). Fonte dos requisitos: `docs/requisitos/`. Atividade prevista: `docs/especificacao/07-PLANO-DE-ATIVIDADES.md` (e a coluna AGT dos RF). **Evidência** só existe para o que foi executado no experimento principal (AGT-001 a AGT-009; ver a coluna Estado de cada linha e os commits em `TCC/metricas/METRICAS.csv`); o restante está **Planejada**. Não há, aqui, evidência do piloto (repositório não reaberto): **[DADO NÃO REGISTRADO]**.
+Atualizada em 21/11/2026 (AGT-010). Fonte dos requisitos: `docs/requisitos/`. Atividade prevista: `docs/especificacao/07-PLANO-DE-ATIVIDADES.md` (e a coluna AGT dos RF). **Evidência** só existe para o que foi executado no experimento principal (AGT-001 a AGT-010; ver a coluna Estado de cada linha e os commits em `TCC/metricas/METRICAS.csv`); o restante está **Planejada**. Não há, aqui, evidência do piloto (repositório não reaberto): **[DADO NÃO REGISTRADO]**.
 
 Cadeia (TCC, Seção 3.8): requisito → atividade AGT → instrução → execução → alterações → testes → revisão humana → classificação → commit.
 
@@ -31,11 +31,11 @@ Cadeia (TCC, Seção 3.8): requisito → atividade AGT → instrução → execu
 | RF-021 | Retenção temporária de vaga durante o checkout | 008 | Evidenciada na AGT-008 | `iniciarCheckout` em `server/reservas/service.ts`; `tests/retencao-api.test.ts`, `tests/web-reservas.test.tsx` |
 | RF-022 | Expiração da retenção | 008/014 | Parcial na AGT-008 (expiração na leitura e na gravação, sem tarefa em segundo plano; a rotina agendada é da AGT-014) | `expirarVencidas` em `server/vagas/disponibilidade.ts`; `tests/retencao-api.test.ts`, `tests/vagas-concorrencia.test.ts` |
 | RF-023 | Pagamento integral | 009 | Evidenciada na AGT-009 (provedor simulado fora de produção) | `server/pagamentos/service.ts`, `src/pages/Reservas.tsx`; `tests/pagamento-api.test.ts`, `tests/web-reservas.test.tsx` |
-| RF-024 | Pagamento em duas parcelas de 50% | 010 | Planejada | — |
-| RF-025 | Confirmação financeira e ocupação efetiva da vaga | 009/010 | Parcial na AGT-009 (pagamento integral; a primeira parcela é da AGT-010) | `confirmarPagamento` em `server/pagamentos/confirmacao.ts`; `tests/pagamento-confirmacao.test.ts`, `tests/pagamento-api.test.ts` |
+| RF-024 | Pagamento em duas parcelas de 50% | 010 | Evidenciada na AGT-010 (provedor simulado fora de produção) | `server/pagamentos/parcelas.ts`, `server/pagamentos/service.ts`, `src/pages/Reservas.tsx`; `tests/parcelado-api.test.ts`, `tests/web-reservas.test.tsx` |
+| RF-025 | Confirmação financeira e ocupação efetiva da vaga | 009/010 | Evidenciada nas AGT-009 e AGT-010 (integral e primeira parcela) | `confirmarPagamento` em `server/pagamentos/confirmacao.ts`; `tests/pagamento-confirmacao.test.ts`, `tests/pagamento-api.test.ts` |
 | RF-026 | Registro de confirmação financeira após expiração da retenção, para tratamento administrativo | 009/013 | Parcial na AGT-009 (registro sinalizado em `pendencia_administrativa`; a tela e o estorno são das AGT-012 e AGT-013) | `server/db/migrations.ts` (versão 2), `confirmarPagamento`; `tests/pagamento-confirmacao.test.ts`, `tests/pagamento-api.test.ts` |
-| RF-027 | Quitação pela confirmação da segunda parcela | 010 | Planejada | — |
-| RF-028 | Liberação da vaga por segunda parcela não paga no prazo | 010/014 | Planejada | — |
+| RF-027 | Quitação pela confirmação da segunda parcela | 010 | Evidenciada na AGT-010 | `confirmarSegunda` em `server/pagamentos/confirmacao.ts`; `tests/parcelado-confirmacao.test.ts`, `tests/parcelado-api.test.ts` |
+| RF-028 | Liberação da vaga por segunda parcela não paga no prazo | 010/014 | Parcial na AGT-010 (vencimento avaliado na leitura e na gravação, sem tarefa em segundo plano; a rotina agendada é da AGT-014) | `vencerSegundasParcelas` em `server/vagas/vencimento.ts`; `tests/parcelado-confirmacao.test.ts`, `tests/parcelado-api.test.ts` |
 | RF-029 | Área do passageiro: minhas reservas | 011 | Planejada | — |
 | RF-030 | Detalhe e situação da reserva | 011 | Planejada | — |
 | RF-031 | Histórico de reservas concluídas | 011 | Planejada | — |
@@ -106,19 +106,19 @@ AGT prevista conforme o plano; regras sem AGT no plano ficam na AGT-017 (valida�
 | RN-009 | Cada reserva é individual e vinculada a um único passageiro autenticado. | 007 | Planejada | — |
 | RN-010 | O checkout é obrigatório. | 007 | Planejada | — |
 | RN-011 | O pagamento integral é a modalidade padrão. | 009 | Evidenciada na AGT-009 | `server/pagamentos/service.ts`; `tests/pagamento-api.test.ts` |
-| RN-012 | O pagamento em duas parcelas de 50% pode ser habilitado individualmente por excursão. | 010 | Planejada | — |
-| RN-013 | A data limite da segunda parcela é configurada por excursão e é anterior à partida (23:59:59 da data configurada). | 010 | Planejada | — |
+| RN-012 | O pagamento em duas parcelas de 50% pode ser habilitado individualmente por excursão. | 010 | Evidenciada nas AGT-005 e AGT-007 (configuração e exigência na reserva); aplicada na AGT-010 | `server/excursoes/service.ts`, `server/pagamentos/service.ts`; `tests/parcelado-api.test.ts` |
+| RN-013 | A data limite da segunda parcela é configurada por excursão e é anterior à partida (23:59:59 da data configurada). | 010 | Evidenciada nas AGT-005 e AGT-007 (configuração); aplicada na AGT-010 ao pagamento e ao vencimento | `server/vagas/vencimento.ts`; `tests/parcelado-api.test.ts` |
 | RN-014 | Durante o checkout há retenção temporária de vaga. | 008 | Evidenciada na AGT-008 | `iniciarCheckout`; `tests/retencao-api.test.ts` |
 | RN-015 | A retenção não representa ocupação definitiva. | 008 | Evidenciada na AGT-008 | `vagas_ocupadas` inalterado pela retenção; `tests/retencao-api.test.ts` |
 | RN-016 | No pagamento integral, a confirmação financeira converte a retenção em ocupação efetiva e a reserva fica "Pronto para embarque". | 009 | Evidenciada na AGT-009 | `confirmarPagamento`; `tests/pagamento-api.test.ts`, `tests/pagamento-confirmacao.test.ts` |
-| RN-017 | No parcelamento, a confirmação da primeira parcela ocupa a vaga e mantém obrigação financeira pendente. | 010 | Planejada | — |
-| RN-018 | A confirmação da segunda parcela conclui a quitação. | 010 | Planejada | — |
-| RN-019 | Se a segunda parcela não for paga no prazo, a vaga é liberada. | 010 | Planejada | — |
-| RN-020 | Nesse caso, a primeira parcela permanece não reembolsável. | 010 | Planejada | — |
+| RN-017 | No parcelamento, a confirmação da primeira parcela ocupa a vaga e mantém obrigação financeira pendente. | 010 | Evidenciada na AGT-010 | `server/pagamentos/confirmacao.ts`, `server/vagas/vencimento.ts`; `tests/parcelado-confirmacao.test.ts`, `tests/parcelado-api.test.ts` |
+| RN-018 | A confirmação da segunda parcela conclui a quitação. | 010 | Evidenciada na AGT-010 | `server/pagamentos/confirmacao.ts`, `server/vagas/vencimento.ts`; `tests/parcelado-confirmacao.test.ts`, `tests/parcelado-api.test.ts` |
+| RN-019 | Se a segunda parcela não for paga no prazo, a vaga é liberada. | 010 | Evidenciada na AGT-010 | `server/pagamentos/confirmacao.ts`, `server/vagas/vencimento.ts`; `tests/parcelado-confirmacao.test.ts`, `tests/parcelado-api.test.ts` |
+| RN-020 | Nesse caso, a primeira parcela permanece não reembolsável. | 010 | Evidenciada na AGT-010 | `server/pagamentos/confirmacao.ts`, `server/vagas/vencimento.ts`; `tests/parcelado-confirmacao.test.ts`, `tests/parcelado-api.test.ts` |
 | RN-021 | Nenhuma operação pode resultar em vagas ocupadas acima da capacidade da excursão. | 008 | Parcial na AGT-008 (restrição do banco da AGT-002, retenção e `ocuparVaga`; a ocupação por pagamento é da AGT-009) | `server/vagas/disponibilidade.ts`; `tests/vagas-concorrencia.test.ts`, `tests/db-schema.test.ts` |
 | RN-022 | Confirmação financeira recebida após a expiração da retenção, sem disponibilidade, é registrada para tratamento administrativo, sem criar vaga adicional. | 009 | Evidenciada na AGT-009 (o registro; o tratamento administrativo é das AGT-012 e AGT-013) | `confirmarPagamento`; `tests/pagamento-confirmacao.test.ts`, `tests/pagamento-api.test.ts` |
 | RN-023 | As situações da reserva são: Aguardando pagamento, Pronto para embarque, Concluída e Cancelada. | 011 | Planejada | — |
-| RN-024 | Reservas integralmente pagas ou com segunda parcela quitada ficam "Pronto para embarque". | 011 | Planejada | — |
+| RN-024 | Reservas integralmente pagas ou com segunda parcela quitada ficam "Pronto para embarque". | 011 | Parcial: a situação é atribuída pelas AGT-009 e AGT-010; a área do passageiro é da AGT-011 | `confirmarPagamento`; `tests/parcelado-api.test.ts` |
 | RN-025 | Um dia após a data final da excursão, reservas elegíveis ficam automaticamente "Concluída". | 011, 014 | Planejada | — |
 | RN-026 | Reservas concluídas permanecem no histórico do passageiro. | 011 | Planejada | — |
 | RN-027 | Cancelamento pelo passageiro com antecedência de pelo menos duas semanas: reembolso de 100% do valor elegível. | 013 | Planejada | — |
@@ -126,7 +126,7 @@ AGT prevista conforme o plano; regras sem AGT no plano ficam na AGT-017 (valida�
 | RN-029 | Com menos de uma semana: sem reembolso. | 013 | Planejada | — |
 | RN-030 | O reembolso incide sobre o valor efetivamente pago e elegível. | 013 | Planejada | — |
 | RN-031 | Cancelamento pela organização: reembolso integral dos valores pagos aos passageiros afetados. | 013 | Planejada | — |
-| RN-032 | A primeira parcela de reserva parcelada não quitada permanece não reembolsável (inadimplência). | 013 | Planejada | — |
+| RN-032 | A primeira parcela de reserva parcelada não quitada permanece não reembolsável (inadimplência). | 013 | Parcial na AGT-010 (a primeira parcela fica confirmada e a reserva cancelada por inadimplência; a devolução é da AGT-013) | `server/vagas/vencimento.ts`; `tests/parcelado-confirmacao.test.ts` |
 | RN-033 | O administrador configura capacidade, preço, parcelamento e prazo da segunda parcela de cada excursão. | 005 | Planejada | — |
 | RN-034 | O administrador consulta passageiros e reservas. | 012 | Planejada | — |
 | RN-035 | Alterações manuais de situação só ocorrem quando autorizadas e ficam registradas na auditoria. | 012 | Planejada | — |

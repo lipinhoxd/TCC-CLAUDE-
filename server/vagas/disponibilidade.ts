@@ -12,9 +12,12 @@ import { registrarAuditoria } from '../db/audit.ts';
  * no inicio e a condicao e reavaliada na gravacao, entao uma leitura antiga nunca causa excedente (RN-040).
  */
 
-/** Capacidade menos ocupadas menos retidas, nunca negativa. */
-export function vagasDisponiveis(capacidade: number, ocupadas: number, retidas = 0): number {
-  return Math.max(0, capacidade - ocupadas - retidas);
+/**
+ * Capacidade menos ocupadas menos retidas, nunca negativa. `vencidas` (AGT-010) sao vagas de reservas parceladas cuja segunda parcela
+ * venceu e cuja liberacao ainda nao foi gravada: ja contam como livres na leitura.
+ */
+export function vagasDisponiveis(capacidade: number, ocupadas: number, retidas = 0, vencidas = 0): number {
+  return Math.max(0, capacidade - ocupadas + vencidas - retidas);
 }
 
 /**

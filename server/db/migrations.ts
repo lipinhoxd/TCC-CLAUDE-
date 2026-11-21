@@ -164,4 +164,15 @@ ALTER TABLE pagamento ADD COLUMN pendencia_administrativa TEXT
 CREATE INDEX ix_pagamento_pendencia ON pagamento (pendencia_administrativa) WHERE pendencia_administrativa IS NOT NULL;
 `,
   },
+  {
+    // AGT-010 (decisao 3 do pesquisador): a reserva parcelada cuja segunda parcela nao foi paga no prazo fica Cancelada, com o
+    // motivo gravado aqui, e a primeira parcela permanece nao reembolsavel (RN-019, RN-020, RN-032). A AGT-013 reaproveita o motivo.
+    // Nao altera linhas existentes (motivo nulo).
+    version: 3,
+    name: 'reserva_motivo_cancelamento',
+    sql: `
+ALTER TABLE reserva ADD COLUMN motivo_cancelamento TEXT
+  CHECK (motivo_cancelamento IS NULL OR motivo_cancelamento = 'inadimplencia');
+`,
+  },
 ];

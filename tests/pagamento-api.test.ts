@@ -185,7 +185,8 @@ describe('iniciar o pagamento (RF-023)', () => {
     await checkout(ana, reservaId);
     const res = await pagar(ana, reservaId);
     expect(res.status).toBe(200);
-    expect(pagamentoDe(res)).toEqual({ situacao: 'pendente', valor_centavos: 150000, confirmado_em: null, requer_tratamento_administrativo: false });
+    expect(pagamentoDe(res)).toEqual({ parcela: 'unica', situacao: 'pendente', valor_centavos: 150000, confirmado_em: null, requer_tratamento_administrativo: false });
+    expect(reservaDe(res)['proxima_parcela']).toBe('unica');
     expect(reservaDe(res)).toMatchObject({ situacao: 'aguardando_pagamento', pagamento_disponivel: true, pagamento_simulado: true, pode_desistir: false });
     expect(db.prepare('SELECT parcela, valor_centavos AS v, situacao FROM pagamento').all()).toEqual([{ parcela: 'unica', v: 150000, situacao: 'pendente' }]);
     expect(ocupadas(id)).toBe(0);
@@ -221,16 +222,6 @@ describe('iniciar o pagamento (RF-023)', () => {
     const vencida = await pagar(ana, reservaId);
     expect(vencida.status).toBe(409);
     expect(vencida.json).toEqual({ error: 'retencao_inativa' });
-    expect(contar('pagamento')).toBe(0);
-  });
-
-  it('reserva parcelada recebe erro claro e nada e criado (a AGT-010 trata o parcelamento)', async () => {
-    const reservaId = Number(reservaDe(await ana('POST', '/api/reservas', { excursao_id: publicar(), modalidade: 'parcelada' }))['id']);
-    await checkout(ana, reservaId);
-    const res = await pagar(ana, reservaId);
-    expect(res.status).toBe(409);
-    expect(res.json).toEqual({ error: 'pagamento_parcelado_indisponivel' });
-    expect(reservaDe(await ana('GET', `/api/reservas/${reservaId}`))['pagamento_disponivel']).toBe(false);
     expect(contar('pagamento')).toBe(0);
   });
 
@@ -444,7 +435,7 @@ describe('privacidade e forma da resposta', () => {
     for (const proibido of ['ana.passageira', 'beatriz', '11144477735', 'usuario_id', 'vagas_ocupadas', 'capacidade', 'pendencia_administrativa', SENHA]) {
       expect(texto).not.toContain(proibido);
     }
-    expect(Object.keys(pagamentoDe(res) ?? {}).sort()).toEqual(['confirmado_em', 'requer_tratamento_administrativo', 'situacao', 'valor_centavos']);
+    expect(Object.keys(pagamentoDe(res) ?? {}).sort()).toEqual(['confirmado_em', 'parcela', 'requer_tratamento_administrativo', 'situacao', 'valor_centavos']);
   });
 
   it('a consulta publica continua sem expor pagamento nem ocupacao', async () => {

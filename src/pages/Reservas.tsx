@@ -13,6 +13,7 @@ import { Notice, usePageTitle } from '../ui.tsx';
  * Reserva do passageiro (AGT-007): botao no detalhe da excursao e pagina de checkout. Sem pagamento ainda.
  * AGT-008: abrir o checkout inicia a retencao temporaria da vaga; a tela mostra o tempo restante e, expirada, oferece retomar.
  * AGT-009: pagamento integral no checkout (provedor simulado fora de producao); reserva paga fica pronta para embarque.
+ * AGT-010: pagamento em duas parcelas: a primeira ocupa a vaga, a segunda quita; vencido o prazo, a reserva aparece cancelada por inadimplencia.
  */
 
 const AVISO_VAGA = 'A vaga só é garantida após o pagamento confirmado.';
@@ -106,6 +107,12 @@ export function AcaoReservar({ excursao }: { excursao: ExcursaoPublica }) {
 }
 
 const ROTULO_PARCELA = { unica: 'Parcela única', primeira: 'Primeira parcela', segunda: 'Segunda parcela' } as const;
+const ROTULO_PAGAMENTO = { pendente: 'Aguardando confirmação', confirmado: 'Pago', falhou: 'Recusado', estornado: 'Estornado' } as const;
+
+/** Vaga ja ocupada por pagamento confirmado (a unica ou a primeira parcela), mesmo que a reserva ainda aguarde a segunda. */
+function vagaOcupada(reserva: Reserva): boolean {
+  return reserva.valores.parcelas.some((p) => p.situacao_pagamento === 'confirmado');
+}
 
 function Restrito({ visitante }: { visitante: boolean }) {
   return (
@@ -179,7 +186,7 @@ export function Checkout({ id }: { id: number }) {
   useEffect(() => {
     if (reserva === null || autoIniciou.current) return;
     autoIniciou.current = true;
-    if (reserva.situacao === 'aguardando_pagamento' && reserva.pagamento?.situacao !== 'confirmado' && reserva.retencao?.situacao !== 'ativa') void iniciar();
+    if (reserva.situacao === 'aguardando_pagamento' && !vagaOcupada(reserva) && reserva.retencao?.situacao !== 'ativa') void iniciar();
   }, [reserva]);
 
   // O servidor informa os segundos restantes; a contagem na tela usa o relogio local a partir dessa medida.
@@ -275,16 +282,21 @@ export function Checkout({ id }: { id: number }) {
   const e = reserva.excursao;
   const aguardandoPagamento = reserva.situacao === 'aguardando_pagamento';
   const pag = reserva.pagamento;
-  const confirmado = pag?.situacao === 'confirmado';
-  // O bloco da retencao so aparece enquanto o pagamento nao foi confirmado.
-  const aguardando = aguardandoPagamento && !confirmado;
+  const ocupada = vagaOcupada(reserva);
+  const semVagaAdm = pag?.situacao === 'confirmado' && pag.requer_tratamento_administrativo;
+  const proxima = reserva.proxima_parcela;
+  const valorProxima = reserva.valores.parcelas.find((p) => p.parcela === proxima);
+  const prazoSegunda = reserva.valores.parcelas.find((p) => p.parcela === 'segunda')?.vencimento ?? null;
+  const inadimplente = reserva.situacao === 'cancelada' && reserva.motivo_cancelamento === 'inadimplencia';
+  // O bloco da retencao so aparece enquanto nenhuma vaga foi ocupada por pagamento confirmado.
+  const aguardando = aguardandoPagamento && !ocupada;
   const retida = aguardando && fimLocal !== null && restante > 0;
   const expirou = aguardando && !retida && !iniciando && !semVaga && (reserva.retencao?.situacao === 'expirada' || (fimLocal !== null && restante <= 0));
   return (
     <>
       <h1>Checkout da reserva nº {reserva.id}</h1>
       {aviso ? <Notice kind={aviso.tipo}>{aviso.texto}</Notice> : null}
-      {reserva.situacao === 'cancelada' ? <Notice kind="info">Esta reserva está cancelada.</Notice> : null}
+      {reserva.situacao === 'cancelada' && !inadimplente ? <Notice kind="info">Esta reserva está cancelada.</Notice> : null}
       <dl className="detalhes">
         <dt>Excursão</dt>
         <dd>
@@ -311,6 +323,7 @@ export function Checkout({ id }: { id: number }) {
               <th scope="col">Parcela</th>
               <th scope="col">Valor</th>
               <th scope="col">Vencimento</th>
+              <th scope="col">Pagamento</th>
             </tr>
           </thead>
           <tbody>
@@ -319,6 +332,7 @@ export function Checkout({ id }: { id: number }) {
                 <th scope="row">{ROTULO_PARCELA[p.parcela]}</th>
                 <td>{formatarReais(p.valor_centavos)}</td>
                 <td>{p.vencimento === null ? (p.parcela === 'segunda' ? '—' : 'Ao pagar') : dataBr(p.vencimento)}</td>
+                <td>{p.situacao_pagamento ? ROTULO_PAGAMENTO[p.situacao_pagamento] : '—'}</td>
               </tr>
             ))}
             <tr>
@@ -326,6 +340,7 @@ export function Checkout({ id }: { id: number }) {
               <td>
                 <strong>{formatarReais(reserva.valores.total_centavos)}</strong>
               </td>
+              <td />
               <td />
             </tr>
           </tbody>
@@ -373,19 +388,38 @@ export function Checkout({ id }: { id: number }) {
         </>
       ) : null}
       {reserva.situacao === 'pronto_para_embarque' ? <Notice kind="success">Pagamento confirmado. Sua reserva está pronta para embarque.</Notice> : null}
-      {aguardandoPagamento && confirmado ? (
+      {aguardandoPagamento && semVagaAdm ? (
         <Notice kind="info">Recebemos o seu pagamento, mas a vaga não está mais disponível. A organização vai tratar o caso.</Notice>
       ) : null}
-      {aguardando ? (
+      {aguardandoPagamento && ocupada && !semVagaAdm && reserva.modalidade === 'parcelada' ? (
+        <Notice kind="success">
+          Primeira parcela confirmada: a vaga é sua. Falta a segunda parcela{prazoSegunda === null ? '' : `, até ${dataBr(prazoSegunda)}`}.
+        </Notice>
+      ) : null}
+      {inadimplente ? (
+        <Notice kind="info">O prazo da segunda parcela venceu: a vaga foi liberada e a primeira parcela não é reembolsável.</Notice>
+      ) : null}
+      {inadimplente && pag?.parcela === 'segunda' && pag.situacao === 'confirmado' ? (
+        <Notice kind="info">Recebemos o pagamento da segunda parcela depois do prazo. A organização vai tratar o caso.</Notice>
+      ) : null}
+      {aguardandoPagamento && proxima !== null && !semVagaAdm ? (
         <section aria-labelledby="pagamento-titulo" className="panel">
           <h2 id="pagamento-titulo">Pagamento</h2>
-          {reserva.modalidade === 'parcelada' ? (
-            <Notice kind="info">O pagamento em duas parcelas ainda não está disponível.</Notice>
-          ) : !reserva.pagamento_disponivel ? (
+          {!reserva.pagamento_disponivel ? (
             <Notice kind="info">O pagamento não está disponível neste ambiente.</Notice>
           ) : (
             <>
-              {pag?.situacao === 'falhou' ? <Notice kind="error">O pagamento foi recusado. Você pode tentar de novo enquanto a vaga estiver retida.</Notice> : null}
+              {reserva.modalidade === 'parcelada' ? (
+                <p className="hint">
+                  Pagamento em duas parcelas de 50%: {proxima === 'primeira' ? 'a primeira agora, para ocupar a vaga, e a segunda' : 'agora a segunda, que quita a reserva; ela vale'}
+                  {prazoSegunda === null ? '' : ` até ${dataBr(prazoSegunda)}`}.
+                </p>
+              ) : null}
+              {pag?.situacao === 'falhou' ? (
+                <Notice kind="error">
+                  O pagamento foi recusado. Você pode tentar de novo{proxima === 'segunda' ? ' até o fim do prazo' : ' enquanto a vaga estiver retida'}.
+                </Notice>
+              ) : null}
               {pag?.situacao === 'pendente' ? (
                 <>
                   <Notice kind="info">Pagamento de {formatarReais(pag.valor_centavos)} iniciado. Aguardando a confirmação.</Notice>
@@ -404,12 +438,12 @@ export function Checkout({ id }: { id: number }) {
               ) : (
                 <>
                   <p>
-                    Valor a pagar: <strong>{formatarReais(reserva.valores.total_centavos)}</strong>
+                    Valor a pagar: <strong>{formatarReais((valorProxima ?? { valor_centavos: reserva.valores.total_centavos }).valor_centavos)}</strong>
                   </p>
-                  <button type="button" className="btn btn-primary" disabled={pagando || !retida} onClick={() => void pagar()}>
-                    {pagando ? 'Pagando…' : 'Pagar'}
+                  <button type="button" className="btn btn-primary" disabled={pagando || (proxima !== 'segunda' && !retida)} onClick={() => void pagar()}>
+                    {pagando ? 'Pagando…' : proxima === 'primeira' ? 'Pagar a primeira parcela' : proxima === 'segunda' ? 'Pagar a segunda parcela' : 'Pagar'}
                   </button>
-                  {!retida ? <p className="hint">Para pagar, a vaga precisa estar retida. Retome o checkout acima.</p> : null}
+                  {proxima !== 'segunda' && !retida ? <p className="hint">Para pagar, a vaga precisa estar retida. Retome o checkout acima.</p> : null}
                 </>
               )}
             </>

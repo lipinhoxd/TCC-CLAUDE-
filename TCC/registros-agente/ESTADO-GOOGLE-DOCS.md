@@ -59,6 +59,39 @@ Se algum texto âncora não for único, o lote para sem alterar nada (aconteceu 
 
 Última transcrição: 19/11/2026, AGT-007 (13 substituições, parágrafo da 5.3, ficha do Apêndice E e linha do Quadro 2, tudo conferido).
 
+## Alterações feitas no Docs fora da sessão (registradas em 20/11/2026)
+
+Aplicadas no Docs por você ou pelo assistente do Docs, sem passar por esta sessão. O texto vigente é o do Docs; o agente não as reaplica.
+
+- Datas da Seção 5.1 e da fonte do Quadro 2: passaram para 19/11/2026.
+- "pesquisadores" (plural) onde há classificação (Seções 5.1, 5.3, 6.3, fichas e Apêndice F).
+- Seção 5.4 reescrita a partir da AGT-008 ("As próximas atividades… incluem, a partir da AGT-008…").
+- "n = 5" e "n = 7" no Resumo, no Abstract, nas Seções 5.1, 6.1 e 6.4 e no Capítulo 7.
+- Fichas AGT-001 e AGT-005 com os mesmos 20 campos da AGT-007.
+- "independente" removido das fichas do piloto (resta uma ocorrência: "verificação auxiliar independente", ficha do piloto AGT-005; ver a auditoria).
+- "[DADO NÃO REGISTRADO]" padronizado no Quadro 2.
+
+Leitura de conferência em 20/11/2026: revisão `AHj4eMQd0z6vUApFjyR4F_CUXIR5w420Td8o86gjtwnOUZlv3pqm2fheaGdoqqnlhjrsoWLeJUVlU6UNPyFZ-S3N0L2vHQM2WDKkguIbDV8`, 842 parágrafos. Resultado completo em `TCC/relatorios/AUDITORIA-SINCRONIA-2026-11-20.md` (69 itens: 48 OK, 13 DIVERGE, 6 perguntas, 2 fora do alcance).
+
+### Âncoras do checklist da AGT-008 que mudaram (as demais continuam únicas)
+
+Os itens 3 a 8 e 11 acima continuam com 1 ocorrência cada. Os itens 1, 2, 9 e 10 têm hoje estes textos:
+
+1. Resumo: `sete das 18 atividades previstas (n = 7) foram concluídas e classificadas (as sete aprovadas com intervenção humana,` → "oito ... (n = 8) ... as oito".
+2. Abstract: `seven of the 18 planned activities (n = 7) have been completed and classified (all seven approved with human intervention,` → "eight ... (n = 8) ... all eight".
+9. Seção 6.4: `5 atividades no piloto (n = 5) e 7 das 18 previstas classificadas no experimento principal (n = 7)` → "8 das 18 ... (n = 8)".
+10. Capítulo 7: `tem, até o momento, 7 das 18 atividades previstas concluídas e classificadas pelos pesquisadores (n = 7):` → "8 ... (n = 8)", acrescentando a AGT-008.
+Seção 5.1: além do item 3, o texto atual dá "7 das 18 atividades previstas estão concluídas e classificadas pelos pesquisadores (n = 7)": também passa a 8.
+Seção 5.4 já diz "a partir da AGT-008"; ao concluir a AGT-008, reescrever para "a partir da AGT-009".
+
+### Pendências de texto apontadas pela auditoria (aguardam suas respostas P1 a P6)
+
+Resíduo "$1" no campo 18 das fichas AGT-001, 003, 004, 005, 006 e 007; "19 critérios" na ficha AGT-003 (são 20); Seção 4.7 sem "Sessão e token"; Seção 4.8 sem as decisões das AGT-001 a AGT-007; faixas de entradas do diário nas fichas.
+
+## Prompt de correções gerado em 20/11/2026
+
+`TCC/relatorios/PROMPT-CORRECOES-DOCS-2026-11-20.md`: 11 correções para o assistente do Docs aplicar (resíduo "$1" nas 6 fichas, 20 critérios na ficha AGT-003, Seções 4.7, 4.8 e 3.5, "independente" na ficha do piloto AGT-005). Após aplicar, reler o Docs e conferir; atualizar este arquivo.
+
 ## Pendências suas (pesquisador)
 
 Atualizar o sumário do Docs (clique); escopo da AGT-005 em diante (corte proposto 24/11/2026); verificação real

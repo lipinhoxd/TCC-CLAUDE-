@@ -1275,7 +1275,24 @@ nova. A classificação (AP-1, AP-2, AP-3 ou RP) cabe ao pesquisador; o agente n
 
 **Pendente (pesquisador):** atualizar o sumário do Docs; diagramas (hospedagem externa de imagem, a decidir); verificação real do telefone e envio do token; DOIs das referências 1 e 8; segundo avaliador; instrução da AGT-008 (retenção de vaga, a próxima do plano), com o prazo de corte de 24/11/2026 se aproximando.
 
-### Entrada 74 — 2026-11-20T00:13:18-03:00
+## Entrada 74 — Padrão de escrita no CLAUDE.md e próximos passos
+
+**Hora do sistema:** 2026-11-20T00:13:18-03:00
+
 - Acrescentada ao final do CLAUDE.md a seção "Padrão de escrita e formatação do TCC (Google Docs)", conforme texto do pesquisador.
 - Criado TCC/registros-agente/PROXIMOS-PASSOS.md (a colagem terminava truncada em "Aprovação da instrução da AGT-00"; completado como AGT-008).
 - Sem commit (aguarda pedido explícito do pesquisador).
+
+## Entrada 75 — Auditoria de sincronia do Docs com o repositório
+
+**Hora do sistema:** 2026-11-20T00:38:46-03:00
+
+**Ações:** leitura integral do Docs (revisão AHj4eMQd…, 842 parágrafos); comparação dos Apêndices A, B e C com a especificação por script; esquema real lido das migrações; versões lidas de package.json, lockfile, node, npm e SQLite. Gravados TCC/relatorios/AUDITORIA-SINCRONIA-2026-11-20.md (69 itens: 48 OK, 13 DIVERGE, 6 perguntas ao autor, 2 fora do alcance), seção nova em ESTADO-GOOGLE-DOCS.md, PROXIMOS-PASSOS.md reescrito e seção "Padrão de escrita e formatação do TCC e sincronia" no CLAUDE.md. Nada aplicado no Docs, nada commitado.
+
+**Observação:** a Entrada 74 tinha formato diferente (### e título só com a hora); corrigida na Entrada 76.
+
+## Entrada 76 — Prompt de correções do Docs e correções no repositório
+
+**Hora do sistema:** 2026-11-20T21:09:45-03:00
+
+**Ações:** gerado TCC/relatorios/PROMPT-CORRECOES-DOCS-2026-11-20.md (10 correções do Docs, depois 11 com a P5). Com o "ok" do pesquisador (lido como aval às correções do repositório e como "recomendadas" para P1 a P6, primeira opção de cada), corrigidos no repositório: cabeçalho e 10 linhas de RN da matriz de rastreabilidade (RN-001 a RN-008, RN-036, RN-037), data do quadro de resultados, 19 para 20 critérios na ficha AGT-003 e ficha AGT-005 com 20 campos (campo extra passou para Decisão técnica), formato da Entrada 74. Nada commitado.

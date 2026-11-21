@@ -1,6 +1,6 @@
 # Matriz de rastreabilidade (requisito → atividade → evidência)
 
-Atualizada em 13/11/2026. Fonte dos requisitos: `docs/requisitos/`. Atividade prevista: `docs/especificacao/07-PLANO-DE-ATIVIDADES.md` (e a coluna AGT dos RF). **Evidência** só existe para o que foi executado no experimento principal (AGT-001, commits `4cd310c` e `d65d64f`); o restante está **Planejada**. Não há, aqui, evidência do piloto (repositório não reaberto): **[DADO NÃO REGISTRADO]**.
+Atualizada em 20/11/2026. Fonte dos requisitos: `docs/requisitos/`. Atividade prevista: `docs/especificacao/07-PLANO-DE-ATIVIDADES.md` (e a coluna AGT dos RF). **Evidência** só existe para o que foi executado no experimento principal (AGT-001 a AGT-007; ver a coluna Estado de cada linha e os commits em `TCC/metricas/METRICAS.csv`); o restante está **Planejada**. Não há, aqui, evidência do piloto (repositório não reaberto): **[DADO NÃO REGISTRADO]**.
 
 Cadeia (TCC, Seção 3.8): requisito → atividade AGT → instrução → execução → alterações → testes → revisão humana → classificação → commit.
 
@@ -95,14 +95,14 @@ AGT prevista conforme o plano; regras sem AGT no plano ficam na AGT-017 (valida�
 
 | RN | Regra | AGT prevista | Estado | Evidência |
 | --- | --- | --- | --- | --- |
-| RN-001 | Apenas usuários com 18 anos ou mais podem concluir o cadastro. | 003 | Planejada | — |
-| RN-002 | O CPF deve ser único. | 003 | Planejada | — |
-| RN-003 | O e-mail deve ser único. | 003 | Planejada | — |
-| RN-004 | São obrigatórios: nome completo, CPF, data de nascimento, telefone ou WhatsApp, e-mail e senha. | 003 | Planejada | — |
-| RN-005 | O telefone ou WhatsApp deve passar pelo mecanismo de validação definido. | 003 | Planejada | — |
-| RN-006 | O login ocorre por e-mail e senha. | 003 | Planejada | — |
-| RN-007 | A recuperação de acesso usa token de uso único e validade limitada. | 003 | Planejada | — |
-| RN-008 | A sessão expira e pode ser revogada; o acesso protegido é revalidado no servidor. | 003 | Planejada | — |
+| RN-001 | Apenas usuários com 18 anos ou mais podem concluir o cadastro. | 003 | Evidenciada na AGT-003 | `tests/auth-validation.test.ts` (maioridade) |
+| RN-002 | O CPF deve ser único. | 003 | Evidenciada na AGT-003 | `tests/auth-validation.test.ts` |
+| RN-003 | O e-mail deve ser único. | 003 | Evidenciada na AGT-003 | `tests/auth-validation.test.ts` |
+| RN-004 | São obrigatórios: nome completo, CPF, data de nascimento, telefone ou WhatsApp, e-mail e senha. | 003 | Evidenciada na AGT-003 | `tests/auth-api.test.ts` |
+| RN-005 | O telefone ou WhatsApp deve passar pelo mecanismo de validação definido. | 003 | Parcial na AGT-003 (só formato; posse do número não verificada) | `tests/auth-validation.test.ts` |
+| RN-006 | O login ocorre por e-mail e senha. | 003 | Evidenciada na AGT-003 | `tests/auth-api.test.ts` |
+| RN-007 | A recuperação de acesso usa token de uso único e validade limitada. | 003 | Evidenciada na AGT-003 (duração de 30 min decidida pelo pesquisador; sem entrega real do token em produção) | `tests/auth-api.test.ts` |
+| RN-008 | A sessão expira e pode ser revogada; o acesso protegido é revalidado no servidor. | 003 | Evidenciada na AGT-003 | `tests/auth-api.test.ts` |
 | RN-009 | Cada reserva é individual e vinculada a um único passageiro autenticado. | 007 | Planejada | — |
 | RN-010 | O checkout é obrigatório. | 007 | Planejada | — |
 | RN-011 | O pagamento integral é a modalidade padrão. | 009 | Planejada | — |
@@ -130,8 +130,8 @@ AGT prevista conforme o plano; regras sem AGT no plano ficam na AGT-017 (valida�
 | RN-033 | O administrador configura capacidade, preço, parcelamento e prazo da segunda parcela de cada excursão. | 005 | Planejada | — |
 | RN-034 | O administrador consulta passageiros e reservas. | 012 | Planejada | — |
 | RN-035 | Alterações manuais de situação só ocorrem quando autorizadas e ficam registradas na auditoria. | 012 | Planejada | — |
-| RN-036 | Com reserva ou retenção ativa, condições comerciais e temporais da excursão não podem ser editadas; nome, imagem e descrição continuam editáveis. | 005 | Planejada | — |
-| RN-037 | A excursão é criada em Rascunho; a publicação é ação distinta. | 005 | Planejada | — |
+| RN-036 | Com reserva ou retenção ativa, condições comerciais e temporais da excursão não podem ser editadas; nome, imagem e descrição continuam editáveis. | 005 | Evidenciada na AGT-005 (confirmada pela aprovação da instrução) | `tests/excursoes-api.test.ts` |
+| RN-037 | A excursão é criada em Rascunho; a publicação é ação distinta. | 005 | Evidenciada na AGT-005 (confirmada pela aprovação da instrução) | `tests/excursoes-api.test.ts` |
 | RN-038 | Valores monetários são guardados em centavos inteiros (BRL). | 005 | Planejada | — |
 | RN-039 | Instantes são guardados em UTC e interpretados no fuso America/Sao_Paulo. | 005 | Planejada | — |
 | RN-040 | Retenção, confirmação e expiração usam mecanismos que preservam a capacidade sob processamento concorrente. | 008 | Planejada | — |

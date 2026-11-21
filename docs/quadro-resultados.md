@@ -1,6 +1,6 @@
 # Quadro de resultados por atividade
 
-Atualizado em 13/11/2026. Os dois estudos são apresentados separados e **não se somam**.
+Atualizado em 19/11/2026. Os dois estudos são apresentados separados e **não se somam**.
 Fontes: TCC (Seção 5), `TCC/registros-agente/`, `TCC/metricas/METRICAS.csv` e Git.
 Células sem dado verificável contêm **[DADO NÃO REGISTRADO]**.
 

@@ -58,3 +58,12 @@ pesquisadores: decisões, intervenções, resultados e classificações já feit
 ### Ficha AGT (Apêndice E): 20 campos, nesta ordem
 1. ID e título; 2. Estudo; 3. Objetivo; 4. Requisitos relacionados; 5. Comando inicial; 6. Critérios de aceitação; 7. Testes; 8. Lint, tipos e build; 9. Número de tentativas; 10. Duração; 11. Pausas ou interrupções; 12. Intervenção humana; 13. Decisão técnica; 14. Versão do agente; 15. Ambiente; 16. Commits; 17. Evidências; 18. Classificação final; 19. Segundo avaliador; 20. Limitações.
 - Dado ausente: "[DADO NÃO REGISTRADO]". Nunca inventar tempo, tentativa, commit, teste, versão ou referência.
+
+## Padrão de escrita e formatação do TCC e sincronia
+
+Formatação, escrita, contagens, tabelas e a ficha AGT de 20 campos seguem a seção anterior ("Padrão de escrita e formatação do TCC (Google Docs)"), sem repetição aqui. Complementos:
+
+- O TCC deve descrever o que o repositório realmente contém. Se o Docs divergir do código, dos registros ou das métricas, o erro é do TCC. Se o Docs divergir da especificação e esta divergir do código, não decidir: registrar como "Pergunta ao autor".
+- Expressões como "revisão independente", "validação independente" e "verificação independente" não são usadas sem segundo avaliador. Classificação é sempre atribuída aos pesquisadores.
+- Itens do piloto que só se verificam lendo o código do piloto: marcar "fora do alcance da verificação".
+- Passo obrigatório: ao fechar cada AGT, rodar a auditoria de sincronia (comparar os trechos tocados do TCC com os registros, `METRICAS.csv`, o diário, `package.json`, as migrações e `docs/especificacao/`) antes de encerrar, e gravar o resultado em `TCC/relatorios/`. A auditoria só relata; as correções do Docs dependem de aprovação.

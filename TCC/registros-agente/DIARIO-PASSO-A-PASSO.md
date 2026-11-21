@@ -1380,3 +1380,9 @@ nova. A classificação (AP-1, AP-2, AP-3 ou RP) cabe ao pesquisador; o agente n
 **Hora do sistema:** 2026-11-21T18:25:00-03:00
 
 **Ações:** o pesquisador respondeu "ap 3" (lido como AP-3; critério único). Fechamento padrão: 26 critérios marcados; Seções 11 a 14 e 16 do registro; METRICAS.csv (396,47 min em relógio, com pausas e a interrupção da sessão; tempo ativo não registrado); quadro de resultados (n = 10 de 18); matriz de rastreabilidade (RF-024, RF-025, RF-027, RF-028, RN-012, RN-013, RN-017 a RN-020, RN-024, RN-032); ficha AGT-010 com 20 campos. Commits: f983b15 (atividade e registro) e ac63597 (hash nas métricas, quadro, ficha e registro). Gerados a auditoria de sincronia (TCC/relatorios/AUDITORIA-SINCRONIA-AGT-010-2026-11-21.md) e o prompt do Docs (TCC/relatorios/PROMPT-DOCS-AGT-010-2026-11-21.md, 19 trocas e 3 inserções, âncoras únicas conferidas por script). Docs ainda não alterado; aguardando o pesquisador aplicar o prompt.
+
+## Entrada 91 — AGT-010: conferência da transcrição no Docs
+
+**Hora do sistema:** 2026-11-21T18:16:59-03:00
+
+**Ações:** o pesquisador aplicou o prompt no Docs ("feito"). Releitura do Docs (914 elementos): 19 trocas e 3 inserções aplicadas e idênticas ao prompt; 14 parágrafos alterados e 24 elementos acrescentados, sem outra mudança; formatação igual à dos vizinhos. Resultado gravado na auditoria TCC/relatorios/AUDITORIA-SINCRONIA-AGT-010-2026-11-21.md. Nenhuma divergência aberta.

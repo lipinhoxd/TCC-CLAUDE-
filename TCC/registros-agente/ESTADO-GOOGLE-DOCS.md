@@ -21,7 +21,7 @@ campos de avaliação: docs/rubrica-avaliacao.md (repositório)".
 | 007 | AP-3 | 5c86513 | sim | sim | sim | sim | sim |
 | 008 | AP-3 | 23e87fb | sim | sim | sim | sim | sim |
 | 009 | AP-3 | c051823 | sim | sim | sim | sim | sim |
-| 010 | AP-3 | f983b15 | pendente | pendente | pendente | pendente | pendente |
+| 010 | AP-3 | f983b15 | sim | sim | sim | sim | sim |
 
 Critério único de classificação (AP-3 quando a instrução manda parar e a atividade só prossegue com
 decisão do pesquisador) está na rubrica, na Seção 6.3 e no Apêndice F do Docs.
@@ -112,4 +112,4 @@ Prompt gerado: `TCC/relatorios/PROMPT-DOCS-AGT-009-2026-11-20.md` (17 trocas de 
 
 ## AGT-010 (21/11/2026)
 
-Prompt gerado: `TCC/relatorios/PROMPT-DOCS-AGT-010-2026-11-21.md` (19 trocas de texto, com âncoras conferidas uma a uma no Docs base de 890 linhas e 866 parágrafos de corpo, e 3 inserções: parágrafo da 5.3, linha do Quadro 2 e ficha do Apêndice E). Auditoria: `TCC/relatorios/AUDITORIA-SINCRONIA-AGT-010-2026-11-21.md`. **Aguardando o pesquisador colar o prompt no assistente do Docs**; depois, reler o Docs e conferir (trocas, inserções, contagem de parágrafos, formatação). Commits da atividade: f983b15 e ac63597.
+Prompt gerado: `TCC/relatorios/PROMPT-DOCS-AGT-010-2026-11-21.md` (19 trocas de texto, com âncoras conferidas uma a uma no Docs base de 890 linhas e 866 parágrafos de corpo, e 3 inserções: parágrafo da 5.3, linha do Quadro 2 e ficha do Apêndice E). Auditoria: `TCC/relatorios/AUDITORIA-SINCRONIA-AGT-010-2026-11-21.md`. **Aplicado e conferido por releitura em 2026-11-21T18:16:59-03:00** (19 trocas e 3 inserções; 914 elementos; nenhuma divergência). Commits da atividade: f983b15 e ac63597.

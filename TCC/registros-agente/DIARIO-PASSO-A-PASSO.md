@@ -1338,3 +1338,21 @@ nova. A classificação (AP-1, AP-2, AP-3 ou RP) cabe ao pesquisador; o agente n
 **Hora do sistema:** 2026-11-20T23:16:20-03:00
 
 **Ações:** o pesquisador aplicou o prompt no assistente do Docs ("feito"). Releitura do Docs: 19 trocas e 3 inserções conferidas por script (textos exatos, ficha com 20 campos, Quadro 2 com 8 linhas do principal, mais 23 parágrafos de corpo) e a formatação comparada com a dos vizinhos. Atualizados o estado, os próximos passos e a auditoria.
+
+## Entrada 84 — AGT-009: rascunho aprovado e parada das três decisões
+
+**Hora do sistema:** 2026-11-20T23:20:25-03:00
+
+**Ações:** rascunho da instrução publicado em página privada (https://claude.ai/artifact/1WLzyyYLM3zwdoVrcqskJJ); o pesquisador respondeu "aprovo" (2026-11-20T23:19:55-03:00). Registrado TCC/registros-agente/AGT-009.md (Seções 1 a 5 preenchidas, Seção 5 sem alterações depois da aprovação; versão da extensão 2.1.325 registrada na Seção 1). Nenhum arquivo de código criado. Parada obrigatória: aguardando as decisões 1 a 3 (meio de pagamento; ciclo do pagamento e da confirmação; confirmação depois da expiração).
+
+## Entrada 85 — AGT-009: decisões, implementação e verificação
+
+**Hora do sistema:** 2026-11-20T23:37:28-03:00
+
+**Ações:** o pesquisador respondeu "recomendadas" às três decisões (2026-11-20T23:21:54-03:00). Implementados o provedor simulado, a confirmação atômica e idempotente, o serviço de pagamento, a migração 2 e o bloco Pagamento do checkout. 48 testes novos (420 em 24 arquivos); lint, tipos e build sem erros; quatro mutações verificadas e restauradas; percurso em navegador real (Edge) com recusa, nova tentativa, aprovação, parcelada, confirmação tardia com e sem vaga. Registro AGT-009.md preenchido até a Seção 10. Sem commit.
+
+## Entrada 86 — AGT-009: classificação AP-3, fechamento padrão e prompt do Docs
+
+**Hora do sistema:** 2026-11-20T23:41:27-03:00
+
+**Ações:** o pesquisador respondeu "3" (2026-11-20T23:38:31-03:00), que o agente leu como AP-3 e avisou na mesma resposta (a mensagem anterior, "T.", fora interrompida e não foi registrada como classificação). Critérios marcados (24), Seções 11 a 14 e 16 preenchidas, METRICAS.csv, quadro, matriz (RF-023, 025, 026; RN-011, 016, 022) e ficha atualizados; checagem completa limpa (420 testes); commits c051823 (atividade) e 8b1b1cf (hash). Gerados o prompt do Docs (TCC/relatorios/PROMPT-DOCS-AGT-009-2026-11-20.md, 17 trocas e 3 inserções, âncoras conferidas) e a auditoria dos trechos tocados (TCC/relatorios/AUDITORIA-SINCRONIA-AGT-009-2026-11-20.md).

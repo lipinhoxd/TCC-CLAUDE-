@@ -1,7 +1,7 @@
 # Próximos passos (atualizado em 20/11/2026)
 
 ## Onde parou
-- **AGT-008 concluída e classificada AP-3 pelos pesquisadores (20/11/2026)**; commits 23e87fb e c2083f1. **Transcrição no Docs pendente**: colar `TCC/relatorios/PROMPT-DOCS-AGT-008-2026-11-20.md` no assistente do Docs; depois o agente relê o Docs e confirma. Próxima atividade: AGT-009 (pagamento integral; RF-023, RF-025, RF-026; RN-011, RN-016, RN-022), sem instrução redigida.
+- **AGT-008 concluída e classificada AP-3 pelos pesquisadores (20/11/2026)**; commits 23e87fb e c2083f1. **Transcrita e conferida no Docs em 20/11/2026** (19 trocas e 3 inserções). Próxima atividade: AGT-009 (pagamento integral; RF-023, RF-025, RF-026; RN-011, RN-016, RN-022), sem instrução redigida.
 - Experimento principal: AGT-001 a AGT-007 concluídas, classificadas pelos pesquisadores (AP-3) e transcritas no Docs (7 das 18; n = 7). Piloto com o Codex (n = 5) é separado e nunca somado.
 - Próxima atividade: AGT-008 (capacidade e retenção temporária de vagas; RF-019, RF-021, RF-022; RN-014, RN-015, RN-021, RN-040). Não existe `AGT-008.md`: não há instrução redigida nem aprovada. O agente só redige a instrução quando os pesquisadores disserem "vamos".
 - Nada em andamento. Último commit de atividade: `5c86513` (AGT-007), com o hash em `b258e66`.

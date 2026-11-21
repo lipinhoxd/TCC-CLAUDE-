@@ -39,3 +39,7 @@ As 19 trocas de texto foram conferidas por script contra o texto extraído do Do
 - Piloto: nada tocado.
 - Versão da ferramenta Claude Code e segundo avaliador: [DADO NÃO REGISTRADO] (sem mudança).
 - Conferência pós-aplicação no Docs: pendente até o assistente do Docs aplicar o prompt.
+
+## Conferência pós-aplicação (2026-11-20T23:16:20-03:00)
+
+Releitura do Docs (866 linhas extraídas, 843 parágrafos de corpo): as 19 trocas e as 3 inserções estão aplicadas. Cada texto proposto aparece uma vez e nenhum texto atual restou fora do proposto; o parágrafo da Seção 5.3 é idêntico ao do prompt (3338 caracteres); a linha do Quadro 2 está presente (8 linhas do principal); a ficha tem título e 20 campos idênticos ao esperado, entre a ficha da AGT-007 e a do piloto; não há "$1" nem "n = 7"; "n = 8" aparece 6 vezes e "n = 5" 6 vezes. Formatação do novo parágrafo (Times New Roman 12, justificado, recuo de 1,25 cm, espaçamento 1,5), do título e dos campos da ficha e da nova linha do Quadro 2 igual à dos vizinhos. Todos os itens T1 a T17 passam a OK no Docs.

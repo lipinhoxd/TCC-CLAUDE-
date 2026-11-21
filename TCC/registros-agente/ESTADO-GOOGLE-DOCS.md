@@ -19,6 +19,7 @@ campos de avaliação: docs/rubrica-avaliacao.md (repositório)".
 | 005 | AP-3 | 614e11d | sim | sim | sim | sim | sim |
 | 006 | AP-3 | a9d06a1 | sim | sim | sim | sim | sim |
 | 007 | AP-3 | 5c86513 | sim | sim | sim | sim | sim |
+| 008 | AP-3 | 23e87fb | pendente | pendente | pendente | pendente | pendente (prompt gerado em 20/11/2026) |
 
 Critério único de classificação (AP-3 quando a instrução manda parar e a atividade só prossegue com
 decisão do pesquisador) está na rubrica, na Seção 6.3 e no Apêndice F do Docs.
@@ -98,3 +99,7 @@ Resíduo "$1" no campo 18 das fichas AGT-001, 003, 004, 005, 006 e 007; "19 crit
 
 Atualizar o sumário do Docs (clique); escopo da AGT-005 em diante (corte proposto 24/11/2026); verificação real
 do telefone e envio do token; DOIs das referências 1 e 8; segundo avaliador.
+
+## AGT-008 (20/11/2026)
+
+Prompt gerado: `TCC/relatorios/PROMPT-DOCS-AGT-008-2026-11-20.md` (19 trocas de texto, com âncoras conferidas uma a uma no Docs, e 3 inserções: parágrafo da 5.3, linha do Quadro 2 e ficha do Apêndice E). Ainda **não aplicado**. Depois de aplicar: reler o Docs, conferir os 19 textos propostos e a contagem de parágrafos (esperado: 842 mais o parágrafo da 5.3, mais o parágrafo em branco, mais a ficha com título e 20 campos), e atualizar a tabela acima. Âncoras do checklist da AGT-009 (textos de depois da aplicação): Resumo "oito das 18 atividades previstas (n = 8) foram concluídas e classificadas (as oito aprovadas com intervenção humana,"; Abstract "eight of the 18 planned activities (n = 8) have been completed and classified (all eight approved with human intervention,"; 5.1 "8 das 18 atividades previstas estão concluídas e classificadas pelos pesquisadores (n = 8)" e "(AGT-009 a AGT-018) ainda não foram iniciadas."; 6.1 "oito atividades foram concluídas e classificadas"; 6.4 "8 das 18 previstas classificadas no experimento principal (n = 8)"; Capítulo 7 "tem, até o momento, 8 das 18 atividades previstas"; Apêndice D "AGT-009 (planejada): RF-023, RF-025 e RF-026; RN-011, RN-016 e RN-022."; Seção 5.4 "a partir da AGT-009, pagamentos".

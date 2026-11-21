@@ -1,6 +1,7 @@
 # Próximos passos (atualizado em 20/11/2026)
 
 ## Onde parou
+- **AGT-008 concluída e classificada AP-3 pelos pesquisadores (20/11/2026)**; commits 23e87fb e c2083f1. **Transcrição no Docs pendente**: colar `TCC/relatorios/PROMPT-DOCS-AGT-008-2026-11-20.md` no assistente do Docs; depois o agente relê o Docs e confirma. Próxima atividade: AGT-009 (pagamento integral; RF-023, RF-025, RF-026; RN-011, RN-016, RN-022), sem instrução redigida.
 - Experimento principal: AGT-001 a AGT-007 concluídas, classificadas pelos pesquisadores (AP-3) e transcritas no Docs (7 das 18; n = 7). Piloto com o Codex (n = 5) é separado e nunca somado.
 - Próxima atividade: AGT-008 (capacidade e retenção temporária de vagas; RF-019, RF-021, RF-022; RN-014, RN-015, RN-021, RN-040). Não existe `AGT-008.md`: não há instrução redigida nem aprovada. O agente só redige a instrução quando os pesquisadores disserem "vamos".
 - Nada em andamento. Último commit de atividade: `5c86513` (AGT-007), com o hash em `b258e66`.
@@ -12,11 +13,11 @@
 - "pesquisadores" (plural) nas classificações; fichas AGT-001 e AGT-005 com 20 campos; "[DADO NÃO REGISTRADO]" padronizado no Quadro 2; "independente" removido das fichas do piloto (resta uma ocorrência, apontada na auditoria).
 
 ## Depende do orientador/autor
-- Sumário do Docs: atualizar.
+- Sumário do Docs: atualizado pelo pesquisador em 20/11/2026. Atualizar de novo ao final, se o texto mudar.
 - Escopo a partir da AGT-005, com corte proposto em 24/11/2026: confirmar (11 atividades restantes).
 - Verificação real do telefone e do token de recuperação.
 - DOIs das referências 1 e 8.
-- Campos [INFORMAR]: orientador, examinadores, data de aprovação (só após a defesa).
+- Campos [INFORMAR]: orientador, examinadores, data de aprovação. O pesquisador preencherá no final (examinadores) e a data só após a defesa.
 - Auditoria de 20/11/2026: as 12 correções do Docs (11 do primeiro lote e a da Seção 3.5) estão aplicadas e conferidas por releitura; nenhuma divergência aberta no Docs.
 
 ## Depende dos pesquisadores

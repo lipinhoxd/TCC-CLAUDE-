@@ -1308,3 +1308,27 @@ nova. A classificação (AP-1, AP-2, AP-3 ou RP) cabe ao pesquisador; o agente n
 **Hora do sistema:** 2026-11-20T21:50:43-03:00
 
 **Ações:** o pesquisador escolheu a opção A. Gerado PROMPT-CORRECAO-3-5-2026-11-20.md; o assistente do Docs aplicou; releitura confirmou 1 parágrafo alterado (842 parágrafos) e o texto proposto presente. Fichas do piloto do repositório: 16 campos. Commit dos registros autorizado pelo pesquisador ("sim, faça tudo").
+
+## Entrada 79 — AGT-008: rascunho aprovado e parada das três decisões
+
+**Hora do sistema:** 2026-11-20T21:57:48-03:00
+
+**Ações:** rascunho da instrução publicado em página privada (https://claude.ai/artifact/K6CSDsw5JkJSqwMzdqC41P); o pesquisador respondeu "Approve" (2026-11-20T21:57:41-03:00). Registrado TCC/registros-agente/AGT-008.md (Seções 1 a 5 preenchidas, Seção 5 sem alterações depois da aprovação). Nenhum arquivo de código criado. Parada obrigatória: aguardando as decisões 1 a 3 (início, duração e renovação; disponibilidade e concorrência; expiração e liberação).
+
+## Entrada 80 — AGT-008: decisões, implementação e verificação
+
+**Hora do sistema:** 2026-11-20T22:22:33-03:00
+
+**Ações:** o pesquisador respondeu "tudo que é recomendado" às três decisões (2026-11-20T22:03:54-03:00). Implementados server/vagas/disponibilidade.ts, config da duração, checkout com retenção, consulta pública descontando retenções e a página de checkout com contagem. 46 testes novos (372 em 22 arquivos); lint, tipos e build sem erros; três mutações verificadas e restauradas; percurso em navegador real (Edge) com expiração real de retenção. Defeito de acessibilidade do contador (role="status") corrigido para role="timer". Registro AGT-008.md preenchido até a Seção 10. Sem commit.
+
+## Entrada 81 — Parada do dia
+
+**Hora do sistema:** 2026-11-20T22:23:43-03:00
+
+**Ações:** relatório da AGT-008 publicado em https://claude.ai/artifact/M5gpoZMYAf4poqJg6Cnp7j. O pesquisador encerrou a sessão ("amanhã a gente continua, ou mais tarde"). Pendente: classificação da AGT-008 pelos pesquisadores; nada da AGT-008 commitado.
+
+## Entrada 82 — AGT-008: classificação AP-3, fechamento padrão e prompt do Docs
+
+**Hora do sistema:** 2026-11-20T23:09:08-03:00
+
+**Ações:** o pesquisador respondeu "ap 3" (2026-11-20T23:04:22-03:00). Critérios marcados (23), Seções 11 a 14 e 16 preenchidas, METRICAS.csv, quadro, matriz (RF-017, 019, 021, 022; RN-014, 015, 021, 040) e ficha atualizados; checagem completa limpa (372 testes); commits 23e87fb (atividade) e c2083f1 (hash). Gerados o prompt para o assistente do Docs (TCC/relatorios/PROMPT-DOCS-AGT-008-2026-11-20.md, 19 trocas e 3 inserções, âncoras conferidas) e a auditoria dos trechos tocados (TCC/relatorios/AUDITORIA-SINCRONIA-AGT-008-2026-11-20.md). Corrigida a Seção 7 do registro (descrição dos 3 testes ajustados da AGT-007).

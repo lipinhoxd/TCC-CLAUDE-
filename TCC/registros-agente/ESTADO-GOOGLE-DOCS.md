@@ -90,6 +90,8 @@ Resíduo "$1" no campo 18 das fichas AGT-001, 003, 004, 005, 006 e 007; "19 crit
 
 ## Prompt de correções gerado em 20/11/2026
 
+**Aplicado e conferido em 20/11/2026** (releitura: revisão `AHj4eMQ5tijOXHoxMOFrh_8aZMV9zWHBDFxEbRu1pjMTDg7DY6uMrBQ0KWYU_kInkfKuIU2ltnN6hgiqdCp8DMyYTZcSElhPfYMCokkhW6I`, 842 parágrafos, mesmo total de antes; exatamente 11 parágrafos mudaram; os 11 textos propostos estão no Docs; sem "$1"; 20 critérios na AGT-003). Ressalva resolvida: a Seção 3.5 foi corrigida (opção A) para "20 campos nas fichas do experimento principal e 16 nas do piloto" e conferida por releitura (revisão `AHj4eMSdsYIMzO-PZXzVZPnKpsj5yD704n7d5A7I31dO2qc6noljk6Wb0a4t1pWHNGXmaNTOtTO4T8NNfwB002Xhhin7UINu4RBvBBHR7As`, 842 parágrafos, 1 parágrafo alterado); as 5 fichas do piloto em `docs/fichas-agt/piloto/` têm 16 campos.
+
 `TCC/relatorios/PROMPT-CORRECOES-DOCS-2026-11-20.md`: 11 correções para o assistente do Docs aplicar (resíduo "$1" nas 6 fichas, 20 critérios na ficha AGT-003, Seções 4.7, 4.8 e 3.5, "independente" na ficha do piloto AGT-005). Após aplicar, reler o Docs e conferir; atualizar este arquivo.
 
 ## Pendências suas (pesquisador)

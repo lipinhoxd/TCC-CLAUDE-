@@ -17,7 +17,7 @@
 - Verificação real do telefone e do token de recuperação.
 - DOIs das referências 1 e 8.
 - Campos [INFORMAR]: orientador, examinadores, data de aprovação (só após a defesa).
-- Aplicar no Docs o prompt `TCC/relatorios/PROMPT-CORRECOES-DOCS-2026-11-20.md` (11 correções) e pedir ao agente a releitura de conferência.
+- Auditoria de 20/11/2026: as 12 correções do Docs (11 do primeiro lote e a da Seção 3.5) estão aplicadas e conferidas por releitura; nenhuma divergência aberta no Docs.
 
 ## Depende dos pesquisadores
 - Classificação de cada atividade nova (sempre dos pesquisadores).

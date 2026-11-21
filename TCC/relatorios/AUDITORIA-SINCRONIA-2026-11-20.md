@@ -433,3 +433,9 @@ Correções de arquivos do repositório (não do Docs), pendentes de seu aval: `
 - P1 a P6: adotada a primeira opção de cada (leitura do agente para "ok"; a confirmar). Só a P5 gera correção no Docs (Correção 11 de `TCC/relatorios/PROMPT-CORRECOES-DOCS-2026-11-20.md`).
 - Corrigidos no repositório: M2 e M3 (matriz: cabeçalho e RN-001 a RN-008, RN-036 e RN-037; as demais RN seguem "Planejada" por falta de evidência registrada na matriz), G8 (data do quadro de resultados, matriz), E14 (ficha AGT-005 do repositório com 20 campos), a ficha AGT-003 do repositório (20 critérios) e H5 (formato da Entrada 74).
 - Pendentes no Docs: as 11 correções do prompt. Itens C1, C4, E5, E9, E17 e F9 só passam a OK depois da releitura do Docs.
+
+## Conferência pós-aplicação (2026-11-20T21:34:26-03:00)
+
+Releitura do Docs (revisão `AHj4eMQ5tijO…`, 842 parágrafos): as 11 correções estão aplicadas. Comparação parágrafo a parágrafo com a leitura anterior: 11 removidos e 11 acrescentados, todos os da lista. Itens C1, C4, E5, E9, E17 e F9 passam a OK. Ressalva nova: a Seção 3.5 fala em "20 campos", mas as fichas do piloto têm 16 (as 7 do principal têm 20). A contagem de 823 parágrafos relatada pelo assistente do Docs difere da 842 desta auditoria por critério de contagem, não por alteração.
+
+Seção 3.5: corrigida pela opção A ("20 campos nas fichas do experimento principal e 16 nas do piloto"), conferida por releitura em 2026-11-20T21:50:43-03:00; as 5 fichas do piloto do repositório têm 16 campos. Sem divergência aberta no Docs.

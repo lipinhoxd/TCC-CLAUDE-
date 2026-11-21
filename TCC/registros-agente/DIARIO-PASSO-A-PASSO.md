@@ -1296,3 +1296,15 @@ nova. A classificação (AP-1, AP-2, AP-3 ou RP) cabe ao pesquisador; o agente n
 **Hora do sistema:** 2026-11-20T21:09:45-03:00
 
 **Ações:** gerado TCC/relatorios/PROMPT-CORRECOES-DOCS-2026-11-20.md (10 correções do Docs, depois 11 com a P5). Com o "ok" do pesquisador (lido como aval às correções do repositório e como "recomendadas" para P1 a P6, primeira opção de cada), corrigidos no repositório: cabeçalho e 10 linhas de RN da matriz de rastreabilidade (RN-001 a RN-008, RN-036, RN-037), data do quadro de resultados, 19 para 20 critérios na ficha AGT-003 e ficha AGT-005 com 20 campos (campo extra passou para Decisão técnica), formato da Entrada 74. Nada commitado.
+
+## Entrada 77 — Conferência do Docs após as 11 correções
+
+**Hora do sistema:** 2026-11-20T21:34:26-03:00
+
+**Ações:** releitura do Docs (revisão AHj4eMQ5…, 842 parágrafos). Exatamente 11 parágrafos mudaram em relação à leitura anterior e os 11 textos propostos estão presentes; não há "$1"; fichas do principal com 20 campos. Ressalva: a Seção 3.5 diz "20 campos" e as fichas do piloto têm 16.
+
+## Entrada 78 — Seção 3.5 corrigida e commit dos registros
+
+**Hora do sistema:** 2026-11-20T21:50:43-03:00
+
+**Ações:** o pesquisador escolheu a opção A. Gerado PROMPT-CORRECAO-3-5-2026-11-20.md; o assistente do Docs aplicou; releitura confirmou 1 parágrafo alterado (842 parágrafos) e o texto proposto presente. Fichas do piloto do repositório: 16 campos. Commit dos registros autorizado pelo pesquisador ("sim, faça tudo").

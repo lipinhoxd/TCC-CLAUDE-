@@ -2,6 +2,7 @@
 import { cleanup, fireEvent, render, screen, waitFor } from '@testing-library/react';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { App } from '../src/App.tsx';
+import { formatarRestante } from '../src/pages/Reservas.tsx';
 import { json, mockApi } from './helpers/api-mock.ts';
 import type { Handler, RecordedCall } from './helpers/api-mock.ts';
 
@@ -38,6 +39,7 @@ function reserva(extra: Record<string, unknown> = {}): Record<string, unknown> {
     excursao: { id: 7, nome: 'Excursao Ficticia Serra', data_inicial: '2026-12-10', data_final: '2026-12-12', partida_brasilia: { data: '2026-12-10', hora: '07:00' } },
     valores: { total_centavos: 150001, parcelas: [{ parcela: 'unica', valor_centavos: 150001, vencimento: null }] },
     pode_desistir: true,
+    retencao: { situacao: 'ativa', expira_em: '2026-11-19T12:10:00.000Z', segundos_restantes: 600 },
     ...extra,
   };
 }
@@ -133,7 +135,7 @@ describe('botao de reserva no detalhe da excursao (RF-018)', () => {
   });
 
   it.each([
-    ['sem_vagas', 409, {}, 'Esta excursão está esgotada.'],
+    ['sem_vagas', 409, {}, /Não há vaga disponível agora/],
     ['limite_de_reservas_pendentes', 409, {}, /Você já tem 3 reservas aguardando pagamento/],
     ['reservas_encerradas', 409, {}, 'As reservas desta excursão estão encerradas.'],
     ['excursao_nao_encontrada', 404, {}, /não foi encontrada ou não está disponível/],
@@ -192,7 +194,9 @@ describe('checkout (RF-020)', () => {
     expect(tabela).toContain('Parcela única');
     expect(tabela).toContain('R$ 1.500,01');
     expect(tabela).toContain('Total');
-    expect(screen.getByText(/A vaga só é garantida após o pagamento confirmado\. Esta reserva ainda não segura a vaga\./)).not.toBeNull();
+    expect(await screen.findByText(/A vaga só é garantida após o pagamento confirmado\./)).not.toBeNull();
+    expect(screen.getByText('10:00')).not.toBeNull();
+    expect(screen.queryByText(/ainda não segura a vaga/)).toBeNull();
     expect(screen.getByText(/Pagamento: ainda não está disponível\. Será habilitado em uma próxima etapa\. Este texto é provisório\./)).not.toBeNull();
     expect(screen.queryByRole('button', { name: /pagar/i })).toBeNull();
     expect(document.title).toBe('Checkout · BPM Trip');
@@ -291,5 +295,121 @@ describe('checkout (RF-020)', () => {
     expect(document.cookie).toBe('');
     for (const e of espioes) expect(e).not.toHaveBeenCalled();
     expect(document.querySelectorAll('script[src], link[href], iframe')).toHaveLength(0);
+  });
+});
+
+const ativa = (segundos: number) => ({ situacao: 'ativa', expira_em: '2026-11-19T12:15:00.000Z', segundos_restantes: segundos });
+
+describe('retencao da vaga no checkout (AGT-008, RF-021)', () => {
+  it('formata o tempo restante em mm:ss', () => {
+    expect(formatarRestante(900)).toBe('15:00');
+    expect(formatarRestante(65)).toBe('01:05');
+    expect(formatarRestante(0)).toBe('00:00');
+    expect(formatarRestante(-3)).toBe('00:00');
+  });
+
+  it('abrir o checkout sem retencao inicia a retencao uma unica vez e mostra o tempo', async () => {
+    const calls = mockApi({
+      ...comoPassageiro,
+      'GET /api/reservas/31': () => json(200, { reserva: reserva({ retencao: null }) }),
+      'POST /api/reservas/31/checkout': () => json(200, { reserva: reserva({ retencao: ativa(900) }) }),
+    });
+    abrir('/reservas/31/checkout');
+    expect(await screen.findByText('15:00')).not.toBeNull();
+    // o contador e um timer (sem regiao viva): leitores de tela nao anunciam a cada segundo
+    expect(screen.getByRole('timer').textContent).toBe('15:00');
+    expect(screen.getByRole('timer').closest('p')?.getAttribute('role')).toBeNull();
+    expect(screen.getByText(/A vaga só é garantida após o pagamento confirmado\./)).not.toBeNull();
+    expect(chamadas(calls, 'POST', '/api/reservas/31/checkout')).toHaveLength(1);
+    expect(screen.queryByRole('button', { name: /Iniciar checkout|Retomar checkout/ })).toBeNull();
+  });
+
+  it('com a retencao ja ativa, nao inicia outra', async () => {
+    const calls = mockApi({ ...comoPassageiro, 'GET /api/reservas/31': () => json(200, { reserva: reserva({ retencao: ativa(300) }) }) });
+    abrir('/reservas/31/checkout');
+    expect(await screen.findByText('05:00')).not.toBeNull();
+    expect(chamadas(calls, 'POST', '/api/reservas/31/checkout')).toHaveLength(0);
+  });
+
+  it('sem vaga no checkout: explica, nao mostra tempo e permite tentar de novo', async () => {
+    let tentativa = 0;
+    const calls = mockApi({
+      ...comoPassageiro,
+      'GET /api/reservas/31': () => json(200, { reserva: reserva({ retencao: null }) }),
+      'POST /api/reservas/31/checkout': () => {
+        tentativa += 1;
+        return tentativa === 1 ? json(409, { error: 'sem_vagas' }) : json(200, { reserva: reserva({ retencao: ativa(900) }) });
+      },
+    });
+    abrir('/reservas/31/checkout');
+    const alerta = await screen.findByRole('alert');
+    expect(alerta.textContent).toMatch(/Não há vaga disponível agora/);
+    expect(screen.queryByText(/Vaga retida para você/)).toBeNull();
+    clicar('Tentar novamente');
+    expect(await screen.findByText('15:00')).not.toBeNull();
+    expect(chamadas(calls, 'POST', '/api/reservas/31/checkout')).toHaveLength(2);
+    expect(screen.queryByRole('alert')).toBeNull();
+  });
+
+  it('retencao expirada no servidor: ao abrir, tenta retomar sozinha', async () => {
+    const calls = mockApi({
+      ...comoPassageiro,
+      'GET /api/reservas/31': () => json(200, { reserva: reserva({ retencao: { situacao: 'expirada', expira_em: '2026-11-19T11:00:00.000Z', segundos_restantes: 0 } }) }),
+      'POST /api/reservas/31/checkout': () => json(200, { reserva: reserva({ retencao: ativa(900) }) }),
+    });
+    abrir('/reservas/31/checkout');
+    expect(await screen.findByText('15:00')).not.toBeNull();
+    expect(chamadas(calls, 'POST', '/api/reservas/31/checkout')).toHaveLength(1);
+  });
+
+  it('o tempo acaba na tela: avisa que a vaga foi liberada e oferece retomar', async () => {
+    let retomadas = 0;
+    const calls = mockApi({
+      ...comoPassageiro,
+      'GET /api/reservas/31': () => json(200, { reserva: reserva({ retencao: ativa(1) }) }),
+      'POST /api/reservas/31/checkout': () => {
+        retomadas += 1;
+        return json(200, { reserva: reserva({ retencao: ativa(900) }) });
+      },
+    });
+    abrir('/reservas/31/checkout');
+    await screen.findByText('00:01');
+    const aviso = await screen.findByText(/O tempo da retenção acabou e a vaga foi liberada/, {}, { timeout: 4000 });
+    expect(aviso).not.toBeNull();
+    expect(screen.queryByText(/Vaga retida para você/)).toBeNull();
+    clicar('Retomar checkout');
+    expect(await screen.findByText('15:00')).not.toBeNull();
+    expect(retomadas).toBe(1);
+    expect(chamadas(calls, 'POST', '/api/reservas/31/checkout')).toHaveLength(1);
+  });
+
+  it('falha ao iniciar o checkout: mostra o erro e deixa iniciar manualmente', async () => {
+    mockApi({
+      ...comoPassageiro,
+      'GET /api/reservas/31': () => json(200, { reserva: reserva({ retencao: null }) }),
+      'POST /api/reservas/31/checkout': () => json(500, { error: 'erro_interno' }),
+    });
+    abrir('/reservas/31/checkout');
+    expect((await screen.findByRole('alert')).textContent).toMatch(/Algo deu errado/);
+    expect(screen.getByRole('button', { name: 'Iniciar checkout' })).not.toBeNull();
+  });
+
+  it('reserva cancelada nao inicia retencao nem mostra tempo', async () => {
+    const calls = mockApi({
+      ...comoPassageiro,
+      'GET /api/reservas/31': () => json(200, { reserva: reserva({ situacao: 'cancelada', pode_desistir: false, retencao: { situacao: 'cancelada', expira_em: '2026-11-19T12:15:00.000Z', segundos_restantes: 0 } }) }),
+    });
+    abrir('/reservas/31/checkout');
+    expect(await screen.findByText('Esta reserva está cancelada.')).not.toBeNull();
+    expect(chamadas(calls, 'POST', '/api/reservas/31/checkout')).toHaveLength(0);
+    expect(screen.queryByText(/Vaga retida para você/)).toBeNull();
+    expect(screen.queryByRole('button', { name: /Iniciar checkout|Retomar checkout/ })).toBeNull();
+  });
+
+  it('o passageiro nao pode ter a retencao iniciada por visitante ou administrador', async () => {
+    const calls = mockApi({ 'GET /api/me': () => json(200, { usuario: ADMIN }) });
+    abrir('/reservas/31/checkout');
+    expect(await screen.findByText('Acesso restrito a passageiros.')).not.toBeNull();
+    expect(calls.some((c) => c.path.endsWith('/checkout'))).toBe(false);
   });
 });

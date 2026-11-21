@@ -1,6 +1,6 @@
 # Matriz de rastreabilidade (requisito → atividade → evidência)
 
-Atualizada em 20/11/2026. Fonte dos requisitos: `docs/requisitos/`. Atividade prevista: `docs/especificacao/07-PLANO-DE-ATIVIDADES.md` (e a coluna AGT dos RF). **Evidência** só existe para o que foi executado no experimento principal (AGT-001 a AGT-007; ver a coluna Estado de cada linha e os commits em `TCC/metricas/METRICAS.csv`); o restante está **Planejada**. Não há, aqui, evidência do piloto (repositório não reaberto): **[DADO NÃO REGISTRADO]**.
+Atualizada em 20/11/2026 (AGT-008). Fonte dos requisitos: `docs/requisitos/`. Atividade prevista: `docs/especificacao/07-PLANO-DE-ATIVIDADES.md` (e a coluna AGT dos RF). **Evidência** só existe para o que foi executado no experimento principal (AGT-001 a AGT-008; ver a coluna Estado de cada linha e os commits em `TCC/metricas/METRICAS.csv`); o restante está **Planejada**. Não há, aqui, evidência do piloto (repositório não reaberto): **[DADO NÃO REGISTRADO]**.
 
 Cadeia (TCC, Seção 3.8): requisito → atividade AGT → instrução → execução → alterações → testes → revisão humana → classificação → commit.
 
@@ -24,12 +24,12 @@ Cadeia (TCC, Seção 3.8): requisito → atividade AGT → instrução → execu
 | RF-014 | Publicação e situação da excursão | 005/006 | Parcial na AGT-005 (parte administrativa; exibição pública é da AGT-006) | `server/excursoes/service.ts` (situações); `tests/excursoes-api.test.ts` |
 | RF-015 | Listagem pública de excursões | 006 | Evidenciada na AGT-006 | `server/excursoes/publico.ts`, `src/pages/ExcursoesPublicas.tsx`; `tests/consulta-publica.test.ts`, `tests/web-publico.test.tsx` |
 | RF-016 | Detalhamento da excursão | 006 | Evidenciada na AGT-006 | `GET /api/excursoes/:id`; `tests/consulta-publica.test.ts`, `tests/web-publico.test.tsx` |
-| RF-017 | Exibição de disponibilidade de vagas | 006/008 | Parcial na AGT-006 (capacidade menos vagas ocupadas; a retenção temporária é da AGT-008) | `vagasDisponiveis` em `server/excursoes/publico.ts`; `tests/consulta-publica.test.ts` |
+| RF-017 | Exibição de disponibilidade de vagas | 006/008 | Evidenciada na AGT-008 (capacidade menos ocupadas menos retenções ativas; parcial na AGT-006) | `server/vagas/disponibilidade.ts`, `server/excursoes/publico.ts`; `tests/consulta-publica.test.ts`, `tests/vagas-concorrencia.test.ts` |
 | RF-018 | Solicitação de reserva individual | 007 | Evidenciada na AGT-007 | `server/reservas/service.ts`, `src/pages/Reservas.tsx`; `tests/reservas-api.test.ts`, `tests/web-reservas.test.tsx` |
-| RF-019 | Verificação de disponibilidade na reserva | 007/008 | Parcial na AGT-007 (disponibilidade na solicitação, sem retenção; a retenção é da AGT-008) | `solicitar` em `server/reservas/service.ts`; `tests/reservas-api.test.ts` |
+| RF-019 | Verificação de disponibilidade na reserva | 007/008 | Evidenciada na AGT-008 (a solicitação considera as retenções; parcial na AGT-007) | `solicitar` em `server/reservas/service.ts`; `tests/reservas-api.test.ts`, `tests/retencao-api.test.ts` |
 | RF-020 | Checkout obrigatório | 007 | Evidenciada na AGT-007 (checkout sem pagamento) | `/reservas/:id/checkout`; `tests/web-reservas.test.tsx` |
-| RF-021 | Retenção temporária de vaga durante o checkout | 008 | Planejada | — |
-| RF-022 | Expiração da retenção | 008/014 | Planejada | — |
+| RF-021 | Retenção temporária de vaga durante o checkout | 008 | Evidenciada na AGT-008 | `iniciarCheckout` em `server/reservas/service.ts`; `tests/retencao-api.test.ts`, `tests/web-reservas.test.tsx` |
+| RF-022 | Expiração da retenção | 008/014 | Parcial na AGT-008 (expiração na leitura e na gravação, sem tarefa em segundo plano; a rotina agendada é da AGT-014) | `expirarVencidas` em `server/vagas/disponibilidade.ts`; `tests/retencao-api.test.ts`, `tests/vagas-concorrencia.test.ts` |
 | RF-023 | Pagamento integral | 009 | Planejada | — |
 | RF-024 | Pagamento em duas parcelas de 50% | 010 | Planejada | — |
 | RF-025 | Confirmação financeira e ocupação efetiva da vaga | 009/010 | Planejada | — |
@@ -62,7 +62,7 @@ Cadeia (TCC, Seção 3.8): requisito → atividade AGT → instrução → execu
 | RNF-005 | Proteção de dados pessoais | 003 | Evidenciada na AGT-003 (ver limitações em docs/autenticacao.md) | CPF mascarado; auditoria sem dados pessoais; tests/auth-api.test.ts |
 | RNF-006 | Segurança de sessão | 003 | Evidenciada na AGT-003 (ver limitações em docs/autenticacao.md) | cookie HttpOnly e hash do token; tests/auth-api.test.ts |
 | RNF-007 | Integridade dos dados | 002 | Evidenciada na AGT-002 | `server/db/migrations.ts` (restrições, chaves estrangeiras); `tests/db-schema.test.ts` |
-| RNF-008 | Prevenção de excedente de capacidade | 002 | Evidenciada na AGT-002 (estrutura; fluxo na AGT-008) | `CHECK` em `excursao`; `tests/db-schema.test.ts`, `tests/db-concorrencia.test.ts` |
+| RNF-008 | Prevenção de excedente de capacidade | 002 | Evidenciada na AGT-002 (estrutura) e na AGT-008 (retenção e mecanismo de ocupar e liberar) | `CHECK` em `excursao`; `tests/db-schema.test.ts`, `tests/db-concorrencia.test.ts` |
 | RNF-009 | Consistência em operações críticas | 002 | Evidenciada na AGT-002 | `server/db/transaction.ts`; `tests/db-transaction-audit.test.ts` |
 | RNF-010 | Tratamento de falhas | 004 | Evidenciada na AGT-004 (ver limitações em docs/interface-publica.md) | estados de erro e de rede em `src/pages/AuthPages.tsx`; `tests/web-sessao.test.tsx` |
 | RNF-011 | Desempenho das consultas públicas | a definir | Planejada | — |
@@ -108,14 +108,14 @@ AGT prevista conforme o plano; regras sem AGT no plano ficam na AGT-017 (valida�
 | RN-011 | O pagamento integral é a modalidade padrão. | 009 | Planejada | — |
 | RN-012 | O pagamento em duas parcelas de 50% pode ser habilitado individualmente por excursão. | 010 | Planejada | — |
 | RN-013 | A data limite da segunda parcela é configurada por excursão e é anterior à partida (23:59:59 da data configurada). | 010 | Planejada | — |
-| RN-014 | Durante o checkout há retenção temporária de vaga. | 008 | Planejada | — |
-| RN-015 | A retenção não representa ocupação definitiva. | 008 | Planejada | — |
+| RN-014 | Durante o checkout há retenção temporária de vaga. | 008 | Evidenciada na AGT-008 | `iniciarCheckout`; `tests/retencao-api.test.ts` |
+| RN-015 | A retenção não representa ocupação definitiva. | 008 | Evidenciada na AGT-008 | `vagas_ocupadas` inalterado pela retenção; `tests/retencao-api.test.ts` |
 | RN-016 | No pagamento integral, a confirmação financeira converte a retenção em ocupação efetiva e a reserva fica "Pronto para embarque". | 009 | Planejada | — |
 | RN-017 | No parcelamento, a confirmação da primeira parcela ocupa a vaga e mantém obrigação financeira pendente. | 010 | Planejada | — |
 | RN-018 | A confirmação da segunda parcela conclui a quitação. | 010 | Planejada | — |
 | RN-019 | Se a segunda parcela não for paga no prazo, a vaga é liberada. | 010 | Planejada | — |
 | RN-020 | Nesse caso, a primeira parcela permanece não reembolsável. | 010 | Planejada | — |
-| RN-021 | Nenhuma operação pode resultar em vagas ocupadas acima da capacidade da excursão. | 008 | Planejada | — |
+| RN-021 | Nenhuma operação pode resultar em vagas ocupadas acima da capacidade da excursão. | 008 | Parcial na AGT-008 (restrição do banco da AGT-002, retenção e `ocuparVaga`; a ocupação por pagamento é da AGT-009) | `server/vagas/disponibilidade.ts`; `tests/vagas-concorrencia.test.ts`, `tests/db-schema.test.ts` |
 | RN-022 | Confirmação financeira recebida após a expiração da retenção, sem disponibilidade, é registrada para tratamento administrativo, sem criar vaga adicional. | 009 | Planejada | — |
 | RN-023 | As situações da reserva são: Aguardando pagamento, Pronto para embarque, Concluída e Cancelada. | 011 | Planejada | — |
 | RN-024 | Reservas integralmente pagas ou com segunda parcela quitada ficam "Pronto para embarque". | 011 | Planejada | — |
@@ -134,7 +134,7 @@ AGT prevista conforme o plano; regras sem AGT no plano ficam na AGT-017 (valida�
 | RN-037 | A excursão é criada em Rascunho; a publicação é ação distinta. | 005 | Evidenciada na AGT-005 (confirmada pela aprovação da instrução) | `tests/excursoes-api.test.ts` |
 | RN-038 | Valores monetários são guardados em centavos inteiros (BRL). | 005 | Planejada | — |
 | RN-039 | Instantes são guardados em UTC e interpretados no fuso America/Sao_Paulo. | 005 | Planejada | — |
-| RN-040 | Retenção, confirmação e expiração usam mecanismos que preservam a capacidade sob processamento concorrente. | 008 | Planejada | — |
+| RN-040 | Retenção, confirmação e expiração usam mecanismos que preservam a capacidade sob processamento concorrente. | 008 | Parcial na AGT-008 (retenção e expiração; a confirmação é da AGT-009) | `BEGIN IMMEDIATE` em `iniciarCheckout`; `tests/vagas-concorrencia.test.ts`, `tests/retencao-api.test.ts` |
 | RN-041 | Operações administrativas e automáticas relevantes geram histórico de auditoria. | 017 (validação geral) | Planejada | — |
 | RN-042 | Logs e auditoria não contêm senhas, tokens ou dados cadastrais desnecessários. | 017 (validação geral) | Planejada | — |
 | RN-043 | A IA não pode alterar autonomamente regras de negócio aprovadas. | 017 (validação geral) | Planejada | — |

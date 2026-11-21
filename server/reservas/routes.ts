@@ -10,6 +10,9 @@ import type { ReservaService } from './service.ts';
 
 type Metodo = 'GET' | 'POST';
 
+/** Erros do SQLite quando o bloqueio de escrita nao e obtido dentro do busy_timeout. */
+const BANCO_OCUPADO = /database is (locked|busy)|SQLITE_BUSY/i;
+
 interface Contexto {
   req: IncomingMessage;
   res: ServerResponse;
@@ -36,6 +39,13 @@ const ROTAS: Rota[] = [
     padrao: /^\/api\/reservas\/(\d{1,15})$/,
     metodos: {
       GET: ({ res, passageiroId, id, servico }) => sendJson(res, 200, { reserva: servico.obter(passageiroId, id) }),
+    },
+  },
+  {
+    // AGT-008: abrir o checkout inicia (ou retoma) a retencao temporaria da vaga.
+    padrao: /^\/api\/reservas\/(\d{1,15})\/checkout$/,
+    metodos: {
+      POST: ({ res, passageiroId, id, servico }) => sendJson(res, 200, { reserva: servico.iniciarCheckout(passageiroId, id) }),
     },
   },
   {
@@ -69,7 +79,12 @@ export async function handleReservaRoute(
       const contexto = authorize(req, auth, ['passageiro']);
       await tratador({ req, res, passageiroId: contexto.user.id, id: Number(encontrado[1] ?? 0), servico });
     } catch (error) {
-      sendError(req, res, pathname, error);
+      // Banco ocupado alem do busy_timeout (AGT-008, decisao 2): resposta curta e segura, sem detalhes internos.
+      if (error instanceof Error && BANCO_OCUPADO.test(error.message)) {
+        sendJson(res, 503, { error: 'banco_ocupado' }, { 'Retry-After': '1' });
+      } else {
+        sendError(req, res, pathname, error);
+      }
     }
     return true;
   }

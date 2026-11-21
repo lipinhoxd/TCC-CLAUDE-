@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import type { FormEvent } from 'react';
 import { formatarReais } from '../../shared/dinheiro.ts';
 import { dataBr } from '../formato.ts';
@@ -9,7 +9,10 @@ import { useSession } from '../session.tsx';
 import type { ExcursaoPublica } from '../publico/excursoes-publicas-api.ts';
 import { Notice, usePageTitle } from '../ui.tsx';
 
-/** Reserva do passageiro (AGT-007): botao no detalhe da excursao e pagina de checkout. Sem pagamento ainda. */
+/**
+ * Reserva do passageiro (AGT-007): botao no detalhe da excursao e pagina de checkout. Sem pagamento ainda.
+ * AGT-008: abrir o checkout inicia a retencao temporaria da vaga; a tela mostra o tempo restante e, expirada, oferece retomar.
+ */
 
 const AVISO_VAGA = 'A vaga só é garantida após o pagamento confirmado.';
 
@@ -118,11 +121,22 @@ function Restrito({ visitante }: { visitante: boolean }) {
   );
 }
 
-/** Pagina de checkout: resumo da reserva. O pagamento ainda nao existe (AGT-009 e AGT-010). */
+/** Tempo restante no formato mm:ss. */
+export function formatarRestante(segundos: number): string {
+  const s = Math.max(0, Math.floor(segundos));
+  return `${String(Math.floor(s / 60)).padStart(2, '0')}:${String(s % 60).padStart(2, '0')}`;
+}
+
+/** Pagina de checkout: resumo da reserva e retencao da vaga. O pagamento ainda nao existe (AGT-009 e AGT-010). */
 export function Checkout({ id }: { id: number }) {
   usePageTitle('Checkout');
   const { status, user } = useSession();
   const [reserva, setReserva] = useState<Reserva | null>(null);
+  const [fimLocal, setFimLocal] = useState<number | null>(null);
+  const [restante, setRestante] = useState(0);
+  const [semVaga, setSemVaga] = useState(false);
+  const [iniciando, setIniciando] = useState(false);
+  const autoIniciou = useRef(false);
   const [carregando, setCarregando] = useState(true);
   const [falha, setFalha] = useState<'nao_encontrada' | 'rede' | 'erro' | null>(null);
   const [negado, setNegado] = useState(false);
@@ -145,6 +159,43 @@ export function Checkout({ id }: { id: number }) {
       ativo = false;
     };
   }, [id, pode]);
+
+  const iniciar = async () => {
+    setIniciando(true);
+    setSemVaga(false);
+    setAviso(null);
+    const r = await reservasApi.iniciarCheckout(id);
+    setIniciando(false);
+    if (r.ok) setReserva(r.reserva);
+    else if (r.motivo === 'recusa' && r.codigo === 'sem_vagas') setSemVaga(true);
+    else if (r.motivo === 'recusa') setAviso({ tipo: 'error', texto: MENSAGEM_RESERVA[r.codigo] ?? 'Não foi possível iniciar o checkout.' });
+    else if (r.motivo === 'acesso') setNegado(true);
+    else setAviso({ tipo: 'error', texto: r.motivo === 'rede' ? 'Sem conexão com o servidor. Tente novamente.' : 'Algo deu errado. Tente novamente em instantes.' });
+  };
+
+  // Ao abrir o checkout de uma reserva pendente sem retencao ativa, inicia a retencao uma vez (RF-021).
+  useEffect(() => {
+    if (reserva === null || autoIniciou.current) return;
+    autoIniciou.current = true;
+    if (reserva.situacao === 'aguardando_pagamento' && reserva.retencao?.situacao !== 'ativa') void iniciar();
+  }, [reserva]);
+
+  // O servidor informa os segundos restantes; a contagem na tela usa o relogio local a partir dessa medida.
+  useEffect(() => {
+    const ativa = reserva?.retencao?.situacao === 'ativa' ? reserva.retencao.segundos_restantes : null;
+    setFimLocal(ativa === null ? null : Date.now() + ativa * 1000);
+  }, [reserva]);
+
+  useEffect(() => {
+    if (fimLocal === null) {
+      setRestante(0);
+      return;
+    }
+    const atualizar = () => setRestante(Math.max(0, Math.ceil((fimLocal - Date.now()) / 1000)));
+    atualizar();
+    const timer = setInterval(atualizar, 1000);
+    return () => clearInterval(timer);
+  }, [fimLocal]);
 
   if (status === 'loading') return <p aria-busy="true">Carregando…</p>;
   if (user === null) return <Restrito visitante />;
@@ -192,6 +243,8 @@ export function Checkout({ id }: { id: number }) {
 
   const e = reserva.excursao;
   const aguardando = reserva.situacao === 'aguardando_pagamento';
+  const retida = aguardando && fimLocal !== null && restante > 0;
+  const expirou = aguardando && !retida && !iniciando && !semVaga && (reserva.retencao?.situacao === 'expirada' || (fimLocal !== null && restante <= 0));
   return (
     <>
       <h1>Checkout da reserva nº {reserva.id}</h1>
@@ -245,7 +298,43 @@ export function Checkout({ id }: { id: number }) {
       </div>
       {aguardando ? (
         <>
-          <p className="notice notice-info">{AVISO_VAGA} Esta reserva ainda não segura a vaga.</p>
+          {iniciando ? (
+            <p className="notice notice-info" aria-busy="true">
+              Reservando a vaga para você…
+            </p>
+          ) : null}
+          {retida ? (
+            <p className="notice notice-info">
+              Vaga retida para você por <strong role="timer">{formatarRestante(restante)}</strong>. {AVISO_VAGA}
+            </p>
+          ) : null}
+          {semVaga ? (
+            <div>
+              <Notice kind="error">{MENSAGEM_RESERVA['sem_vagas']}</Notice>
+              <p>
+                <button type="button" className="btn btn-primary" disabled={iniciando} onClick={() => void iniciar()}>
+                  Tentar novamente
+                </button>
+              </p>
+            </div>
+          ) : null}
+          {expirou ? (
+            <div>
+              <Notice kind="info">O tempo da retenção acabou e a vaga foi liberada. Se ainda houver vaga, você pode retomar o checkout.</Notice>
+              <p>
+                <button type="button" className="btn btn-primary" disabled={iniciando} onClick={() => void iniciar()}>
+                  Retomar checkout
+                </button>
+              </p>
+            </div>
+          ) : null}
+          {!retida && !iniciando && !semVaga && !expirou ? (
+            <p>
+              <button type="button" className="btn btn-primary" onClick={() => void iniciar()}>
+                Iniciar checkout
+              </button>
+            </p>
+          ) : null}
           <p className="notice notice-provisional">Pagamento: ainda não está disponível. Será habilitado em uma próxima etapa. Este texto é provisório.</p>
         </>
       ) : null}

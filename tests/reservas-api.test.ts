@@ -125,6 +125,7 @@ describe('autorizacao (RN-009, RNF-004)', () => {
   const rotas: [string, string, unknown][] = [
     ['POST', '/api/reservas', { excursao_id: 1 }],
     ['GET', '/api/reservas/1', undefined],
+    ['POST', '/api/reservas/1/checkout', undefined],
     ['POST', '/api/reservas/1/desistir', undefined],
   ];
 
@@ -322,7 +323,7 @@ describe('privacidade entre passageiros e consulta da reserva', () => {
   it('a resposta nao contem dados de outras pessoas nem campos internos', async () => {
     const id = publicar();
     const r = reservaDe(await reservar(id));
-    expect(Object.keys(r).sort()).toEqual(['criada_em', 'excursao', 'id', 'modalidade', 'pode_desistir', 'situacao', 'valores']);
+    expect(Object.keys(r).sort()).toEqual(['criada_em', 'excursao', 'id', 'modalidade', 'pode_desistir', 'retencao', 'situacao', 'valores']);
     const texto = JSON.stringify(r);
     for (const proibido of ['ana.passageira', 'beatriz', '11144477735', 'usuario_id', 'vagas_ocupadas', 'capacidade', SENHA]) {
       expect(texto).not.toContain(proibido);

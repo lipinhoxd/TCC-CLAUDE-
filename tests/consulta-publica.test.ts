@@ -297,14 +297,26 @@ describe('disponibilidade de vagas (RF-017, RN-021)', () => {
     expect(vagasDisponiveis(10, 15)).toBe(0);
   });
 
-  it('retencao temporaria ainda nao reduz o numero exibido (limitacao ate a AGT-008)', async () => {
+  it('a retencao ativa reduz o numero exibido; expirada ou cancelada nao (RF-017, AGT-008)', async () => {
     const id = criar();
     const iso = relogio.toISOString();
-    const fim = new Date(relogio.getTime() + 600_000).toISOString();
+    const ver = async () => ((await chamar('GET', `/api/excursoes/${id}`)).json?.['excursao'] as Record<string, unknown>)['vagas_disponiveis'];
     db.prepare("INSERT INTO usuario (nome_completo, cpf, email, data_nascimento, telefone, senha_hash, perfil, criado_em, atualizado_em) VALUES ('P F','11144477735','p@exemplo.com','1990-01-01','+5511900000000','x','passageiro',?,?)").run(iso, iso);
     const uid = Number(db.prepare("SELECT id FROM usuario WHERE email = 'p@exemplo.com'").get()?.['id']);
     const reserva = Number(db.prepare("INSERT INTO reserva (usuario_id, excursao_id, modalidade, situacao, criado_em, atualizado_em) VALUES (?,?,'integral','aguardando_pagamento',?,?)").run(uid, id, iso, iso).lastInsertRowid);
-    db.prepare("INSERT INTO retencao_vaga (reserva_id, criado_em, expira_em, situacao) VALUES (?,?,?, 'ativa')").run(reserva, iso, fim);
-    expect(((await chamar('GET', `/api/excursoes/${id}`)).json?.['excursao'] as Record<string, unknown>)['vagas_disponiveis']).toBe(20);
+    const retencao = Number(
+      db.prepare("INSERT INTO retencao_vaga (reserva_id, criado_em, expira_em, situacao) VALUES (?,?,?, 'ativa')").run(reserva, iso, new Date(relogio.getTime() + 600_000).toISOString()).lastInsertRowid,
+    );
+    expect(await ver()).toBe(19);
+    expect((await lista())[0]?.['vagas_disponiveis']).toBe(19);
+    // prazo vencido (mesmo sem ter sido marcada como expirada) nao conta
+    db.prepare('UPDATE retencao_vaga SET criado_em = ?, expira_em = ? WHERE id = ?').run(new Date(relogio.getTime() - 2000).toISOString(), new Date(relogio.getTime() - 1000).toISOString(), retencao);
+    expect(await ver()).toBe(20);
+    // cancelada, expirada e confirmada nao contam como retencao
+    db.prepare("UPDATE retencao_vaga SET expira_em = ?, situacao = 'cancelada' WHERE id = ?").run(new Date(relogio.getTime() + 600_000).toISOString(), retencao);
+    expect(await ver()).toBe(20);
+    // a resposta publica continua sem capacidade, ocupacao nem retencoes
+    const corpo = JSON.stringify((await chamar('GET', `/api/excursoes/${id}`)).json);
+    for (const proibido of ['retidas', 'retencao', 'vagas_ocupadas', 'capacidade']) expect(corpo).not.toContain(proibido);
   });
 });

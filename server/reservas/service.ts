@@ -4,15 +4,20 @@ import { utcParaBrasilia } from '../../shared/fuso.ts';
 import { HttpError } from '../auth/support.ts';
 import { registrarAuditoria } from '../db/audit.ts';
 import { withTransaction } from '../db/transaction.ts';
-import { vagasDisponiveis } from '../excursoes/publico.ts';
 import { instantePrazo } from '../excursoes/validation.ts';
+import { disponibilidade, expirarVencidas } from '../vagas/disponibilidade.ts';
+import { RETENCAO_PADRAO_MINUTOS } from './config.ts';
 
 /**
- * Reservas do passageiro (AGT-007, RF-018 a RF-020). Cria a reserva em "aguardando_pagamento" e nada mais:
- * nao cria pagamento nem retencao e nao altera vagas_ocupadas (RN-021 fica a cargo do banco e das AGT-008 a 010).
+ * Reservas do passageiro (AGT-007, RF-018 a RF-020). Cria a reserva em "aguardando_pagamento":
+ * nao cria pagamento e nao altera vagas_ocupadas (RN-021 fica a cargo do banco e do mecanismo de server/vagas/).
+ * AGT-008: o checkout inicia a retencao temporaria de vaga (RF-021, RN-014, RN-015), que reduz a disponibilidade.
  * Decisoes do pesquisador: reserva criada ao solicitar; desistencia enquanto nao houver pagamento; ate 3
  * reservas pendentes por passageiro; primeira parcela = metade para baixo e segunda = restante; modalidade
  * escolhida na solicitacao e sem troca; solicitacao recusada sem vagas, mas varias pendentes na ultima vaga.
+ * Decisoes do pesquisador na AGT-008: a retencao comeca ao abrir o checkout e dura 15 min (configuravel); pode ser
+ * retomada depois de expirada, se houver vaga; a expiracao e avaliada na leitura e na gravacao; a reserva continua
+ * aguardando pagamento quando a retencao expira; desistir cancela a retencao ativa.
  */
 
 export const LIMITE_PENDENTES = 3;
@@ -24,6 +29,15 @@ export interface Parcela {
   valor_centavos: number;
   /** Data (Brasilia) de vencimento; so a segunda parcela tem. */
   vencimento: string | null;
+}
+
+export type SituacaoRetencao = 'ativa' | 'confirmada' | 'expirada' | 'cancelada';
+
+export interface RetencaoDto {
+  situacao: SituacaoRetencao;
+  expira_em: string;
+  /** Segundos que faltam para expirar; 0 se nao estiver ativa. */
+  segundos_restantes: number;
 }
 
 export interface ReservaDto {
@@ -40,6 +54,8 @@ export interface ReservaDto {
   };
   valores: { total_centavos: number; parcelas: Parcela[] };
   pode_desistir: boolean;
+  /** Retencao mais recente da reserva, ou null se o checkout ainda nao foi iniciado. */
+  retencao: RetencaoDto | null;
 }
 
 type Row = Record<string, unknown>;
@@ -67,10 +83,23 @@ export function calcularParcelas(total: number, modalidade: Modalidade, prazoSeg
 export class ReservaService {
   private readonly db: DatabaseSync;
   private readonly relogio: () => Date;
+  private readonly retencaoMs: number;
 
-  constructor(db: DatabaseSync, now?: () => Date) {
+  constructor(db: DatabaseSync, now?: () => Date, retencaoMs: number = RETENCAO_PADRAO_MINUTOS * 60_000) {
     this.db = db;
     this.relogio = now ?? (() => new Date());
+    this.retencaoMs = retencaoMs;
+  }
+
+  /** Retencao mais recente da reserva; a ativa com prazo vencido aparece como expirada, sem gravar nada na leitura. */
+  private retencaoDe(reservaId: number): RetencaoDto | null {
+    const r = this.db.prepare('SELECT situacao, expira_em FROM retencao_vaga WHERE reserva_id = ? ORDER BY id DESC LIMIT 1').get(reservaId);
+    if (r === undefined) return null;
+    const expiraEm = t(r['expira_em']);
+    const restante = Math.floor((new Date(expiraEm).getTime() - this.relogio().getTime()) / 1000);
+    const ativa = r['situacao'] === 'ativa' && restante > 0;
+    const situacao: SituacaoRetencao = ativa ? 'ativa' : r['situacao'] === 'ativa' ? 'expirada' : (r['situacao'] as SituacaoRetencao);
+    return { situacao, expira_em: expiraEm, segundos_restantes: ativa ? restante : 0 };
   }
 
   private paraDto(reserva: Row): ReservaDto {
@@ -99,6 +128,7 @@ export class ReservaService {
         parcelas: calcularParcelas(total, modalidade, modalidade === 'parcelada' && prazo !== null ? utcParaBrasilia(t(prazo)).data : null),
       },
       pode_desistir: situacao === 'aguardando_pagamento' && !comPagamento,
+      retencao: this.retencaoDe(Number(reserva['id'])),
     };
   }
 
@@ -139,7 +169,9 @@ export class ReservaService {
       );
       if (pendentes >= LIMITE_PENDENTES) throw new HttpError(409, 'limite_de_reservas_pendentes');
 
-      if (vagasDisponiveis(Number(excursao['capacidade']), Number(excursao['vagas_ocupadas'])) <= 0) {
+      // RF-019 (AGT-008): a disponibilidade desconta as retencoes ativas e nao expiradas.
+      expirarVencidas(this.db, agora, { excursaoId: excursaoId as number });
+      if ((disponibilidade(this.db, excursaoId as number, agora)?.livres ?? 0) <= 0) {
         throw new HttpError(409, 'sem_vagas');
       }
       if (modalidade === 'parcelada') {
@@ -186,6 +218,54 @@ export class ReservaService {
     return this.paraDto(reserva);
   }
 
+  /**
+   * Inicia o checkout: cria a retencao temporaria da vaga (RF-021, RN-014). Repetir a chamada com a retencao ativa devolve a
+   * mesma, sem prorrogar. Depois de expirada, retoma criando outra se houver vaga. A disponibilidade e reavaliada dentro da
+   * transacao IMMEDIATE, entao dois pedidos pela ultima vaga resultam em uma retencao e um 409 (RN-021, RN-040).
+   */
+  iniciarCheckout(passageiroId: number, reservaId: number): ReservaDto {
+    const agora = this.relogio();
+    const hoje = utcParaBrasilia(agora).data;
+    return withTransaction(this.db, () => {
+      const reserva = this.db.prepare('SELECT * FROM reserva WHERE id = ? AND usuario_id = ?').get(reservaId, passageiroId);
+      if (reserva === undefined) throw new HttpError(404, 'nao_encontrada');
+      if (t(reserva['situacao']) !== 'aguardando_pagamento') throw new HttpError(409, 'reserva_nao_pendente');
+      const excursaoId = Number(reserva['excursao_id']);
+      const excursao = this.db
+        .prepare("SELECT partida_utc FROM excursao WHERE id = ? AND situacao = 'publicada' AND data_final >= ?")
+        .get(excursaoId, hoje);
+      if (excursao === undefined || new Date(t(excursao['partida_utc'])).getTime() <= agora.getTime()) {
+        throw new HttpError(409, 'reservas_encerradas');
+      }
+      expirarVencidas(this.db, agora, { excursaoId });
+      if (this.db.prepare("SELECT 1 AS x FROM retencao_vaga WHERE reserva_id = ? AND situacao = 'ativa'").get(reservaId) !== undefined) {
+        return this.obter(passageiroId, reservaId);
+      }
+      if ((disponibilidade(this.db, excursaoId, agora)?.livres ?? 0) <= 0) throw new HttpError(409, 'sem_vagas');
+      let id: number;
+      try {
+        id = Number(
+          this.db
+            .prepare("INSERT INTO retencao_vaga (reserva_id, criado_em, expira_em, situacao) VALUES (?, ?, ?, 'ativa')")
+            .run(reservaId, agora.toISOString(), new Date(agora.getTime() + this.retencaoMs).toISOString()).lastInsertRowid,
+        );
+      } catch (erro) {
+        // Rede de seguranca: uq_retencao_ativa garante uma retencao ativa por reserva mesmo se a verificacao acima for contornada.
+        if (erro instanceof Error && erro.message.includes('UNIQUE constraint failed')) return this.obter(passageiroId, reservaId);
+        throw erro;
+      }
+      registrarAuditoria(this.db, {
+        atorUsuarioId: passageiroId,
+        acao: 'retencao.criada',
+        entidade: 'retencao_vaga',
+        registroId: id,
+        estadoNovo: { situacao: 'ativa', reserva_id: reservaId, excursao_id: excursaoId },
+        ocorridoEm: agora,
+      });
+      return this.obter(passageiroId, reservaId);
+    });
+  }
+
   /** Desistencia: so enquanto aguarda pagamento e sem nenhum pagamento; vira Cancelada e libera o indice unico. */
   desistir(passageiroId: number, reservaId: number): ReservaDto {
     const agora = this.relogio();
@@ -195,6 +275,20 @@ export class ReservaService {
       if (t(reserva['situacao']) !== 'aguardando_pagamento') throw new HttpError(409, 'reserva_nao_cancelavel');
       if (this.db.prepare('SELECT 1 AS x FROM pagamento WHERE reserva_id = ? LIMIT 1').get(reservaId) !== undefined) {
         throw new HttpError(409, 'reserva_com_pagamento');
+      }
+      expirarVencidas(this.db, agora, { reservaId });
+      const ativa = this.db.prepare("SELECT id FROM retencao_vaga WHERE reserva_id = ? AND situacao = 'ativa'").get(reservaId);
+      if (ativa !== undefined) {
+        this.db.prepare("UPDATE retencao_vaga SET situacao = 'cancelada' WHERE id = ?").run(Number(ativa['id']));
+        registrarAuditoria(this.db, {
+          atorUsuarioId: passageiroId,
+          acao: 'retencao.cancelada',
+          entidade: 'retencao_vaga',
+          registroId: Number(ativa['id']),
+          estadoAnterior: { situacao: 'ativa' },
+          estadoNovo: { situacao: 'cancelada', reserva_id: reservaId },
+          ocorridoEm: agora,
+        });
       }
       this.db.prepare("UPDATE reserva SET situacao = 'cancelada', atualizado_em = ? WHERE id = ?").run(agora.toISOString(), reservaId);
       registrarAuditoria(this.db, {

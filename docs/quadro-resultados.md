@@ -1,6 +1,6 @@
 # Quadro de resultados por atividade
 
-Atualizado em 19/11/2026. Os dois estudos são apresentados separados e **não se somam**.
+Atualizado em 20/11/2026. Os dois estudos são apresentados separados e **não se somam**.
 Fontes: TCC (Seção 5), `TCC/registros-agente/`, `TCC/metricas/METRICAS.csv` e Git.
 Células sem dado verificável contêm **[DADO NÃO REGISTRADO]**.
 
@@ -30,7 +30,7 @@ Não há inferência estatística.
 
 ## 2. Experimento principal (Claude Code)
 
-n = 7 atividades concluídas e classificadas (de 18 previstas).
+n = 8 atividades concluídas e classificadas (de 18 previstas).
 
 | AGT | Atividade | Estado | Classe | Tentativas | Testes | Duração | Intervenção | Commit |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- |
@@ -41,10 +41,11 @@ n = 7 atividades concluídas e classificadas (de 18 previstas).
 | 005 | Gerenciamento administrativo de excursões | Concluída | AP-3 | 1 | 238 (140 anteriores + 98 novos), todos aprovados | ≈ 13,5 min de implementação (espera pelas três decisões não contada) | Sim: decisão de regras de negócio e arquitetura (três paradas previstas) | `614e11d` |
 | 006 | Consulta e detalhamento | Concluída | AP-3 | 1 | 277 (238 anteriores + 39 novos; 1 reescrito), todos aprovados | ≈ 7 min de implementação (espera pelas decisões não contada) | Sim: decisão sobre o que o público vê (três paradas previstas) | `a9d06a1` |
 | 007 | Reservas | Concluída | AP-3 | 1 | 326 (277 anteriores + 49 novos; 1 reescrito), todos aprovados | ≈ 5,3 min de implementação (espera pelas decisões não contada) | Sim: decisão sobre reservas, vagas e dinheiro (três paradas previstas) | `5c86513` |
-| 008 a 018 | Ver `docs/especificacao/07-PLANO-DE-ATIVIDADES.md` | Planejada | — | — | — | — | — | — |
+| 008 | Capacidade e retenção temporária de vagas | Concluída | AP-3 | 1 | 372 (326 anteriores + 46 novos; 1 reescrito de outra atividade e 3 ajustados), todos aprovados | ≈ 17,6 min (inclui documentação, mutações e percurso em navegador; espera pelas decisões não contada) | Sim: decisão sobre vagas e concorrência (três paradas previstas) | `HASH_A_PREENCHER` |
+| 009 a 018 | Ver `docs/especificacao/07-PLANO-DE-ATIVIDADES.md` | Planejada | — | — | — | — | — | — |
 
-Distribuição descritiva: 7 AP-3 (n = 7) no subconjunto avaliado, o que **não permite concluir
-nada sobre o desempenho do agente**. As três atividades seguem um critério único (decisão do pesquisador exigida pela instrução = AP-3; ver `docs/rubrica-avaliacao.md`). Perfil: tarefas fundacionais. Não há inferência estatística nem grupo
+Distribuição descritiva: 8 AP-3 (n = 8) no subconjunto avaliado, o que **não permite concluir
+nada sobre o desempenho do agente**. As atividades seguem um critério único (decisão do pesquisador exigida pela instrução = AP-3; ver `docs/rubrica-avaliacao.md`). Perfil: tarefas fundacionais. Não há inferência estatística nem grupo
 de controle.
 
 ## 3. Como atualizar

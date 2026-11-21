@@ -32,8 +32,9 @@ Campos da resposta (a lista exata, RNF-028): `id`, `nome`, `descricao`, `imagem_
 transições, instante UTC do prazo, identificadores de auditoria nem dados de pessoas. `imagem_ref` só sai se ainda
 seguir o formato validado na AGT-005 (`imagens/nome.jpg`, `.jpeg`, `.png` ou `.webp`); qualquer outro valor sai como `null`.
 
-`vagas_disponiveis` = capacidade menos vagas ocupadas, nunca negativa (`server/excursoes/publico.ts`).
-**Limitação:** a retenção temporária de vaga (RN-014, RN-015) só existe na AGT-008; até lá ela não reduz o número exibido.
+`vagas_disponiveis` = capacidade menos vagas ocupadas menos retenções ativas e não expiradas, nunca negativa
+(`server/vagas/disponibilidade.ts`, usada por `server/excursoes/publico.ts`). Desde a AGT-008 a retenção temporária de vaga
+(RN-014, RN-015) reduz o número exibido; a resposta continua sem capacidade, ocupação nem retenções.
 
 ## Interface
 
@@ -62,7 +63,7 @@ do banco que impede ocupação acima da capacidade continua valendo.
 
 ## Limitações conhecidas
 
-1. A retenção temporária de vaga não entra na disponibilidade (AGT-008).
+1. A retenção só deixa de contar depois de expirar pelo prazo; não há atualização em tempo real (a página mostra o valor da última consulta).
 2. Lista limitada a 100 excursões, sem paginação, busca nem filtros.
 3. A pasta `public/imagens/` está vazia; as imagens reais dependem do pesquisador.
 4. Não há cache: cada visita consulta o banco (`Cache-Control: no-store`). Para a escala atual basta (RNF-011 não foi medido).

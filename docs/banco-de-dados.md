@@ -63,9 +63,11 @@ reembolso não estão definidas na especificação (a RN-037 está como "[confir
 - **Por que funciona no SQLite:** `BEGIN IMMEDIATE` adquire o bloqueio de escrita no início; escritas
   concorrentes esperam (`busy_timeout`) ou falham com "database is locked". Testado em
   `tests/db-concorrencia.test.ts` com duas conexões ao mesmo arquivo.
-- **Pendente para a AGT-008:** a regra completa de retenção, expiração e confirmação, e a política de
-  nova tentativa quando o banco estiver ocupado. O contador `vagas_ocupadas` é mantido pela aplicação
-  (não há gatilho que o recalcule a partir de reservas e retenções).
+- **Implementado na AGT-008:** `server/vagas/disponibilidade.ts` (`disponibilidade`, `ocuparVaga`, `liberarVaga`, `expirarVencidas`).
+  A retenção não altera `vagas_ocupadas`: a disponibilidade é capacidade menos ocupadas menos retenções `ativa` com `expira_em` no futuro.
+  O banco ocupado além do `busy_timeout` de 5 s vira 503 `banco_ocupado` na API, sem nova tentativa automática.
+- **Pendente (AGT-009 e AGT-014):** a conversão da retenção em ocupação e a rotina agendada de expiração. O contador `vagas_ocupadas`
+  é mantido pela aplicação (não há gatilho que o recalcule a partir de reservas e retenções).
 
 ## Camada de acesso
 

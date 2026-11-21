@@ -1,6 +1,6 @@
 import { NetworkError, apiRequest } from '../api.ts';
 
-/** Cliente das reservas do passageiro (AGT-007). O servidor decide tudo; aqui so se envia e se mostra. */
+/** Cliente das reservas do passageiro (AGT-007, AGT-008). O servidor decide tudo; aqui so se envia e se mostra. */
 
 export type Modalidade = 'integral' | 'parcelada';
 
@@ -8,6 +8,12 @@ export interface ParcelaReserva {
   parcela: 'unica' | 'primeira' | 'segunda';
   valor_centavos: number;
   vencimento: string | null;
+}
+
+export interface Retencao {
+  situacao: 'ativa' | 'confirmada' | 'expirada' | 'cancelada';
+  expira_em: string;
+  segundos_restantes: number;
 }
 
 export interface Reserva {
@@ -24,6 +30,7 @@ export interface Reserva {
   };
   valores: { total_centavos: number; parcelas: ParcelaReserva[] };
   pode_desistir: boolean;
+  retencao: Retencao | null;
 }
 
 export type ResultadoReserva =
@@ -55,6 +62,8 @@ async function chamar(metodo: 'GET' | 'POST', caminho: string, corpo?: unknown):
 export const reservasApi = {
   solicitar: (excursaoId: number, modalidade: Modalidade) => chamar('POST', '/api/reservas', { excursao_id: excursaoId, modalidade }),
   obter: (id: number) => chamar('GET', `/api/reservas/${id}`),
+  /** Abre o checkout: inicia ou retoma a retencao temporaria da vaga (AGT-008). */
+  iniciarCheckout: (id: number) => chamar('POST', `/api/reservas/${id}/checkout`),
   desistir: (id: number) => chamar('POST', `/api/reservas/${id}/desistir`),
 };
 
@@ -66,7 +75,8 @@ export const ROTULO_SITUACAO_RESERVA: Record<Reserva['situacao'], string> = {
 };
 
 export const MENSAGEM_RESERVA: Record<string, string> = {
-  sem_vagas: 'Esta excursão está esgotada.',
+  sem_vagas: 'Não há vaga disponível agora: as vagas restantes estão retidas por outras pessoas ou esgotaram.',
+  reserva_nao_pendente: 'Esta reserva não está mais aguardando pagamento.',
   limite_de_reservas_pendentes: 'Você já tem 3 reservas aguardando pagamento. Conclua ou desista de uma antes de reservar outra.',
   reservas_encerradas: 'As reservas desta excursão estão encerradas.',
   excursao_nao_encontrada: 'Esta excursão não foi encontrada ou não está disponível.',

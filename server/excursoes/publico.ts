@@ -1,11 +1,15 @@
 import type { DatabaseSync } from 'node:sqlite';
 import { utcParaBrasilia } from '../../shared/fuso.ts';
+import { sqlRetidas, vagasDisponiveis } from '../vagas/disponibilidade.ts';
 import { IMAGEM_FORMATO } from './validation.ts';
+
+export { vagasDisponiveis };
 
 /**
  * Consulta publica de excursoes (AGT-006, RF-015 a RF-017). So leitura. Decisoes do pesquisador:
  * so excursoes publicadas e ainda nao terminadas (data final nao anterior a hoje, em Brasilia);
  * da data inicial mais proxima para a mais distante; ate 100 por resposta; vagas livres exatas.
+ * AGT-008: as vagas livres descontam as retencoes ativas e nao expiradas (RF-017), pela mesma funcao das reservas.
  */
 
 export const LIMITE_LISTA_PUBLICA = 100;
@@ -32,11 +36,6 @@ export interface ExcursaoPublica {
 type Row = Record<string, unknown>;
 const t = (valor: unknown): string => (typeof valor === 'string' ? valor : '');
 
-/** Capacidade menos ocupadas, nunca negativa. A retencao temporaria so entra na AGT-008. */
-export function vagasDisponiveis(capacidade: number, ocupadas: number): number {
-  return Math.max(0, capacidade - ocupadas);
-}
-
 function paraPublica(row: Row): ExcursaoPublica {
   const imagem = row['imagem_ref'] === null ? null : t(row['imagem_ref']);
   const prazo = row['prazo_segunda_parcela_utc'];
@@ -58,12 +57,12 @@ function paraPublica(row: Row): ExcursaoPublica {
     preco_centavos: Number(row['preco_centavos']),
     parcelamento_habilitado: parcelado,
     prazo_segunda_parcela: parcelado && prazo !== null ? utcParaBrasilia(t(prazo)).data : null,
-    vagas_disponiveis: vagasDisponiveis(Number(row['capacidade']), Number(row['vagas_ocupadas'])),
+    vagas_disponiveis: vagasDisponiveis(Number(row['capacidade']), Number(row['vagas_ocupadas']), Number(row['retidas'])),
   };
 }
 
-const COLUNAS =
-  'id, nome, descricao, imagem_ref, local, ponto_embarque, data_inicial, data_final, partida_utc, capacidade, vagas_ocupadas, preco_centavos, parcelamento_habilitado, prazo_segunda_parcela_utc';
+/** Colunas lidas; a ultima, `retidas`, so alimenta o calculo de vagas e nunca sai na resposta. O "?" e o instante atual. */
+const COLUNAS = `id, nome, descricao, imagem_ref, local, ponto_embarque, data_inicial, data_final, partida_utc, capacidade, vagas_ocupadas, preco_centavos, parcelamento_habilitado, prazo_segunda_parcela_utc, ${sqlRetidas('excursao.id')} AS retidas`;
 
 export function listarPublicas(db: DatabaseSync, agora: Date): ExcursaoPublica[] {
   const hoje = utcParaBrasilia(agora).data;
@@ -71,7 +70,7 @@ export function listarPublicas(db: DatabaseSync, agora: Date): ExcursaoPublica[]
     .prepare(
       `SELECT ${COLUNAS} FROM excursao WHERE situacao = 'publicada' AND data_final >= ? ORDER BY data_inicial ASC, id ASC LIMIT ?`,
     )
-    .all(hoje, LIMITE_LISTA_PUBLICA)
+    .all(agora.toISOString(), hoje, LIMITE_LISTA_PUBLICA)
     .map(paraPublica);
 }
 
@@ -80,6 +79,6 @@ export function obterPublica(db: DatabaseSync, id: number, agora: Date): Excursa
   const hoje = utcParaBrasilia(agora).data;
   const row = db
     .prepare(`SELECT ${COLUNAS} FROM excursao WHERE id = ? AND situacao = 'publicada' AND data_final >= ?`)
-    .get(id, hoje);
+    .get(agora.toISOString(), id, hoje);
   return row === undefined ? null : paraPublica(row);
 }

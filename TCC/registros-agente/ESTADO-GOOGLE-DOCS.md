@@ -21,6 +21,7 @@ campos de avaliação: docs/rubrica-avaliacao.md (repositório)".
 | 007 | AP-3 | 5c86513 | sim | sim | sim | sim | sim |
 | 008 | AP-3 | 23e87fb | sim | sim | sim | sim | sim |
 | 009 | AP-3 | c051823 | sim | sim | sim | sim | sim |
+| 010 | AP-3 | f983b15 | pendente | pendente | pendente | pendente | pendente |
 
 Critério único de classificação (AP-3 quando a instrução manda parar e a atividade só prossegue com
 decisão do pesquisador) está na rubrica, na Seção 6.3 e no Apêndice F do Docs.
@@ -108,3 +109,7 @@ Prompt gerado: `TCC/relatorios/PROMPT-DOCS-AGT-008-2026-11-20.md` (19 trocas de 
 ## AGT-009 (20/11/2026)
 
 Prompt gerado: `TCC/relatorios/PROMPT-DOCS-AGT-009-2026-11-20.md` (17 trocas de texto, com âncoras conferidas uma a uma no Docs, e 3 inserções: parágrafo da 5.3, linha do Quadro 2 e ficha do Apêndice E). **Aplicado e conferido por releitura em 21/11/2026** (as 17 trocas e as 3 inserções estão no Docs; o parágrafo da 5.3 é idêntico ao do prompt, 3404 caracteres; os 20 campos da ficha batem; 9 linhas do principal no Quadro 2; sem "$1" e sem "n = 8"; 866 parágrafos de corpo contra 843 antes, ou seja, mais 23; formatação igual à dos vizinhos). A base de parágrafos de corpo para a AGT-010 é 866. Âncoras do checklist da AGT-010 (textos de depois da aplicação): Resumo "nove das 18 atividades previstas (n = 9)"; Abstract "nine of the 18 planned activities (n = 9)"; 5.1 "9 das 18 atividades previstas estão concluídas e classificadas pelos pesquisadores (n = 9)" e "(AGT-010 a AGT-018) ainda não foram iniciadas."; 6.1 "nove atividades foram concluídas e classificadas"; 6.4 "9 das 18 previstas classificadas no experimento principal (n = 9)"; Capítulo 7 "tem, até o momento, 9 das 18 atividades previstas"; Apêndice D "AGT-010 (planejada): RF-024, RF-027 e RF-028; RN-012, RN-013 e RN-017 a RN-020."; Seção 5.4 "a partir da AGT-010, pagamento parcelado".
+
+## AGT-010 (21/11/2026)
+
+Prompt gerado: `TCC/relatorios/PROMPT-DOCS-AGT-010-2026-11-21.md` (19 trocas de texto, com âncoras conferidas uma a uma no Docs base de 890 linhas e 866 parágrafos de corpo, e 3 inserções: parágrafo da 5.3, linha do Quadro 2 e ficha do Apêndice E). Auditoria: `TCC/relatorios/AUDITORIA-SINCRONIA-AGT-010-2026-11-21.md`. **Aguardando o pesquisador colar o prompt no assistente do Docs**; depois, reler o Docs e conferir (trocas, inserções, contagem de parágrafos, formatação). Commits da atividade: f983b15 e ac63597.

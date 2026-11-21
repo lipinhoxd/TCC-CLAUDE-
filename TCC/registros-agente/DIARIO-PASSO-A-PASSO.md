@@ -1362,3 +1362,21 @@ nova. A classificação (AP-1, AP-2, AP-3 ou RP) cabe ao pesquisador; o agente n
 **Hora do sistema:** 2026-11-21T11:24:55-03:00
 
 **Ações:** o pesquisador aplicou o prompt no assistente do Docs ("feito") e pediu para pular as pendências humanas. Releitura do Docs: 17 trocas e 3 inserções conferidas por script (textos exatos, ficha com 20 campos, Quadro 2 com 9 linhas do principal, mais 23 parágrafos de corpo) e a formatação comparada com a dos vizinhos. Atualizados o estado, os próximos passos e a auditoria.
+
+## Entrada 88 — AGT-010: rascunho aprovado e parada das três decisões
+
+**Hora do sistema:** 2026-11-21T11:27:32-03:00
+
+**Ações:** rascunho da instrução publicado em página privada (https://claude.ai/artifact/Ee5QaGmLwgG1XJATepucc4); o pesquisador respondeu "aprovo" (2026-11-21T11:27:15-03:00). Registrado TCC/registros-agente/AGT-010.md (Seções 1 a 5 preenchidas, Seção 5 sem alterações depois da aprovação). Versão da extensão do VS Code: a pasta de extensões agora tem a 2.1.330 (instalada em 21/11/2026 às 09:07) e a 2.1.325 está marcada como obsoleta; registrada a 2.1.330 como instalada, sem poder confirmar qual executou esta sessão. Nenhum arquivo de código criado. Parada obrigatória: aguardando as decisões 1 a 3 (estado entre as parcelas; janela e ciclo da segunda parcela; vencimento).
+
+## Entrada 89 — AGT-010: implementação, verificação e relatório
+
+**Hora do sistema:** 2026-11-21T18:08:00-03:00
+
+**Ações:** implementado o pagamento em duas parcelas e o vencimento da segunda (migração 3, vencimento.ts, parcelas.ts, ajustes em confirmacao, service de pagamento e de reservas, disponibilidade pública, interface). Verificação final (npm run check, 18:06:22 a 18:06:44): lint, tipos e build sem erro; 463 de 463 testes. Quatro mutações detectadas e restauradas. Execução em navegador real concluída (a primeira execução foi interrompida pelo fim da sessão e refeita); a confirmação tardia da segunda parcela não foi exercitada no navegador, só em testes automatizados. Registro AGT-010.md, Seções 6 a 10 preenchidas. Sem commit; aguardando a classificação pelos pesquisadores.
+
+## Entrada 90 — AGT-010: classificação AP-3 e fechamento padrão
+
+**Hora do sistema:** 2026-11-21T18:25:00-03:00
+
+**Ações:** o pesquisador respondeu "ap 3" (lido como AP-3; critério único). Fechamento padrão: 26 critérios marcados; Seções 11 a 14 e 16 do registro; METRICAS.csv (396,47 min em relógio, com pausas e a interrupção da sessão; tempo ativo não registrado); quadro de resultados (n = 10 de 18); matriz de rastreabilidade (RF-024, RF-025, RF-027, RF-028, RN-012, RN-013, RN-017 a RN-020, RN-024, RN-032); ficha AGT-010 com 20 campos. Commits: f983b15 (atividade e registro) e ac63597 (hash nas métricas, quadro, ficha e registro). Gerados a auditoria de sincronia (TCC/relatorios/AUDITORIA-SINCRONIA-AGT-010-2026-11-21.md) e o prompt do Docs (TCC/relatorios/PROMPT-DOCS-AGT-010-2026-11-21.md, 19 trocas e 3 inserções, âncoras únicas conferidas por script). Docs ainda não alterado; aguardando o pesquisador aplicar o prompt.

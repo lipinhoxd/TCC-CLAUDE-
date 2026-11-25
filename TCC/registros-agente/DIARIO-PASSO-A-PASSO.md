@@ -1410,3 +1410,15 @@ nova. A classificação (AP-1, AP-2, AP-3 ou RP) cabe ao pesquisador; o agente n
 **Hora do sistema:** 2026-11-24T21:46:53-03:00
 
 **Ações:** o pesquisador disse "feito" (o Gemini aplicou o dossiê). Releitura do Docs (1.015 elementos): n = 11 na Seção 5.1 e no Capítulo 7, linha do Quadro 2, ficha e Apêndice D presentes, mas com divergências em relação ao repositório: n = 10 no Resumo e no Abstract; classe "AP-4" inexistente; parágrafo da 5.3 com decisões diferentes das registradas; Quadro 3 e análise novos com dados e inferências sem origem; ficha com campos diferentes do registro; frase sobre migrações removida da 4.8; parágrafo duplicado; Seção 5.4 sem a data de corte. O agente não corrigiu o Docs. Registrado na auditoria (TCC/relatorios/AUDITORIA-SINCRONIA-AGT-011-2026-11-24.md) e proposto o pedido de correção (TCC/relatorios/PEDIDO-CORRECAO-GEMINI-AGT-011-2026-11-24.md), pendente de aprovação. Rascunho da instrução da AGT-012 publicado em página privada (https://claude.ai/artifact/4wp2R2VKpuA4UME4TCi5wP); nada criado no repositório para a AGT-012; aguardando "aprovo".
+
+## Entrada 96 — AGT-012: rascunho aprovado e parada das três decisões
+
+**Hora do sistema:** 2026-11-24T21:47:37-03:00
+
+**Ações:** rascunho da instrução publicado em página privada (https://claude.ai/artifact/4wp2R2VKpuA4UME4TCi5wP); o pesquisador respondeu "aprovo", lido como aprovação da instrução da AGT-012 (a pergunta anterior era "Responda aprovo para a AGT-012"); o pedido de correção do Docs (AGT-011) continua pendente de aprovação explícita. Registrado TCC/registros-agente/AGT-012.md (Seções 1 a 5 preenchidas, 24 critérios, Seção 5 sem alterações depois da aprovação). Versão da extensão do VS Code: 2.1.330 (a única presente), sem poder confirmar qual executou esta sessão. Nenhum arquivo de código criado. Parada obrigatória: aguardando as decisões 1 a 3 (dados pessoais visíveis ao administrador; alterações manuais de situação autorizadas; pendências administrativas e pagamentos).
+
+## Entrada 97 — Correção do registro da versão da extensão (AGT-011 e AGT-012)
+
+**Hora do sistema:** 2026-11-24T21:48:03-03:00
+
+**Ações:** ao registrar a AGT-012, a pasta de extensões do VS Code mostrou duas versões do Claude Code: 2.1.331 (instalada em 24/11/2026 às 17:12:36) e 2.1.330 (de 21/11/2026, marcada como obsoleta). As Entradas 92 e 96 e o registro, a ficha e o dossiê da AGT-011 diziam que a 2.1.330 era a única presente, o que estava incorreto para 24/11/2026 (a 2.1.331 já estava instalada antes da execução da AGT-011, que ocorreu das 21:17 às 21:26). Corrigidos o registro AGT-011.md (Seções 1, 9 e 16), a ficha, o dossiê para o Gemini, o pedido de correção e o registro AGT-012.md. Continua sem ser possível confirmar qual versão executou a atividade ([DADO NÃO REGISTRADO]); a sessão em curso pode ter sido iniciada antes da instalação da 2.1.331. As Entradas 92 e 96 foram mantidas como estavam, por serem histórico.

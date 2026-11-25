@@ -30,6 +30,25 @@ Escopo: os dados que o dossiê `TCC/relatorios/DOSSIE-GEMINI-AGT-011-2026-11-24.
 
 ## Pendências
 
-- Conferência pós-aplicação no Docs: pendente até os pesquisadores informarem que o Gemini aplicou; então o agente relê o Docs e compara com o dossiê.
+- Conferência pós-aplicação no Docs: feita (ver a seção final); há divergências abertas.
 - Pendências humanas já conhecidas e adiadas pelos pesquisadores: DOIs das referências 1 e 8; corte de 24/11/2026 (11 das 18 concluídas, 7 restantes); verificação de telefone e token; segundo avaliador; versão da ferramenta nas AGT-001 a AGT-008, AGT-010 e AGT-011; campos [INFORMAR].
 - Fora do alcance: o piloto (nada tocado).
+
+## Conferência pós-aplicação (2026-11-24T21:46:53-03:00)
+
+Releitura do Docs (revisão AHj4eMRk_jkg9-J78qv0GsrzrAYBE2AnVQccfbJ_fYQsR67iLDdIq94K_xJQ9MxW9X7Ck9_sHvjgel4ICzKPt01xdkCk4djG-9I2JUvLa2g; 1.015 elementos extraídos, contra 914 em 21/11/2026). O Gemini aplicou a AGT-011 e também alterou outros trechos. **Há divergências com o repositório; o agente não corrigiu o Docs** (as correções dependem de aprovação). Resultado: a linha do Quadro 2, o parágrafo da Seção 5.3, a ficha de 20 campos, o Apêndice D e a Seção 5.1 (n = 11; AGT-012 a AGT-018 não iniciadas) estão presentes, mas com os problemas abaixo.
+
+| ID | Trecho | Divergência | Status |
+| --- | --- | --- | --- |
+| X1 | Resumo e Abstract | Dizem n = 10 ("dez", "ten"); o repositório diz n = 11 | DIVERGE |
+| X2 | Resumo, Abstract, classes, 6.1, Quadro 3, 6.3, Apêndice F | Criam a classe "AP-4" (13 ocorrências) e redefinem AP-3; a rubrica tem AP-1, AP-2, AP-3 e RP | DIVERGE |
+| X3 | Seção 5.3, AGT-011 | Decisões descritas diferentes das registradas ("guias", "cartão de resumo", "resumo financeiro", contagem das 3 pendentes, "comprovante") | DIVERGE |
+| X4 | Quadro 3 e análise nova | Percentuais, "31 decisões", dados do piloto não verificáveis, "até a AGT-010" com n = 11, afirmações de causalidade e a palavra "controlled" | DIVERGE (Pergunta ao autor) |
+| X5 | Quadro 2, linha AGT-011 | Tipo de intervenção diferente do registro e das métricas | DIVERGE |
+| X6 | Ficha AGT-011 | 22 critérios (são 23), "aba de histórico", decisões e requisitos fora do registro, diário "93 a 96" (são 92 a 94), versão da extensão [DADO NÃO REGISTRADO] | DIVERGE |
+| X7 | Seção 4.8 | Frase sobre as migrações das AGT-009 e AGT-010 removida | DIVERGE |
+| X8 | Seção 5.3, AGT-003 | Parágrafo duplicado em linhas contíguas | DIVERGE |
+| X9 | Seção 5.4 | Data de corte trocada por texto sem data (decisão dos pesquisadores) | Pergunta ao autor |
+| X10 | Seção 5.1, Quadro 2 (fonte), contagens do Capítulo 7, 6.1 e 6.4 | n = 11 e data 24/11/2026 | OK |
+
+O pedido de correção proposto está em `TCC/relatorios/PEDIDO-CORRECAO-GEMINI-AGT-011-2026-11-24.md`. Causa provável e medida: o dossiê era bruto e não proibia expressamente criar classes e análises; os próximos dossiês trazem uma lista do que não inventar.

@@ -22,6 +22,7 @@ campos de avaliação: docs/rubrica-avaliacao.md (repositório)".
 | 008 | AP-3 | 23e87fb | sim | sim | sim | sim | sim |
 | 009 | AP-3 | c051823 | sim | sim | sim | sim | sim |
 | 010 | AP-3 | f983b15 | sim | sim | sim | sim | sim |
+| 011 | AP-3 | c8ed387 | pendente | pendente | pendente | pendente | pendente |
 
 Critério único de classificação (AP-3 quando a instrução manda parar e a atividade só prossegue com
 decisão do pesquisador) está na rubrica, na Seção 6.3 e no Apêndice F do Docs.
@@ -113,3 +114,11 @@ Prompt gerado: `TCC/relatorios/PROMPT-DOCS-AGT-009-2026-11-20.md` (17 trocas de 
 ## AGT-010 (21/11/2026)
 
 Prompt gerado: `TCC/relatorios/PROMPT-DOCS-AGT-010-2026-11-21.md` (19 trocas de texto, com âncoras conferidas uma a uma no Docs base de 890 linhas e 866 parágrafos de corpo, e 3 inserções: parágrafo da 5.3, linha do Quadro 2 e ficha do Apêndice E). Auditoria: `TCC/relatorios/AUDITORIA-SINCRONIA-AGT-010-2026-11-21.md`. **Aplicado e conferido por releitura em 2026-11-21T18:16:59-03:00** (19 trocas e 3 inserções; 914 elementos; nenhuma divergência). Commits da atividade: f983b15 e ac63597.
+
+## Mudança de fluxo (24/11/2026): o Docs passa a ser atualizado pelo Gemini
+
+Desde 24/11/2026 o pesquisador envia o material ao Gemini, que tem acesso ao Docs e decide onde cada informação entra e como é escrita. O agente entrega um **dossiê bruto e detalhado** por atividade, informa o caminho do arquivo e qual parte levar, e depois do "feito" relê o Docs e confere. Os prompts com trocas exatas (AGT-008 a AGT-010) não são mais gerados.
+
+## AGT-011 (24/11/2026)
+
+Dossiê: `TCC/relatorios/DOSSIE-GEMINI-AGT-011-2026-11-24.md` (ficha de 20 campos, decisões, verificações, limitações, contagens que mudam e cópia literal do registro). Auditoria: `TCC/relatorios/AUDITORIA-SINCRONIA-AGT-011-2026-11-24.md`. **Aguardando o pesquisador enviar ao Gemini**; depois, reler o Docs e conferir contra o dossiê (n = 11; AGT-012 a AGT-018 não iniciadas; Quadro 2; ficha; Seção 5.3; Apêndice D). Commits da atividade: c8ed387 e ee1aca0.

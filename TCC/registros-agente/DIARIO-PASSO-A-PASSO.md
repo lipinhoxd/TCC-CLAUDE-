@@ -1386,3 +1386,21 @@ nova. A classificação (AP-1, AP-2, AP-3 ou RP) cabe ao pesquisador; o agente n
 **Hora do sistema:** 2026-11-21T18:16:59-03:00
 
 **Ações:** o pesquisador aplicou o prompt no Docs ("feito"). Releitura do Docs (914 elementos): 19 trocas e 3 inserções aplicadas e idênticas ao prompt; 14 parágrafos alterados e 24 elementos acrescentados, sem outra mudança; formatação igual à dos vizinhos. Resultado gravado na auditoria TCC/relatorios/AUDITORIA-SINCRONIA-AGT-010-2026-11-21.md. Nenhuma divergência aberta.
+
+## Entrada 92 — AGT-011: rascunho aprovado e parada das três decisões
+
+**Hora do sistema:** 2026-11-23T11:14:03-03:00
+
+**Ações:** rascunho da instrução publicado em página privada (https://claude.ai/artifact/YD32esgng7tGnvWrGUmxbx); o pesquisador respondeu "aprovo". Registrado TCC/registros-agente/AGT-011.md (Seções 1 a 5 preenchidas, 23 critérios, Seção 5 sem alterações depois da aprovação). Versão da extensão do VS Code: 2.1.330 (a única presente na pasta de extensões; instalada em 21/11/2026), sem poder confirmar qual executou esta sessão. Nenhum arquivo de código criado. Parada obrigatória: aguardando as decisões 1 a 3 (como a reserva vira Concluída; composição da lista e do histórico; conteúdo e ações do detalhe).
+
+## Entrada 93 — AGT-011: decisões, implementação, verificação e relatório
+
+**Hora do sistema:** 2026-11-24T21:27:23-03:00
+
+**Ações:** o pesquisador respondeu "recomendadas" às três decisões (24/11/2026, 21:17:19): conclusão na leitura e na gravação com auditoria; página única com Em andamento e Histórico; página de detalhe própria. Implementados server/vagas/conclusao.ts, listar e consultar no serviço de reservas, rota GET /api/reservas, páginas Minhas reservas e detalhe, rotas e item de menu. Verificação final (npm run check, 21:26:25 a 21:26:41): lint, tipos e build sem erro; 502 de 502 testes (21 + 18 novos). Cinco mutações detectadas e restauradas (o primeiro script de mutação devolveu "no tests" e foi refeito por shell). Execução em navegador real concluída; a conclusão pelo tempo foi demonstrada alterando as datas da excursão no banco. Registro AGT-011.md, Seções 6 a 10 preenchidas. Docs (reservas.md, README) atualizados. Sem commit; aguardando a classificação pelos pesquisadores.
+
+## Entrada 94 — AGT-011: classificação AP-3 e fechamento padrão
+
+**Hora do sistema:** 2026-11-24T21:31:22-03:00
+
+**Ações:** o pesquisador respondeu "ap 3" (lido como AP-3; critério único). Fechamento padrão: 23 critérios marcados; Seções 11 a 14 e 16 do registro; METRICAS.csv (9,37 min de relógio, de 21:17:19 a 21:26:41); quadro de resultados (n = 11 de 18); matriz de rastreabilidade (RF-029 a RF-031, RN-023 a RN-026); ficha AGT-011 com 20 campos. Commits: c8ed387 (atividade e registro) e ee1aca0 (hash). Um primeiro script de fechamento falhou por horário de aprovação incorreto no texto (11:13:36 em vez de 11:14:03); um commit parcial local foi desfeito por reset suave e refeito. Novo fluxo do Docs a pedido do pesquisador: gerado o dossiê bruto para o Gemini (TCC/relatorios/DOSSIE-GEMINI-AGT-011-2026-11-24.md) e a auditoria (TCC/relatorios/AUDITORIA-SINCRONIA-AGT-011-2026-11-24.md). Docs não alterado; aguardando o pesquisador enviar ao Gemini.

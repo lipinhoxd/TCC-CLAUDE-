@@ -35,6 +35,8 @@ export interface Reserva {
   excursao: {
     id: number;
     nome: string;
+    local: string;
+    ponto_embarque: string;
     data_inicial: string;
     data_final: string;
     partida_brasilia: { data: string; hora: string };
@@ -53,6 +55,29 @@ export type ResultadoReserva =
   | { ok: true; reserva: Reserva }
   | { ok: false; motivo: 'acesso' | 'rede' | 'nao_encontrada' | 'erro' }
   | { ok: false; motivo: 'recusa'; status: number; codigo: string; campos: Record<string, string> };
+
+/** Lista da area do passageiro (AGT-011): em andamento e historico (concluidas e canceladas). */
+export interface ListaReservas {
+  em_andamento: Reserva[];
+  historico: Reserva[];
+}
+
+export type ResultadoLista =
+  | { ok: true; lista: ListaReservas }
+  | { ok: false; motivo: 'acesso' | 'rede' | 'erro' };
+
+async function listarReservas(): Promise<ResultadoLista> {
+  try {
+    const r = await apiRequest<Partial<ListaReservas>>('GET', '/api/reservas');
+    if (r.status === 200 && Array.isArray(r.data?.em_andamento) && Array.isArray(r.data?.historico)) {
+      return { ok: true, lista: { em_andamento: r.data.em_andamento, historico: r.data.historico } };
+    }
+    if (r.status === 401 || r.status === 403) return { ok: false, motivo: 'acesso' };
+    return { ok: false, motivo: 'erro' };
+  } catch (erro) {
+    return { ok: false, motivo: erro instanceof NetworkError ? 'rede' : 'erro' };
+  }
+}
 
 interface Corpo {
   reserva?: Reserva;
@@ -78,6 +103,8 @@ async function chamar(metodo: 'GET' | 'POST', caminho: string, corpo?: unknown):
 export const reservasApi = {
   solicitar: (excursaoId: number, modalidade: Modalidade) => chamar('POST', '/api/reservas', { excursao_id: excursaoId, modalidade }),
   obter: (id: number) => chamar('GET', `/api/reservas/${id}`),
+  /** As proprias reservas: em andamento e historico (AGT-011). */
+  listar: listarReservas,
   /** Abre o checkout: inicia ou retoma a retencao temporaria da vaga (AGT-008). */
   iniciarCheckout: (id: number) => chamar('POST', `/api/reservas/${id}/checkout`),
   /** Inicia (ou retoma) o pagamento integral (AGT-009). */

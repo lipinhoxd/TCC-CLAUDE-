@@ -1,6 +1,6 @@
 # Matriz de rastreabilidade (requisito → atividade → evidência)
 
-Atualizada em 21/11/2026 (AGT-010). Fonte dos requisitos: `docs/requisitos/`. Atividade prevista: `docs/especificacao/07-PLANO-DE-ATIVIDADES.md` (e a coluna AGT dos RF). **Evidência** só existe para o que foi executado no experimento principal (AGT-001 a AGT-010; ver a coluna Estado de cada linha e os commits em `TCC/metricas/METRICAS.csv`); o restante está **Planejada**. Não há, aqui, evidência do piloto (repositório não reaberto): **[DADO NÃO REGISTRADO]**.
+Atualizada em 24/11/2026 (AGT-011). Fonte dos requisitos: `docs/requisitos/`. Atividade prevista: `docs/especificacao/07-PLANO-DE-ATIVIDADES.md` (e a coluna AGT dos RF). **Evidência** só existe para o que foi executado no experimento principal (AGT-001 a AGT-011; ver a coluna Estado de cada linha e os commits em `TCC/metricas/METRICAS.csv`); o restante está **Planejada**. Não há, aqui, evidência do piloto (repositório não reaberto): **[DADO NÃO REGISTRADO]**.
 
 Cadeia (TCC, Seção 3.8): requisito → atividade AGT → instrução → execução → alterações → testes → revisão humana → classificação → commit.
 
@@ -36,9 +36,9 @@ Cadeia (TCC, Seção 3.8): requisito → atividade AGT → instrução → execu
 | RF-026 | Registro de confirmação financeira após expiração da retenção, para tratamento administrativo | 009/013 | Parcial na AGT-009 (registro sinalizado em `pendencia_administrativa`; a tela e o estorno são das AGT-012 e AGT-013) | `server/db/migrations.ts` (versão 2), `confirmarPagamento`; `tests/pagamento-confirmacao.test.ts`, `tests/pagamento-api.test.ts` |
 | RF-027 | Quitação pela confirmação da segunda parcela | 010 | Evidenciada na AGT-010 | `confirmarSegunda` em `server/pagamentos/confirmacao.ts`; `tests/parcelado-confirmacao.test.ts`, `tests/parcelado-api.test.ts` |
 | RF-028 | Liberação da vaga por segunda parcela não paga no prazo | 010/014 | Parcial na AGT-010 (vencimento avaliado na leitura e na gravação, sem tarefa em segundo plano; a rotina agendada é da AGT-014) | `vencerSegundasParcelas` em `server/vagas/vencimento.ts`; `tests/parcelado-confirmacao.test.ts`, `tests/parcelado-api.test.ts` |
-| RF-029 | Área do passageiro: minhas reservas | 011 | Planejada | — |
-| RF-030 | Detalhe e situação da reserva | 011 | Planejada | — |
-| RF-031 | Histórico de reservas concluídas | 011 | Planejada | — |
+| RF-029 | Área do passageiro: minhas reservas | 011 | Evidenciada na AGT-011 | `server/reservas/service.ts`, `server/reservas/routes.ts`, `src/pages/MinhasReservas.tsx`; `tests/area-passageiro-api.test.ts`, `tests/web-area-passageiro.test.tsx` |
+| RF-030 | Detalhe e situação da reserva | 011 | Evidenciada na AGT-011 | `server/reservas/service.ts`, `server/reservas/routes.ts`, `src/pages/MinhasReservas.tsx`; `tests/area-passageiro-api.test.ts`, `tests/web-area-passageiro.test.tsx` |
+| RF-031 | Histórico de reservas concluídas | 011 | Evidenciada na AGT-011 (o histórico inclui também as canceladas) | `server/vagas/conclusao.ts`, `src/pages/MinhasReservas.tsx`; `tests/area-passageiro-api.test.ts` |
 | RF-032 | Cancelamento solicitado pelo passageiro | 013 | Planejada | — |
 | RF-033 | Cálculo do reembolso conforme a antecedência | 013 | Planejada | — |
 | RF-034 | Cancelamento da excursão pela organização | 013 | Planejada | — |
@@ -117,10 +117,10 @@ AGT prevista conforme o plano; regras sem AGT no plano ficam na AGT-017 (valida�
 | RN-020 | Nesse caso, a primeira parcela permanece não reembolsável. | 010 | Evidenciada na AGT-010 | `server/pagamentos/confirmacao.ts`, `server/vagas/vencimento.ts`; `tests/parcelado-confirmacao.test.ts`, `tests/parcelado-api.test.ts` |
 | RN-021 | Nenhuma operação pode resultar em vagas ocupadas acima da capacidade da excursão. | 008 | Parcial na AGT-008 (restrição do banco da AGT-002, retenção e `ocuparVaga`; a ocupação por pagamento é da AGT-009) | `server/vagas/disponibilidade.ts`; `tests/vagas-concorrencia.test.ts`, `tests/db-schema.test.ts` |
 | RN-022 | Confirmação financeira recebida após a expiração da retenção, sem disponibilidade, é registrada para tratamento administrativo, sem criar vaga adicional. | 009 | Evidenciada na AGT-009 (o registro; o tratamento administrativo é das AGT-012 e AGT-013) | `confirmarPagamento`; `tests/pagamento-confirmacao.test.ts`, `tests/pagamento-api.test.ts` |
-| RN-023 | As situações da reserva são: Aguardando pagamento, Pronto para embarque, Concluída e Cancelada. | 011 | Planejada | — |
-| RN-024 | Reservas integralmente pagas ou com segunda parcela quitada ficam "Pronto para embarque". | 011 | Parcial: a situação é atribuída pelas AGT-009 e AGT-010; a área do passageiro é da AGT-011 | `confirmarPagamento`; `tests/parcelado-api.test.ts` |
-| RN-025 | Um dia após a data final da excursão, reservas elegíveis ficam automaticamente "Concluída". | 011, 014 | Planejada | — |
-| RN-026 | Reservas concluídas permanecem no histórico do passageiro. | 011 | Planejada | — |
+| RN-023 | As situações da reserva são: Aguardando pagamento, Pronto para embarque, Concluída e Cancelada. | 011 | Evidenciada na AGT-011 (as quatro situações aparecem na lista e no detalhe) | `src/pages/MinhasReservas.tsx`, `server/vagas/conclusao.ts`; `tests/area-passageiro-api.test.ts`, `tests/web-area-passageiro.test.tsx` |
+| RN-024 | Reservas integralmente pagas ou com segunda parcela quitada ficam "Pronto para embarque". | 011 | Evidenciada nas AGT-009, AGT-010 e AGT-011 (atribuída e exibida) | `confirmarPagamento`; `tests/parcelado-api.test.ts` |
+| RN-025 | Um dia após a data final da excursão, reservas elegíveis ficam automaticamente "Concluída". | 011, 014 | Parcial na AGT-011 (conclusão na leitura e na gravação, sem tarefa em segundo plano; a rotina agendada é da AGT-014) | `concluirReservas` em `server/vagas/conclusao.ts`; `tests/area-passageiro-api.test.ts` |
+| RN-026 | Reservas concluídas permanecem no histórico do passageiro. | 011 | Evidenciada na AGT-011 | `server/reservas/service.ts` (listar); `tests/area-passageiro-api.test.ts` |
 | RN-027 | Cancelamento pelo passageiro com antecedência de pelo menos duas semanas: reembolso de 100% do valor elegível. | 013 | Planejada | — |
 | RN-028 | Com menos de duas semanas e pelo menos uma semana: reembolso de 50% do valor elegível. | 013 | Planejada | — |
 | RN-029 | Com menos de uma semana: sem reembolso. | 013 | Planejada | — |

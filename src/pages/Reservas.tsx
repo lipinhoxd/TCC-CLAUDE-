@@ -106,11 +106,11 @@ export function AcaoReservar({ excursao }: { excursao: ExcursaoPublica }) {
   );
 }
 
-const ROTULO_PARCELA = { unica: 'Parcela única', primeira: 'Primeira parcela', segunda: 'Segunda parcela' } as const;
-const ROTULO_PAGAMENTO = { pendente: 'Aguardando confirmação', confirmado: 'Pago', falhou: 'Recusado', estornado: 'Estornado' } as const;
+export const ROTULO_PARCELA = { unica: 'Parcela única', primeira: 'Primeira parcela', segunda: 'Segunda parcela' } as const;
+export const ROTULO_PAGAMENTO = { pendente: 'Aguardando confirmação', confirmado: 'Pago', falhou: 'Recusado', estornado: 'Estornado' } as const;
 
 /** Vaga ja ocupada por pagamento confirmado (a unica ou a primeira parcela), mesmo que a reserva ainda aguarde a segunda. */
-function vagaOcupada(reserva: Reserva): boolean {
+export function vagaOcupada(reserva: Reserva): boolean {
   return reserva.valores.parcelas.some((p) => p.situacao_pagamento === 'confirmado');
 }
 

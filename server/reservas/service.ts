@@ -8,6 +8,7 @@ import { instantePrazo } from '../excursoes/validation.ts';
 import { proximaParcela } from '../pagamentos/parcelas.ts';
 import type { ParcelaPagamento } from '../pagamentos/parcelas.ts';
 import type { ProvedorPagamento } from '../pagamentos/provedor.ts';
+import { concluirReservas, reservaConcluida } from '../vagas/conclusao.ts';
 import { disponibilidade, expirarVencidas } from '../vagas/disponibilidade.ts';
 import { reservaVencida, vencerSegundasParcelas } from '../vagas/vencimento.ts';
 import { RETENCAO_PADRAO_MINUTOS } from './config.ts';
@@ -19,6 +20,7 @@ import { RETENCAO_PADRAO_MINUTOS } from './config.ts';
  * Decisoes do pesquisador: reserva criada ao solicitar; desistencia enquanto nao houver pagamento; ate 3
  * reservas pendentes por passageiro; primeira parcela = metade para baixo e segunda = restante; modalidade
  * escolhida na solicitacao e sem troca; solicitacao recusada sem vagas, mas varias pendentes na ultima vaga.
+ * AGT-011: lista (em andamento e historico), detalhe e conclusao automatica na leitura (server/vagas/conclusao.ts).
  * Decisoes do pesquisador na AGT-008: a retencao comeca ao abrir o checkout e dura 15 min (configuravel); pode ser
  * retomada depois de expirada, se houver vaga; a expiracao e avaliada na leitura e na gravacao; a reserva continua
  * aguardando pagamento quando a retencao expira; desistir cancela a retencao ativa.
@@ -68,6 +70,8 @@ export interface ReservaDto {
   excursao: {
     id: number;
     nome: string;
+    local: string;
+    ponto_embarque: string;
     data_inicial: string;
     data_final: string;
     partida_brasilia: { data: string; hora: string };
@@ -132,6 +136,12 @@ export class ReservaService {
     withTransaction(this.db, () => vencerSegundasParcelas(this.db, agora, escopo));
   }
 
+  /** Grava a conclusao das reservas elegiveis do passageiro em transacao propria, antes de ler (AGT-011, RN-025). */
+  private efetivarConclusoes(escopo: { passageiroId?: number; reservaId?: number }): void {
+    const agora = this.relogio();
+    withTransaction(this.db, () => concluirReservas(this.db, agora, escopo));
+  }
+
   /** Linhas de pagamento da reserva, em ordem de criacao. */
   private pagamentosDe(reservaId: number): Row[] {
     return this.db.prepare('SELECT parcela, situacao, valor_centavos, confirmado_em, pendencia_administrativa FROM pagamento WHERE reserva_id = ? ORDER BY id').all(reservaId);
@@ -167,7 +177,9 @@ export class ReservaService {
     const partida = utcParaBrasilia(t(excursao['partida_utc']));
     // Vencimento da segunda parcela: a leitura ja mostra a reserva cancelada por inadimplencia, mesmo antes de a gravacao efetiva-la.
     const vencida = reservaVencida(this.db, Number(reserva['id']), this.relogio());
-    const situacao = vencida ? 'cancelada' : t(reserva['situacao']);
+    // Conclusao (AGT-011): a leitura ja mostra a reserva Concluida um dia apos a data final, mesmo antes de a passagem ser gravada.
+    const concluida = !vencida && reservaConcluida(this.db, Number(reserva['id']), this.relogio());
+    const situacao = vencida ? 'cancelada' : concluida ? 'concluida' : t(reserva['situacao']);
     const motivo = vencida || reserva['motivo_cancelamento'] === 'inadimplencia' ? ('inadimplencia' as const) : null;
     const linhas = this.pagamentosDe(Number(reserva['id']));
     const proxima = situacao === 'aguardando_pagamento' ? proximaParcela(modalidade, linhas as Array<{ parcela: string; situacao: string; pendencia_administrativa: unknown }>) : null;
@@ -183,6 +195,8 @@ export class ReservaService {
       excursao: {
         id: Number(excursao['id']),
         nome: t(excursao['nome']),
+        local: t(excursao['local']),
+        ponto_embarque: t(excursao['ponto_embarque']),
         data_inicial: t(excursao['data_inicial']),
         data_final: t(excursao['data_final']),
         partida_brasilia: { data: partida.data, hora: partida.hora.slice(0, 5) },
@@ -283,6 +297,32 @@ export class ReservaService {
       });
       return this.obter(passageiroId, id);
     });
+  }
+
+  /**
+   * Detalhe do passageiro (AGT-011, RF-030): efetiva a conclusao das reservas elegiveis dele e devolve a reserva. A de outra pessoa
+   * responde 404, igual a inexistente.
+   */
+  consultar(passageiroId: number, reservaId: number): ReservaDto {
+    this.efetivarConclusoes({ passageiroId });
+    return this.obter(passageiroId, reservaId);
+  }
+
+  /**
+   * Lista as reservas do proprio passageiro (AGT-011, RF-029, RF-031, RN-026). "Em andamento": aguardando pagamento e pronto para
+   * embarque, da excursao mais proxima para a mais distante. "Historico": concluidas e canceladas, da mais recente para a mais
+   * antiga. Nunca devolve reserva de outra pessoa: o passageiro vem da sessao.
+   */
+  listar(passageiroId: number): { em_andamento: ReservaDto[]; historico: ReservaDto[] } {
+    this.efetivarConclusoes({ passageiroId });
+    const linhas = this.db.prepare('SELECT * FROM reserva WHERE usuario_id = ? ORDER BY id').all(passageiroId);
+    const todas = linhas.map((l) => this.paraDto(l));
+    const emAndamento = todas.filter((r) => r.situacao === 'aguardando_pagamento' || r.situacao === 'pronto_para_embarque');
+    const historico = todas.filter((r) => r.situacao === 'concluida' || r.situacao === 'cancelada');
+    const porData = (a: ReservaDto, b: ReservaDto) => a.excursao.data_inicial.localeCompare(b.excursao.data_inicial) || a.id - b.id;
+    emAndamento.sort(porData);
+    historico.sort((a, b) => porData(b, a));
+    return { em_andamento: emAndamento, historico };
   }
 
   /** A propria reserva; a de outra pessoa responde 404, igual a inexistente. */

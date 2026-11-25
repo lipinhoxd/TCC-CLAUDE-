@@ -9,6 +9,7 @@ import type { ReservaService } from './service.ts';
  * Rotas de reserva do passageiro (AGT-007). Todas exigem o perfil passageiro, verificado no servidor a cada
  * requisicao e antes de ler o corpo: visitante 401, administrador 403. O passageiro vem da sessao.
  * AGT-009: pagamento integral da reserva (iniciar) e, so com o provedor simulado, a simulacao do resultado.
+ * AGT-011: lista das proprias reservas (em andamento e historico) e detalhe, com a conclusao efetivada na leitura.
  */
 
 type Metodo = 'GET' | 'POST';
@@ -42,6 +43,7 @@ const ROTAS: Rota[] = [
   {
     padrao: /^\/api\/reservas$/,
     metodos: {
+      GET: ({ res, passageiroId, servico }) => sendJson(res, 200, servico.listar(passageiroId)),
       POST: async ({ req, res, passageiroId, servico }) => {
         sendJson(res, 201, { reserva: servico.solicitar(passageiroId, await readJson(req)) });
       },
@@ -50,7 +52,7 @@ const ROTAS: Rota[] = [
   {
     padrao: /^\/api\/reservas\/(\d{1,15})$/,
     metodos: {
-      GET: ({ res, passageiroId, id, servico }) => sendJson(res, 200, { reserva: servico.obter(passageiroId, id) }),
+      GET: ({ res, passageiroId, id, servico }) => sendJson(res, 200, { reserva: servico.consultar(passageiroId, id) }),
     },
   },
   {

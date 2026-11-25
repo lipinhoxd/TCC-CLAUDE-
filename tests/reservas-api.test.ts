@@ -144,7 +144,7 @@ describe('autorizacao (RN-009, RNF-004)', () => {
   });
 
   it('metodo errado responde 405 com Allow; sem os servicos responde 503', async () => {
-    expect((await ana('GET', '/api/reservas')).headers.get('allow')).toBe('POST');
+    expect((await ana('DELETE', '/api/reservas')).headers.get('allow')).toBe('GET, POST');
     expect((await ana('DELETE', '/api/reservas/1')).headers.get('allow')).toBe('GET');
     const sem = createApp();
     await new Promise<void>((resolve) => sem.listen(0, '127.0.0.1', resolve));

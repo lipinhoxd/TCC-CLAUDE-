@@ -1,4 +1,4 @@
-# Reservas (AGT-007 a AGT-010)
+# Reservas (AGT-007 a AGT-011)
 
 Solicitação de reserva individual do passageiro e checkout (RF-018 a RF-020), sobre as tabelas `reserva`, `excursao`,
 `retencao_vaga` e `auditoria`. criar a
@@ -27,7 +27,8 @@ situação nem valores (`campo_nao_permitido`).
 | Método e caminho | Resultado |
 | --- | --- |
 | `POST /api/reservas` | Corpo `{ "excursao_id": 7, "modalidade": "integral" \| "parcelada" }` (modalidade opcional). 201 com a reserva. |
-| `GET /api/reservas/:id` | A própria reserva, com o resumo de valores. De outra pessoa ou inexistente: 404 `nao_encontrada` (a mesma resposta). |
+| `GET /api/reservas` | (AGT-011) As próprias reservas do passageiro: `{ "em_andamento": [...], "historico": [...] }`. Efetiva antes a conclusão das reservas elegíveis dele. |
+| `GET /api/reservas/:id` | A própria reserva, com o resumo de valores (desde a AGT-011 também efetiva a conclusão das reservas elegíveis do passageiro). De outra pessoa ou inexistente: 404 `nao_encontrada` (a mesma resposta). |
 | `POST /api/reservas/:id/checkout` | (AGT-008) Inicia ou retoma a retenção temporária da vaga. 200 com a reserva e a `retencao`. |
 | `POST /api/reservas/:id/pagamento` | (AGT-009 e AGT-010) Inicia ou retoma o pagamento da **próxima parcela**, que o servidor decide (integral: a única; parcelada: a primeira e depois a segunda). A única e a primeira exigem retenção ativa; a segunda não. 200 com a reserva e o `pagamento`. O corpo, se houver, é ignorado. |
 | `POST /api/reservas/:id/pagamento/simulacao` | (AGT-009) Corpo `{ "resultado": "aprovado" \| "recusado" }`. **Só existe fora de produção** (provedor simulado); com o provedor ausente responde 404 como qualquer rota inexistente. |
@@ -125,11 +126,27 @@ Auditoria (só situação, reserva, excursão, parcela e valor em centavos): `pa
 `pagamento.confirmado` (com `quitacao` na segunda), `pagamento.confirmado_sem_vaga`, `retencao.confirmada`, `reserva.pronta_para_embarque` e
 `reserva.vencimento_segunda_parcela`.
 
+## Área do passageiro (AGT-011, RF-029 a RF-031, RN-023 a RN-026)
+
+Decisões do pesquisador (24/11/2026, "recomendadas"):
+
+| Ponto | Decisão |
+| --- | --- |
+| Conclusão (RN-025) | **Na leitura e na gravação, sem tarefa em segundo plano** (`server/vagas/conclusao.ts`; a rotina agendada é da AGT-014). A lista e o detalhe efetivam, em transação própria e só das reservas do passageiro que consulta, a passagem para **Concluída**, com auditoria `reserva.concluida` (ator nulo, sem dados pessoais). A resposta de qualquer rota já mostra a reserva elegível como Concluída. |
+| Elegibilidade | Só a reserva em **Pronto para embarque**, a partir de 00:00 (Brasília) do dia seguinte à data final da excursão. Reserva em Aguardando pagamento depois do fim da excursão não é elegível e continua em andamento (limitação 8). |
+| Efeitos | A conclusão **não altera vagas nem pagamentos**: a vaga de uma reserva concluída continua ocupada. Acontece uma única vez por reserva (idempotente). |
+| Lista (RF-029, RF-031, RN-026) | Uma página com dois blocos: **Em andamento** (Aguardando pagamento e Pronto para embarque; da excursão mais próxima para a mais distante) e **Histórico** (Concluídas e Canceladas, estas com o motivo "segunda parcela não paga" quando for o caso; da excursão mais recente para a mais antiga). A reserva concluída nunca sai do histórico. |
+| Detalhe (RF-030) | Página própria `/reservas/:id`: excursão, local, ponto de embarque, datas, partida, forma de pagamento, situação e parcelas. O pagamento continua no checkout (`/reservas/:id/checkout`). Ações: Aguardando pagamento: continuar o pagamento e desistir (quando permitido); as demais situações não têm ação. O pagamento confirmado sem vaga é descrito como "a organização vai tratar o caso", sem campos internos; a primeira parcela de uma reserva vencida é "não reembolsável", sem prometer devolução. |
+
+Privacidade: o passageiro vem da sessão (parâmetros de URL e corpo não o escolhem); a lista nunca traz reserva de outra pessoa; reserva alheia e inexistente respondem o mesmo 404; as respostas não trazem CPF, telefone, e-mail, hash, token nem dados de outro passageiro. A resposta da reserva ganhou `excursao.local` e `excursao.ponto_embarque`.
+
 ## Interface
 
 | Caminho | O que mostra |
 | --- | --- |
 | `/excursoes/:id` | Bloco **Reservar**: o passageiro escolhe a forma de pagamento e reserva; o visitante vê "Entrar" e "Criar conta"; o administrador não vê o bloco; excursão esgotada mostra um aviso, sem botão. |
+| `/reservas` | (AGT-011) **Minhas reservas**: blocos "Em andamento" e "Histórico", com situação, valor e ações (ver detalhe e, se aguarda pagamento, continuar o pagamento); item "Minhas reservas" no menu do passageiro; visitante vê convite ao login e administrador vê acesso restrito. |
+| `/reservas/:id` | (AGT-011) **Detalhe da reserva**: dados da excursão, forma de pagamento, situação, parcelas, avisos por situação e, quando permitido, desistir. Inexistente ou de outra pessoa: "Reserva não encontrada". |
 | `/reservas/:id/checkout` | Resumo (excursão, datas, partida, modalidade, situação), tabela de parcelas com vencimento e total, **o tempo restante da retenção (mm:ss)** e o aviso de que a vaga só é garantida após o pagamento confirmado, a coluna **Pagamento** da tabela de parcelas (Pago, Aguardando confirmação, Recusado) e o bloco **Pagamento** (botão Pagar, Pagar a primeira parcela ou Pagar a segunda parcela, com o valor do servidor; pendente com os botões de simulação em demonstração; recusado com nova tentativa; parcelada com aviso; sem provedor com aviso) e o botão de desistir (com confirmação). Reserva paga mostra "Pagamento confirmado. Sua reserva está pronta para embarque." e some com o tempo, o Pagar e o desistir. Pagamento confirmado sem vaga mostra que a organização vai tratar o caso. Ao abrir, inicia a retenção. Sem vaga: explica e oferece "Tentar novamente". Tempo esgotado: avisa que a vaga foi liberada e oferece "Retomar checkout". |
 
 ## Efeitos em outras atividades
@@ -154,6 +171,8 @@ Auditoria (só situação, reserva, excursão, parcela e valor em centavos): `pa
 3a. **Expiração sem tarefa em segundo plano:** a retenção vencida só é marcada como `expirada` quando alguém grava ou lê vagas; a disponibilidade já a ignora pelo prazo. A rotina periódica é da AGT-014.
 3b. **Relógio:** o servidor decide o prazo; a contagem na tela usa o relógio do navegador a partir dos segundos restantes informados e pode divergir poucos segundos.
 4. **Sem troca de modalidade:** para mudar, é preciso desistir e reservar de novo.
-5. **Sem lista de reservas** do passageiro (AGT-011) e sem administração de reservas (AGT-012).
+5. Sem administração de reservas (AGT-012).
 6. **Reserva de excursão que depois deixa de ser publicada:** o passageiro ainda vê a própria reserva; as consequências (cancelamento da excursão) são da AGT-013.
 7. Sem limite de requisições nas rotas e verificação em navegador só no Microsoft Edge (Chromium), sem leitor de tela.
+8. **Conclusão sem tarefa agendada (AGT-011):** a passagem para Concluída só é gravada quando o passageiro consulta a lista ou o detalhe; antes disso o banco ainda guarda "Pronto para embarque", embora as respostas já mostrem "Concluída". A rotina periódica é da AGT-014. A reserva em Aguardando pagamento que passa do fim da excursão não é concluída nem cancelada por esta atividade.
+9. **Aviso e tabela (AGT-011):** o aviso ao passageiro é só a tela; no celular a tabela da lista rola na horizontal dentro do quadro (as colunas Situação e Ações ficam à direita), sem rolagem horizontal da página; sem paginação da lista; sem leitor de tela testado.

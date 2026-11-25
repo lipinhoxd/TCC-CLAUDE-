@@ -30,7 +30,7 @@ Não há inferência estatística.
 
 ## 2. Experimento principal (Claude Code)
 
-n = 10 atividades concluídas e classificadas (de 18 previstas).
+n = 11 atividades concluídas e classificadas (de 18 previstas).
 
 | AGT | Atividade | Estado | Classe | Tentativas | Testes | Duração | Intervenção | Commit |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- |
@@ -44,9 +44,10 @@ n = 10 atividades concluídas e classificadas (de 18 previstas).
 | 008 | Capacidade e retenção temporária de vagas | Concluída | AP-3 | 1 | 372 (326 anteriores + 46 novos; 1 reescrito de outra atividade e 3 ajustados), todos aprovados | ≈ 17,6 min (inclui documentação, mutações e percurso em navegador; espera pelas decisões não contada) | Sim: decisão sobre vagas e concorrência (três paradas previstas) | `23e87fb` |
 | 009 | Pagamento integral | Concluída | AP-3 | 1 | 420 (372 anteriores + 48 novos; 2 atualizados de outras atividades), todos aprovados | ≈ 14,8 min (inclui documentação, mutações e percurso em navegador; espera pelas decisões não contada) | Sim: decisão sobre pagamento e vagas (três paradas previstas) | `c051823` |
 | 010 | Pagamento parcelado e vencimento | Concluída | AP-3 | 1 | 463 (420 anteriores + 43 novos; atualizados testes de outras atividades), todos aprovados | ≈ 396,5 min em relógio (inclui pausas e a interrupção da sessão; tempo ativo **[DADO NÃO REGISTRADO]**) | Sim: decisão sobre pagamentos, vagas e inadimplência (três paradas previstas) | `f983b15` |
-| 011 a 018 | Ver `docs/especificacao/07-PLANO-DE-ATIVIDADES.md` | Planejada | — | — | — | — | — | — |
+| 011 | Área do passageiro | Concluída | AP-3 | 1 | 502 (463 anteriores + 39 novos), todos aprovados | ≈ 9,4 min (inclui documentação, mutações e percurso em navegador; espera pelas decisões não contada) | Sim: decisão sobre situação da reserva e dados do passageiro (três paradas previstas) | `HASH_A_PREENCHER` |
+| 012 a 018 | Ver `docs/especificacao/07-PLANO-DE-ATIVIDADES.md` | Planejada | — | — | — | — | — | — |
 
-Distribuição descritiva: 10 AP-3 (n = 10) no subconjunto avaliado, o que **não permite concluir
+Distribuição descritiva: 11 AP-3 (n = 11) no subconjunto avaliado, o que **não permite concluir
 nada sobre o desempenho do agente**. As atividades seguem um critério único (decisão do pesquisador exigida pela instrução = AP-3; ver `docs/rubrica-avaliacao.md`). Perfil: tarefas fundacionais. Não há inferência estatística nem grupo
 de controle.
 

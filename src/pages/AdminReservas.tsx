@@ -58,6 +58,8 @@ export function SoAdministrador({ children, negado }: { children: ReactNode; neg
 export function SubMenu() {
   return (
     <nav aria-label="Administração" className="actions">
+      <Link to="/admin">Painel</Link>
+      <Link to="/admin/historico">Histórico</Link>
       <Link to="/admin/excursoes">Excursões</Link>
       <Link to="/admin/reservas">Reservas</Link>
       <Link to="/admin/passageiros">Passageiros</Link>

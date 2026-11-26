@@ -3,6 +3,7 @@ import { loadWebConfig } from './config/env.ts';
 import { Layout } from './Layout.tsx';
 import { AdminExcursoes, FormularioExcursao } from './pages/AdminExcursoes.tsx';
 import { AdminCancelamentoExcursao, AdminReembolsos } from './pages/AdminCancelamentos.tsx';
+import { AdminHistorico, AdminPainel } from './pages/AdminPainel.tsx';
 import { AdminPassageiroDetalhe, AdminPassageiros, AdminPendencias, AdminReservaDetalhe, AdminReservas } from './pages/AdminReservas.tsx';
 import { Cadastro, Login } from './pages/AuthPages.tsx';
 import { Avisos } from './pages/Avisos.tsx';
@@ -72,6 +73,8 @@ export const ROUTES: Record<string, ComponentType<PageProps>> = {
   '/login': Login,
   '/reservas': MinhasReservas,
   '/avisos': Avisos,
+  '/admin': AdminPainel,
+  '/admin/historico': AdminHistorico,
   '/admin/excursoes': AdminExcursoes,
   '/admin/reservas': AdminReservas,
   '/admin/passageiros': AdminPassageiros,

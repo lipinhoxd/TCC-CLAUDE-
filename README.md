@@ -79,6 +79,10 @@ A API executa, na inicialização e a cada 60 segundos (`ROTINA_INTERVALO_SEGUND
 
 A rotina automática gera avisos sobre pagamentos, cancelamentos e reembolsos, que o passageiro vê em **Avisos** (`/avisos`). O e-mail é **simulado** fora de produção, em arquivo local (`EMAIL_SIMULADO`, `COMUNICACAO_OUTBOX_PATH`); nada é enviado de verdade. Ver [docs/comunicacao.md](docs/comunicacao.md).
 
+## Painel administrativo
+
+O administrador tem um **Painel** (`/admin`) com valores, reservas por situação, pendências, e-mails que falharam e a ocupação das excursões a realizar, e um **Histórico** (`/admin/historico`) das operações administrativas e automáticas, com filtros. Ver [docs/painel-administrativo.md](docs/painel-administrativo.md).
+
 ## Consulta pública de excursões
 
 Lista e detalhe das excursões publicadas (`/excursoes`, `/excursoes/:id`) e API pública de leitura (`GET /api/excursoes`). Para ver com dados fictícios: `npm run admin:create` e `npm run seed:demo`. Imagens em `public/imagens/`. Detalhes e limitações em [docs/consulta-publica.md](docs/consulta-publica.md).

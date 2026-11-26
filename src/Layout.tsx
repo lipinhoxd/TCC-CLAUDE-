@@ -5,6 +5,8 @@ import { useSession } from './session.tsx';
 import { Notice, useAppName } from './ui.tsx';
 
 export const ADMIN_ITEM = { to: '/admin/excursoes', label: 'Administração' } as const;
+/** Painel consolidado (AGT-016): primeiro item da administracao. */
+export const PAINEL_ITEM = { to: '/admin', label: 'Painel' } as const;
 
 export const ADMIN_ITENS = [
   { to: '/admin/reservas', label: 'Reservas' },
@@ -74,7 +76,7 @@ export function Layout({ children }: { children: ReactNode }) {
   const { path, flash } = useRouter();
   const { checkFailed, user } = useSession();
   // Conveniencia de navegacao: o servidor continua sendo a autoridade sobre o acesso.
-  const itensMenu = user?.perfil === 'administrador' ? [...NAV_ITEMS, ADMIN_ITEM, ...ADMIN_ITENS] : user?.perfil === 'passageiro' ? [...NAV_ITEMS, PASSAGEIRO_ITEM, AVISOS_ITEM] : NAV_ITEMS;
+  const itensMenu = user?.perfil === 'administrador' ? [...NAV_ITEMS, PAINEL_ITEM, ADMIN_ITEM, ...ADMIN_ITENS] : user?.perfil === 'passageiro' ? [...NAV_ITEMS, PASSAGEIRO_ITEM, AVISOS_ITEM] : NAV_ITEMS;
   const [menuOpen, setMenuOpen] = useState(false);
   const mainRef = useRef<HTMLElement>(null);
   const firstRender = useRef(true);

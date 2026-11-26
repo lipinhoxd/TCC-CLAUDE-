@@ -7,6 +7,8 @@ import { calcularParcelas } from '../reservas/service.ts';
 import type { Modalidade } from '../reservas/service.ts';
 import { concluirReservas } from '../vagas/conclusao.ts';
 import { vencerSegundasParcelas } from '../vagas/vencimento.ts';
+import { listarHistorico, montarPainel } from './painel.ts';
+import type { Painel, PaginaDoHistorico } from './painel.ts';
 
 /**
  * Administracao de reservas e passageiros (AGT-012, RF-037, RF-038, RF-039, RF-026, RN-034, RN-035). Decisoes do pesquisador
@@ -384,6 +386,24 @@ export class AdminService {
     });
     const pendencias = tipo === undefined || tipo === '' ? todas : todas.filter((p) => p.tipo === tipo);
     return { pendencias, total: pendencias.length };
+  }
+
+  /* ---------------------------------------------------------- painel e historico */
+
+  /**
+   * Painel consolidado (AGT-016, RF-041). Efetiva antes o vencimento e a conclusao pendentes, como as demais telas administrativas
+   * (decisao 3.1), e le tudo em uma unica transacao de leitura.
+   */
+  painel(consulta: Record<string, string | undefined>): Painel {
+    const campos = Object.keys(consulta);
+    if (campos.length > 0) throw new HttpError(400, 'validacao', { fields: Object.fromEntries(campos.map((c) => [c, 'campo_nao_permitido'])) });
+    this.efetivarPendentes();
+    return withTransaction(this.db, () => montarPainel(this.db, this.relogio()), 'DEFERRED');
+  }
+
+  /** Historico das operacoes administrativas e automaticas (AGT-016, RF-042). So leitura; a consulta nao e auditada (decisao 2.4). */
+  historico(consulta: Record<string, string | undefined>): PaginaDoHistorico {
+    return withTransaction(this.db, () => listarHistorico(this.db, consulta), 'DEFERRED');
   }
 
   /* ---------------------------------------------------------- passageiros */

@@ -782,3 +782,47 @@ main > dl {
 .btn-secondary:disabled {
   cursor: default;
 }
+
+/* Painel e historico administrativo (AGT-016) */
+.linha-de-valor {
+  display: contents;
+}
+
+.filtros {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(12rem, 1fr));
+  gap: 0.75rem 1rem;
+  align-items: end;
+  max-width: 56rem;
+}
+
+/* Os campos nao passam da propria coluna, mesmo com opcoes longas. */
+.filtros .field {
+  grid-template-columns: minmax(0, 1fr);
+  min-width: 0;
+}
+
+.filtros input,
+.filtros select {
+  width: 100%;
+  min-width: 0;
+}
+
+.filtros select {
+  min-height: 2.75rem;
+  padding: 0.5rem 0.7rem;
+  color: var(--text);
+  background: var(--surface);
+  border: 2px solid #6b7785;
+  border-radius: var(--radius);
+  font: inherit;
+}
+
+.filtros .actions {
+  grid-column: 1 / -1;
+}
+
+.texto-longo {
+  min-width: 14rem;
+  overflow-wrap: anywhere;
+}

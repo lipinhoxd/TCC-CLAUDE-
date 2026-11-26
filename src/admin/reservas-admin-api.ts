@@ -191,7 +191,40 @@ function consulta(filtros: Record<string, string | number | undefined>): string 
   return texto === '' ? '' : `?${texto}`;
 }
 
+export interface Painel {
+  gerado_em: string;
+  excursoes: {
+    itens: Array<{ id: number; nome: string; situacao: 'publicada' | 'encerrada'; data_inicial: string; data_final: string; capacidade: number; ocupadas: number; retidas: number; livres: number }>;
+    total: number;
+  };
+  reservas: Record<SituacaoReserva, number> & { total: number };
+  valores: { recebido_centavos: number; devolvido_centavos: number; liquido_centavos: number; a_devolver_centavos: number; a_receber_centavos: number };
+  pendencias: number;
+  emails_com_falha: number;
+}
+
+export interface EventoDoHistorico {
+  id: number;
+  ocorrido_em: string;
+  acao: string;
+  entidade: string;
+  registro_id: number | null;
+  ator_usuario_id: number | null;
+  reserva_id: number | null;
+  situacao_anterior: string | null;
+  situacao_nova: string | null;
+  valor_centavos: number | null;
+  valor_reembolso_centavos: number | null;
+  valor_total_centavos: number | null;
+  percentual: number | null;
+  justificativa: string | null;
+}
+
 export const adminReservasApi = {
+  /** Painel consolidado e historico (AGT-016). */
+  painel: () => chamar<{ painel: Painel }>('GET', '/api/admin/painel'),
+  historico: (filtros: Record<string, string | number | undefined>) =>
+    chamar<{ eventos: EventoDoHistorico[]; acoes: string[] } & Pagina>('GET', `/api/admin/historico${consulta(filtros)}`),
   listarReservas: (filtros: Record<string, string | number | undefined>) =>
     chamar<{ reservas: ReservaResumo[] } & Pagina>('GET', `/api/admin/reservas${consulta(filtros)}`),
   obterReserva: (id: number) => chamar<{ reserva: ReservaDetalhe }>('GET', `/api/admin/reservas/${id}`),
@@ -244,4 +277,15 @@ export const ROTULO_ACAO_AUDITORIA: Record<string, string> = {
   'reserva.cancelamento_organizacao': 'Cancelamento pela organização',
   'reserva.cancelamento_reembolso': 'Cancelada após o reembolso da pendência',
   'reserva.cancelamento_automatico': 'Cancelamento automático (excursão terminada, sem pagamento)',
+  'excursao.criada': 'Excursão criada',
+  'excursao.editada': 'Excursão editada',
+  'excursao.situacao_alterada': 'Situação da excursão alterada',
+  'excursao.cancelamento': 'Excursão cancelada pela organização',
+  'reembolso.criado': 'Reembolso criado',
+  'reembolso.processado': 'Reembolso processado',
+  'reembolso.recusado': 'Reembolso recusado',
+  'passageiro.consultado': 'Consulta aos dados de um passageiro',
+  'usuario.administrador_criado': 'Administrador criado',
+  'usuario.perfil_alterado': 'Perfil alterado',
+  'comunicacao.falha_definitiva': 'Falha definitiva no envio de e-mail',
 };

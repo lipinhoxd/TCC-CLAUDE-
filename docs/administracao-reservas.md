@@ -39,7 +39,7 @@ e `passageiro.consultado`. A justificativa é texto livre do administrador: a te
 ## Interface
 
 `/admin/reservas` (lista com filtros e paginação), `/admin/reservas/:id` (detalhe, alteração com confirmação e justificativa, auditoria),
-`/admin/pendencias`, `/admin/passageiros` e `/admin/passageiros/:id`; itens "Reservas" e "Passageiros" no menu do administrador. Visitante e passageiro veem
+`/admin/pendencias`, `/admin/passageiros` e `/admin/passageiros/:id`; itens "Reservas" e "Passageiros" no menu do administrador (a AGT-016 acrescentou "Painel" e o histórico; ver `docs/painel-administrativo.md`). Visitante e passageiro veem
 acesso restrito sem consultar a API de administração.
 
 ## Limitações conhecidas

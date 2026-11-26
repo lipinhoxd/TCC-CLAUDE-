@@ -36,6 +36,9 @@ interface Rota {
 }
 
 const ROTAS: Rota[] = [
+  // AGT-016: painel consolidado e historico.
+  { padrao: /^\/api\/admin\/painel$/, metodos: { GET: ({ res, consulta, servico }) => sendJson(res, 200, { painel: servico.painel(consulta) }) } },
+  { padrao: /^\/api\/admin\/historico$/, metodos: { GET: ({ res, consulta, servico }) => sendJson(res, 200, servico.historico(consulta)) } },
   { padrao: /^\/api\/admin\/reservas$/, metodos: { GET: ({ res, consulta, servico }) => sendJson(res, 200, servico.listarReservas(consulta)) } },
   { padrao: /^\/api\/admin\/reservas\/(\d{1,15})$/, metodos: { GET: ({ res, id, servico }) => sendJson(res, 200, { reserva: servico.obterReserva(id) }) } },
   {

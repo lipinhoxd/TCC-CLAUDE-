@@ -23,7 +23,7 @@ campos de avaliação: docs/rubrica-avaliacao.md (repositório)".
 | 009 | AP-3 | c051823 | sim | sim | sim | sim | sim |
 | 010 | AP-3 | f983b15 | sim | sim | sim | sim | sim |
 | 011 | AP-3 | c8ed387 | sim, com divergências | sim, com divergências | sim, com divergências | sim | divergente no Resumo e no Abstract |
-| 012 | AP-3 | 482f981 | pendente | pendente | pendente | pendente | pendente |
+| 012 | AP-3 | 482f981 | sim | sim | **não inserida** | sim | sim (n = 12), com divergências nas classes |
 
 Critério único de classificação (AP-3 quando a instrução manda parar e a atividade só prossegue com
 decisão do pesquisador) está na rubrica, na Seção 6.3 e no Apêndice F do Docs.
@@ -131,3 +131,7 @@ O Gemini aplicou a AGT-011 com divergências (ver `TCC/relatorios/AUDITORIA-SINC
 ## AGT-012 (26/11/2026)
 
 Dossiê: `TCC/relatorios/DOSSIE-GEMINI-AGT-012-2026-11-26.md` (com a lista do que o Gemini não deve inventar). Auditoria: `TCC/relatorios/AUDITORIA-SINCRONIA-AGT-012-2026-11-26.md`. **Aguardando o pesquisador enviar ao Gemini**; depois, reler o Docs e conferir (n = 12; AGT-013 a AGT-018 não iniciadas; Quadro 2; ficha; Seção 5.3; Apêndice D; nada novo inventado). Commits da atividade: 482f981 e a797a32.
+
+## Conferência de 2026-11-26T13:21:23-03:00
+
+AGT-012 aplicada em parte; divergências abertas (ficha da AGT-012 ausente, ficha da AGT-011 danificada, classe "AP-4", Quadro 3 e análise, correções da AGT-011 não aplicadas). Pedido consolidado: `TCC/relatorios/PEDIDO-CORRECAO-GEMINI-2026-11-26.md`. Aguardando as decisões dos pesquisadores sobre AP-4, Quadro 3 e data de corte.

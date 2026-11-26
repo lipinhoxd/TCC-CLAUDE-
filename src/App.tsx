@@ -2,6 +2,7 @@ import type { ComponentType } from 'react';
 import { loadWebConfig } from './config/env.ts';
 import { Layout } from './Layout.tsx';
 import { AdminExcursoes, FormularioExcursao } from './pages/AdminExcursoes.tsx';
+import { AdminPassageiroDetalhe, AdminPassageiros, AdminPendencias, AdminReservaDetalhe, AdminReservas } from './pages/AdminReservas.tsx';
 import { Cadastro, Login } from './pages/AuthPages.tsx';
 import { DetalhePublico, ListaPublica } from './pages/ExcursoesPublicas.tsx';
 import { ComoFunciona, Contato, Home, NaoEncontrada, Sobre } from './pages/InfoPages.tsx';
@@ -42,6 +43,18 @@ function DetalheDaReserva({ params }: PageProps) {
   return id === null ? <NaoEncontrada /> : <DetalheReserva id={id} />;
 }
 
+const idDe = (params: Record<string, string>): number | null => (/^[0-9]{1,15}$/.test(params['id'] ?? '') ? Number(params['id']) : null);
+
+function AdminReservaDaRota({ params }: PageProps) {
+  const id = idDe(params);
+  return id === null ? <NaoEncontrada /> : <AdminReservaDetalhe id={id} />;
+}
+
+function AdminPassageiroDaRota({ params }: PageProps) {
+  const id = idDe(params);
+  return id === null ? <NaoEncontrada /> : <AdminPassageiroDetalhe id={id} />;
+}
+
 export const ROUTES: Record<string, ComponentType<PageProps>> = {
   '/': Home,
   '/excursoes': ListaPublica,
@@ -52,6 +65,9 @@ export const ROUTES: Record<string, ComponentType<PageProps>> = {
   '/login': Login,
   '/reservas': MinhasReservas,
   '/admin/excursoes': AdminExcursoes,
+  '/admin/reservas': AdminReservas,
+  '/admin/passageiros': AdminPassageiros,
+  '/admin/pendencias': AdminPendencias,
   '/admin/excursoes/nova': () => <FormularioExcursao />,
 };
 
@@ -60,6 +76,8 @@ export const DYNAMIC_ROUTES: [string, ComponentType<PageProps>][] = [
   ['/reservas/:id/checkout', CheckoutReserva],
   ['/reservas/:id', DetalheDaReserva],
   ['/admin/excursoes/:id', EditarExcursao],
+  ['/admin/reservas/:id', AdminReservaDaRota],
+  ['/admin/passageiros/:id', AdminPassageiroDaRota],
 ];
 
 function Routes() {

@@ -1,5 +1,7 @@
 import { createServer } from 'node:http';
 import type { IncomingMessage, Server, ServerResponse } from 'node:http';
+import { handleAdminRoute } from './admin/routes.ts';
+import type { AdminService } from './admin/service.ts';
 import type { AuthConfig } from './auth/config.ts';
 import { handleAuthRoute, sendJson } from './auth/routes.ts';
 import type { AuthService } from './auth/service.ts';
@@ -19,6 +21,8 @@ export interface AppOptions {
   reservas?: ReservaService;
   /** Servico de pagamento integral (AGT-009); as rotas de reserva que o usam respondem 503 sem ele. */
   pagamentos?: PagamentoService;
+  /** Administracao de reservas e passageiros (AGT-012); as rotas tambem exigem o servico de autenticacao. */
+  admin?: AdminService;
 }
 
 async function handle(req: IncomingMessage, res: ServerResponse, options: AppOptions): Promise<void> {
@@ -42,6 +46,10 @@ async function handle(req: IncomingMessage, res: ServerResponse, options: AppOpt
   }
 
   if (await handleReservaRoute(req, res, pathname, options.auth?.service, options.reservas, options.pagamentos)) {
+    return;
+  }
+
+  if (await handleAdminRoute(req, res, pathname, options.auth?.service, options.admin)) {
     return;
   }
 

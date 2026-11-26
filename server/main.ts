@@ -1,3 +1,4 @@
+import { AdminService } from './admin/service.ts';
 import { createApp } from './app.ts';
 import { loadAuthConfig } from './auth/config.ts';
 import { AuthService } from './auth/service.ts';
@@ -29,6 +30,7 @@ const server = createApp({
   excursoes: new ExcursaoService(db),
   reservas,
   pagamentos: new PagamentoService(db, reservas, provedor),
+  admin: new AdminService(db),
 });
 
 server.listen(port, host, () => {

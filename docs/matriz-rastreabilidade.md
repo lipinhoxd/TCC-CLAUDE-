@@ -1,6 +1,6 @@
 # Matriz de rastreabilidade (requisito → atividade → evidência)
 
-Atualizada em 24/11/2026 (AGT-011). Fonte dos requisitos: `docs/requisitos/`. Atividade prevista: `docs/especificacao/07-PLANO-DE-ATIVIDADES.md` (e a coluna AGT dos RF). **Evidência** só existe para o que foi executado no experimento principal (AGT-001 a AGT-011; ver a coluna Estado de cada linha e os commits em `TCC/metricas/METRICAS.csv`); o restante está **Planejada**. Não há, aqui, evidência do piloto (repositório não reaberto): **[DADO NÃO REGISTRADO]**.
+Atualizada em 26/11/2026 (AGT-012). Fonte dos requisitos: `docs/requisitos/`. Atividade prevista: `docs/especificacao/07-PLANO-DE-ATIVIDADES.md` (e a coluna AGT dos RF). **Evidência** só existe para o que foi executado no experimento principal (AGT-001 a AGT-012; ver a coluna Estado de cada linha e os commits em `TCC/metricas/METRICAS.csv`); o restante está **Planejada**. Não há, aqui, evidência do piloto (repositório não reaberto): **[DADO NÃO REGISTRADO]**.
 
 Cadeia (TCC, Seção 3.8): requisito → atividade AGT → instrução → execução → alterações → testes → revisão humana → classificação → commit.
 
@@ -33,7 +33,7 @@ Cadeia (TCC, Seção 3.8): requisito → atividade AGT → instrução → execu
 | RF-023 | Pagamento integral | 009 | Evidenciada na AGT-009 (provedor simulado fora de produção) | `server/pagamentos/service.ts`, `src/pages/Reservas.tsx`; `tests/pagamento-api.test.ts`, `tests/web-reservas.test.tsx` |
 | RF-024 | Pagamento em duas parcelas de 50% | 010 | Evidenciada na AGT-010 (provedor simulado fora de produção) | `server/pagamentos/parcelas.ts`, `server/pagamentos/service.ts`, `src/pages/Reservas.tsx`; `tests/parcelado-api.test.ts`, `tests/web-reservas.test.tsx` |
 | RF-025 | Confirmação financeira e ocupação efetiva da vaga | 009/010 | Evidenciada nas AGT-009 e AGT-010 (integral e primeira parcela) | `confirmarPagamento` em `server/pagamentos/confirmacao.ts`; `tests/pagamento-confirmacao.test.ts`, `tests/pagamento-api.test.ts` |
-| RF-026 | Registro de confirmação financeira após expiração da retenção, para tratamento administrativo | 009/013 | Parcial na AGT-009 (registro sinalizado em `pendencia_administrativa`; a tela e o estorno são das AGT-012 e AGT-013) | `server/db/migrations.ts` (versão 2), `confirmarPagamento`; `tests/pagamento-confirmacao.test.ts`, `tests/pagamento-api.test.ts` |
+| RF-026 | Registro de confirmação financeira após expiração da retenção, para tratamento administrativo | 009/013 | Parcial nas AGT-009 e AGT-012 (registro sinalizado e consulta administrativa das pendências; o tratamento e o estorno são da AGT-013) | `server/db/migrations.ts` (versão 2), `confirmarPagamento`; `tests/pagamento-confirmacao.test.ts`, `tests/pagamento-api.test.ts` |
 | RF-027 | Quitação pela confirmação da segunda parcela | 010 | Evidenciada na AGT-010 | `confirmarSegunda` em `server/pagamentos/confirmacao.ts`; `tests/parcelado-confirmacao.test.ts`, `tests/parcelado-api.test.ts` |
 | RF-028 | Liberação da vaga por segunda parcela não paga no prazo | 010/014 | Parcial na AGT-010 (vencimento avaliado na leitura e na gravação, sem tarefa em segundo plano; a rotina agendada é da AGT-014) | `vencerSegundasParcelas` em `server/vagas/vencimento.ts`; `tests/parcelado-confirmacao.test.ts`, `tests/parcelado-api.test.ts` |
 | RF-029 | Área do passageiro: minhas reservas | 011 | Evidenciada na AGT-011 | `server/reservas/service.ts`, `server/reservas/routes.ts`, `src/pages/MinhasReservas.tsx`; `tests/area-passageiro-api.test.ts`, `tests/web-area-passageiro.test.tsx` |
@@ -44,9 +44,9 @@ Cadeia (TCC, Seção 3.8): requisito → atividade AGT → instrução → execu
 | RF-034 | Cancelamento da excursão pela organização | 013 | Planejada | — |
 | RF-035 | Reembolso integral dos valores pagos em cancelamento pela organização | 013 | Planejada | — |
 | RF-036 | Conclusão automática de reservas elegíveis | 014 | Planejada | — |
-| RF-037 | Administração de reservas | 012 | Planejada | — |
-| RF-038 | Consulta de passageiros | 012 | Planejada | — |
-| RF-039 | Alteração manual de situação, quando autorizada | 012 | Planejada | — |
+| RF-037 | Administração de reservas | 012 | Evidenciada na AGT-012 | `server/admin/service.ts`, `server/admin/routes.ts`, `src/pages/AdminReservas.tsx`; `tests/admin-api.test.ts`, `tests/web-admin-reservas.test.tsx` |
+| RF-038 | Consulta de passageiros | 012 | Evidenciada na AGT-012 | `server/admin/service.ts`, `server/admin/routes.ts`, `src/pages/AdminReservas.tsx`; `tests/admin-api.test.ts`, `tests/web-admin-reservas.test.tsx` |
+| RF-039 | Alteração manual de situação, quando autorizada | 012 | Evidenciada na AGT-012 (só transições sem efeito financeiro) | `server/admin/service.ts`, `server/admin/routes.ts`, `src/pages/AdminReservas.tsx`; `tests/admin-api.test.ts`, `tests/web-admin-reservas.test.tsx` |
 | RF-040 | Comunicação transacional ao passageiro (simulada/configurável) | 015 | Planejada | — |
 | RF-041 | Painel administrativo consolidado | 016 | Planejada | — |
 | RF-042 | Histórico e auditoria de operações administrativas e automáticas | 005/016 | Parcial na AGT-005 (excursões; auditoria de reservas e processos automáticos fica para as demais) | `GET /api/admin/excursoes/:id/historico`; `tests/excursoes-api.test.ts` |
@@ -128,8 +128,8 @@ AGT prevista conforme o plano; regras sem AGT no plano ficam na AGT-017 (valida�
 | RN-031 | Cancelamento pela organização: reembolso integral dos valores pagos aos passageiros afetados. | 013 | Planejada | — |
 | RN-032 | A primeira parcela de reserva parcelada não quitada permanece não reembolsável (inadimplência). | 013 | Parcial na AGT-010 (a primeira parcela fica confirmada e a reserva cancelada por inadimplência; a devolução é da AGT-013) | `server/vagas/vencimento.ts`; `tests/parcelado-confirmacao.test.ts` |
 | RN-033 | O administrador configura capacidade, preço, parcelamento e prazo da segunda parcela de cada excursão. | 005 | Planejada | — |
-| RN-034 | O administrador consulta passageiros e reservas. | 012 | Planejada | — |
-| RN-035 | Alterações manuais de situação só ocorrem quando autorizadas e ficam registradas na auditoria. | 012 | Planejada | — |
+| RN-034 | O administrador consulta passageiros e reservas. | 012 | Evidenciada na AGT-012 | `server/admin/service.ts`, `server/admin/routes.ts`, `src/pages/AdminReservas.tsx`; `tests/admin-api.test.ts`, `tests/web-admin-reservas.test.tsx` |
+| RN-035 | Alterações manuais de situação só ocorrem quando autorizadas e ficam registradas na auditoria. | 012 | Evidenciada na AGT-012 | `alterarSituacao` em `server/admin/service.ts`; `tests/admin-api.test.ts` |
 | RN-036 | Com reserva ou retenção ativa, condições comerciais e temporais da excursão não podem ser editadas; nome, imagem e descrição continuam editáveis. | 005 | Evidenciada na AGT-005 (confirmada pela aprovação da instrução) | `tests/excursoes-api.test.ts` |
 | RN-037 | A excursão é criada em Rascunho; a publicação é ação distinta. | 005 | Evidenciada na AGT-005 (confirmada pela aprovação da instrução) | `tests/excursoes-api.test.ts` |
 | RN-038 | Valores monetários são guardados em centavos inteiros (BRL). | 005 | Planejada | — |

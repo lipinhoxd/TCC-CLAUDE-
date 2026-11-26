@@ -1,6 +1,6 @@
 # Quadro de resultados por atividade
 
-Atualizado em 20/11/2026. Os dois estudos são apresentados separados e **não se somam**.
+Atualizado em 26/11/2026. Os dois estudos são apresentados separados e **não se somam**.
 Fontes: TCC (Seção 5), `TCC/registros-agente/`, `TCC/metricas/METRICAS.csv` e Git.
 Células sem dado verificável contêm **[DADO NÃO REGISTRADO]**.
 
@@ -30,7 +30,7 @@ Não há inferência estatística.
 
 ## 2. Experimento principal (Claude Code)
 
-n = 11 atividades concluídas e classificadas (de 18 previstas).
+n = 12 atividades concluídas e classificadas (de 18 previstas).
 
 | AGT | Atividade | Estado | Classe | Tentativas | Testes | Duração | Intervenção | Commit |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- |
@@ -45,9 +45,10 @@ n = 11 atividades concluídas e classificadas (de 18 previstas).
 | 009 | Pagamento integral | Concluída | AP-3 | 1 | 420 (372 anteriores + 48 novos; 2 atualizados de outras atividades), todos aprovados | ≈ 14,8 min (inclui documentação, mutações e percurso em navegador; espera pelas decisões não contada) | Sim: decisão sobre pagamento e vagas (três paradas previstas) | `c051823` |
 | 010 | Pagamento parcelado e vencimento | Concluída | AP-3 | 1 | 463 (420 anteriores + 43 novos; atualizados testes de outras atividades), todos aprovados | ≈ 396,5 min em relógio (inclui pausas e a interrupção da sessão; tempo ativo **[DADO NÃO REGISTRADO]**) | Sim: decisão sobre pagamentos, vagas e inadimplência (três paradas previstas) | `f983b15` |
 | 011 | Área do passageiro | Concluída | AP-3 | 1 | 502 (463 anteriores + 39 novos), todos aprovados | ≈ 9,4 min (inclui documentação, mutações e percurso em navegador; espera pelas decisões não contada) | Sim: decisão sobre situação da reserva e dados do passageiro (três paradas previstas) | `c8ed387` |
-| 012 a 018 | Ver `docs/especificacao/07-PLANO-DE-ATIVIDADES.md` | Planejada | — | — | — | — | — | — |
+| 012 | Administração de reservas e passageiros | Concluída | AP-3 | 1 | 557 (502 anteriores + 55 novos), todos aprovados | ≈ 15,5 min (inclui documentação, mutações e percurso em navegador; espera pelas decisões não contada) | Sim: decisão sobre dados pessoais, situação de reserva e pendências (três paradas previstas) | `HASH_A_PREENCHER` |
+| 013 a 018 | Ver `docs/especificacao/07-PLANO-DE-ATIVIDADES.md` | Planejada | — | — | — | — | — | — |
 
-Distribuição descritiva: 11 AP-3 (n = 11) no subconjunto avaliado, o que **não permite concluir
+Distribuição descritiva: 12 AP-3 (n = 12) no subconjunto avaliado, o que **não permite concluir
 nada sobre o desempenho do agente**. As atividades seguem um critério único (decisão do pesquisador exigida pela instrução = AP-3; ver `docs/rubrica-avaliacao.md`). Perfil: tarefas fundacionais. Não há inferência estatística nem grupo
 de controle.
 

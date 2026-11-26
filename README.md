@@ -66,6 +66,8 @@ Páginas Home, Excursões, Sobre, Como funciona e Contato, cabeçalho e rodapé,
 
 O passageiro reserva uma vaga no detalhe da excursão e chega ao checkout (`/reservas/:id/checkout`); pode desistir enquanto não houver pagamento. Abrir o checkout retém a vaga por 15 minutos (`RETENCAO_MINUTOS`); a retenção expirada libera a vaga. O pagamento integral usa um provedor **simulado** fora de produção (`PAGAMENTO_SIMULADO`); em produção não há provedor. O parcelado (duas parcelas de 50%) segue o mesmo provedor: a primeira ocupa a vaga, a segunda quita até a data limite da excursão e, vencido o prazo, a reserva é cancelada por inadimplência e a vaga é liberada. A página **Minhas reservas** (`/reservas`) lista as reservas do passageiro em andamento e no histórico, com o detalhe de cada uma (`/reservas/:id`); um dia após a data final da excursão, a reserva pronta para embarque passa a **Concluída** e permanece no histórico. Regras, rotas e limitações em [docs/reservas.md](docs/reservas.md).
 
+O administrador consulta reservas, pagamentos, pendências e passageiros em `/admin/reservas`, `/admin/passageiros` e `/admin/pendencias` (CPF e telefone mascarados na lista; consulta ao detalhe do passageiro auditada) e pode cancelar uma reserva sem pagamento ou marcar como concluída uma reserva pronta cuja excursão terminou, sempre com justificativa e auditoria. Ver [docs/administracao-reservas.md](docs/administracao-reservas.md).
+
 ## Consulta pública de excursões
 
 Lista e detalhe das excursões publicadas (`/excursoes`, `/excursoes/:id`) e API pública de leitura (`GET /api/excursoes`). Para ver com dados fictícios: `npm run admin:create` e `npm run seed:demo`. Imagens em `public/imagens/`. Detalhes e limitações em [docs/consulta-publica.md](docs/consulta-publica.md).

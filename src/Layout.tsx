@@ -6,6 +6,11 @@ import { Notice, useAppName } from './ui.tsx';
 
 export const ADMIN_ITEM = { to: '/admin/excursoes', label: 'Administração' } as const;
 
+export const ADMIN_ITENS = [
+  { to: '/admin/reservas', label: 'Reservas' },
+  { to: '/admin/passageiros', label: 'Passageiros' },
+] as const;
+
 export const PASSAGEIRO_ITEM = { to: '/reservas', label: 'Minhas reservas' } as const;
 
 export const NAV_ITEMS = [
@@ -68,7 +73,7 @@ export function Layout({ children }: { children: ReactNode }) {
   const { path, flash } = useRouter();
   const { checkFailed, user } = useSession();
   // Conveniencia de navegacao: o servidor continua sendo a autoridade sobre o acesso.
-  const itensMenu = user?.perfil === 'administrador' ? [...NAV_ITEMS, ADMIN_ITEM] : user?.perfil === 'passageiro' ? [...NAV_ITEMS, PASSAGEIRO_ITEM] : NAV_ITEMS;
+  const itensMenu = user?.perfil === 'administrador' ? [...NAV_ITEMS, ADMIN_ITEM, ...ADMIN_ITENS] : user?.perfil === 'passageiro' ? [...NAV_ITEMS, PASSAGEIRO_ITEM] : NAV_ITEMS;
   const [menuOpen, setMenuOpen] = useState(false);
   const mainRef = useRef<HTMLElement>(null);
   const firstRender = useRef(true);

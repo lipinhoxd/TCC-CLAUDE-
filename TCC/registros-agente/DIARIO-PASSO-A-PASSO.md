@@ -1554,3 +1554,31 @@ nova. A classificação (AP-1, AP-2, AP-3 ou RP) cabe ao pesquisador; o agente n
 **Ações:** o agente criou TCC/registros-agente/AGT-015.md (Seções 1 a 5, com a instrução original na Seção 5 e os critérios de aceitação). Conforme a Seção 5, nenhum arquivo de código é criado antes das decisões; o agente apresenta as três paradas ao pesquisador. Entra no commit de registro a correção da entrada 113. Docs não alterado.
 
 **Pendente:** decisões 1 a 3 do pesquisador; envio dos dossiês ao Gemini e conferência do Docs.
+
+## Entrada 115 — AGT-015: decisões respondidas e início da implementação
+
+**Hora do sistema:** 2026-11-26T16:37:52-03:00
+
+**Pedido do pesquisador:** "recomendadas".
+
+**Decisões:** 1A (aviso na plataforma e e-mail simulado); 2.1 A a 2.5 A (eventos de dinheiro e reserva, sem lembrete, texto mínimo, sem prazo de exclusão, recuperação separada); 3.1 A a 3.4 A (geração pela rotina a partir da auditoria, 3 tentativas, só eventos posteriores, só o passageiro vê). Detalhes na Seção 6 do registro.
+
+**Ações:** início da implementação. Docs não alterado.
+
+## Entrada 116 — AGT-015: implementação, verificações e relatório do agente
+
+**Hora do sistema:** 2026-11-26T16:53:27-03:00 (verificação final da implementação: 2026-11-26T16:52:16-03:00)
+
+**Ações:** criados server/comunicacao/ (textos, geração a partir da auditoria, e-mail simulado, entrega, rota), a tela Avisos e a migração 5; a rotina passou a gerar e entregar os avisos; documentação atualizada. npm run check: 685 de 685 testes em 36 arquivos, lint, tipos e build sem erro. Onze mutações detectadas e restauradas. Percurso em API e navegador reais com dados fictícios, com ajustes no banco declarados. Nenhum envio real, sem dependência nova, sem commit. Erros do agente e correções na Seção 9 do registro. Docs não alterado.
+
+**Pendente:** avaliação e classificação do pesquisador.
+
+## Entrada 117 — AGT-015: classificação AP-3, fechamento, dossiê e auditoria
+
+**Hora do sistema:** 2026-11-26T16:56:17-03:00
+
+**Pedido do pesquisador:** "ap 3" (26/11/2026, 16:54:33).
+
+**Ações:** fechamento padrão: critérios marcados, Seções 11 a 14 e 16 preenchidas (revisão do código registrada pela autorização permanente), métricas, quadro, matriz e ficha; npm run check com 685 de 685 testes; commits 8e486ff (atividade) e dfafd89 (hash). Gerados o dossiê para o Gemini (com Quadro 3, análise e Seção 5.4 para n = 15) e a auditoria de sincronia. Estado do Docs e próximos passos atualizados. Docs não alterado nem relido.
+
+**Pendente:** envio ao Gemini e conferência; pontos abertos das AGT-014 e AGT-015; AGT-016 só quando o pesquisador disser "vamos".

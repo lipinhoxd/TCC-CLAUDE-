@@ -1532,3 +1532,25 @@ nova. A classificação (AP-1, AP-2, AP-3 ou RP) cabe ao pesquisador; o agente n
 **Ações:** fechamento padrão: critérios marcados, Seções 11 a 14 e 16 preenchidas (revisão do código registrada pela autorização permanente), métricas, quadro, matriz e ficha; npm run check com 647 de 647 testes; commits ce9cf5e (atividade) e d3ae627 (hash). Gerados o dossiê para o Gemini (com Quadro 3, análise e Seção 5.4 atualizados, que substituem as Partes B e C do pedido de correção) e a auditoria de sincronia. Estado do Docs e próximos passos atualizados. Docs não alterado nem relido.
 
 **Pendente:** envio ao Gemini e conferência; três pontos abertos da AGT-014; AGT-015 só quando o pesquisador disser "vamos".
+
+## Entrada 113 — AGT-015: rascunho da instrução apresentado; correção de contagem na AGT-014
+
+**Hora do sistema:** 2026-11-26T16:35:17-03:00
+
+**Pedido do pesquisador:** "vamos" (iniciar a AGT-015).
+
+**Ações:** o agente leu a especificação (RF-040, 01-VISAO-GERAL.md, 06-MODELO-DE-DADOS.md, RN-004 e RN-005) e o código de entrega do token de recuperação, e publicou o rascunho da instrução em página privada, com três paradas: canal e forma de simulação; eventos, conteúdo e dados pessoais; confiabilidade e acesso. Nenhum arquivo AGT-015.md e nenhum código foram criados.
+
+**Correção do agente:** a Seção 11 do AGT-014.md (e a cópia no dossiê) dizia que o pesquisador não respondera aos "dois pontos abertos" da Seção 16, que lista três; o texto foi corrigido. Nenhum número, classificação ou decisão mudou.
+
+**Pendente:** aprovação ou correções do pesquisador sobre o rascunho; envio dos dossiês ao Gemini e conferência do Docs. Sem commit.
+
+## Entrada 114 — AGT-015: instrução aprovada, registro criado e parada das três decisões
+
+**Hora do sistema:** 2026-11-26T16:36:06-03:00
+
+**Pedido do pesquisador:** "aprovo" (instrução da AGT-015).
+
+**Ações:** o agente criou TCC/registros-agente/AGT-015.md (Seções 1 a 5, com a instrução original na Seção 5 e os critérios de aceitação). Conforme a Seção 5, nenhum arquivo de código é criado antes das decisões; o agente apresenta as três paradas ao pesquisador. Entra no commit de registro a correção da entrada 113. Docs não alterado.
+
+**Pendente:** decisões 1 a 3 do pesquisador; envio dos dossiês ao Gemini e conferência do Docs.

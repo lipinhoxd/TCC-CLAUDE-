@@ -368,7 +368,7 @@ O agente não declara aprovação nem classifica a atividade.
 
 ## 11. Avaliação humana
 
-> **TEXTO REDIGIDO PELO AGENTE, a pedido do pesquisador (2026-11-26T16:03:21-03:00), com base nos registros e nas execuções.** O pesquisador respondeu "ap 3", lido pelo agente como a classificação AP-3; vale a autorização permanente que ele deu em 19/11/2026 para o fechamento padrão de cada atividade (critérios, revisão do código, commit e transcrição no Docs). O pesquisador não escreveu observações sobre o código nem respondeu aos dois pontos abertos (Seção 16). As marcações abaixo refletem as evidências.
+> **TEXTO REDIGIDO PELO AGENTE, a pedido do pesquisador (2026-11-26T16:03:21-03:00), com base nos registros e nas execuções.** O pesquisador respondeu "ap 3", lido pelo agente como a classificação AP-3; vale a autorização permanente que ele deu em 19/11/2026 para o fechamento padrão de cada atividade (critérios, revisão do código, commit e transcrição no Docs). O pesquisador não escreveu observações sobre o código nem respondeu aos pontos abertos (Seção 16, três pontos). As marcações abaixo refletem as evidências.
 
 Atendeu ao objetivo: Proposta: sim. A expiração da retenção, a liberação da vaga por segunda parcela vencida e a conclusão das reservas passam a ser gravadas sem consulta de usuário, e a reserva sem pagamento de excursão terminada é cancelada conforme a decisão 2.3.
 

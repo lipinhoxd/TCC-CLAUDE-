@@ -1630,3 +1630,23 @@ nova. A classificação (AP-1, AP-2, AP-3 ou RP) cabe ao pesquisador; o agente n
 **Ações:** fechamento padrão: critérios marcados, Seções 11 a 14 e 16 preenchidas (revisão do código registrada pela autorização permanente), métricas, quadro, matriz e ficha; npm run check com 720 de 720 testes; commits 8b4bbef (atividade) e 1c96c0e (hash). Gerados o dossiê para o Gemini (com Quadro 3, análise e Seção 5.4 para n = 16) e a auditoria de sincronia. Estado do Docs e próximos passos atualizados. Docs não alterado nem relido.
 
 **Pendente:** envio ao Gemini e conferência; pontos abertos das AGT-014 e 015; AGT-017 só quando o pesquisador disser "vamos".
+
+## Entrada 123 — AGT-017: rascunho da instrução apresentado
+
+**Hora do sistema:** 2026-11-26T19:49:23-03:00
+
+**Pedido do pesquisador:** "vamos terminar o do 17 e aí a gente continua" (lido como início da AGT-017).
+
+**Ações:** o agente conferiu a matriz de rastreabilidade (44 regras: 32 evidenciadas, 3 parciais, 9 sem evidência registrada) e as marcações "[confirmar]" da especificação, e publicou o rascunho da instrução em página privada (https://claude.ai/artifact/QpFfnyokrpYn9uhNtdC63F), com três paradas: forma de verificação e critérios; tratamento do que for encontrado; pontos abertos de regras. Nenhum arquivo AGT-017.md e nenhum código foram criados.
+
+**Pendente:** aprovação ou correções do pesquisador sobre o rascunho; conferência do Docs depois da aplicação do dossiê da AGT-016. Sem commit.
+
+## Entrada 124 — AGT-017: instrução aprovada, registro criado e parada das três decisões
+
+**Hora do sistema:** 2026-11-26T19:51:28-03:00
+
+**Pedido do pesquisador:** "aprovo" (instrução da AGT-017).
+
+**Ações:** o agente criou TCC/registros-agente/AGT-017.md (Seções 1 a 5, com a instrução original na Seção 5 e os critérios de aceitação). Conforme a Seção 5, nenhum arquivo do projeto é criado antes das decisões. Para apresentar o ponto aberto do pagamento pendente com evidência, o agente executou uma sonda em memória, sem criar arquivo. Docs não alterado.
+
+**Pendente:** decisões 1 a 3 do pesquisador; conferência do Docs depois da aplicação do dossiê da AGT-016.

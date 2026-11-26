@@ -2,6 +2,7 @@
 
 ## Onde parou
 - **AGT-009 concluída e classificada AP-3 pelos pesquisadores (20/11/2026)**; commits c051823 e 8b1b1cf. **Transcrita e conferida no Docs em 21/11/2026** (17 trocas e 3 inserções). Próxima atividade: AGT-010 (pagamento parcelado; RF-024, RF-027, RF-028; RN-012, RN-013, RN-017 a RN-020), sem instrução redigida.
+- **AGT-016 concluída e classificada AP-3 pelos pesquisadores (26/11/2026)**; commits 8b4bbef e 1c96c0e. Dossiê para o Gemini (`TCC/relatorios/DOSSIE-GEMINI-AGT-016-2026-11-26.md`) e auditoria gerados; aguarda envio ao Gemini e conferência. Experimento principal: 16 das 18 (n = 16). Restam AGT-017 e AGT-018, com data de corte em 30/11/2026. Decidir antes da AGT-017: confirmação de pagamento pendente de excursão terminada.
 - **AGT-015 concluída e classificada AP-3 pelos pesquisadores (26/11/2026)**; commits 8e486ff e dfafd89. Dossiê para o Gemini (`TCC/relatorios/DOSSIE-GEMINI-AGT-015-2026-11-26.md`) e auditoria gerados; aguarda envio ao Gemini e conferência. Experimento principal: 15 das 18 (n = 15). Restam AGT-016 a AGT-018, com data de corte em 30/11/2026.
 - **Pontos para os pesquisadores (AGT-015):** conferir as frases dos avisos; e-mails pendentes são enviados quando houver provedor, mesmo antigos.
 - **AGT-014 concluída e classificada AP-3 pelos pesquisadores (26/11/2026)**; commits ce9cf5e e d3ae627. Dossiê para o Gemini (`TCC/relatorios/DOSSIE-GEMINI-AGT-014-2026-11-26.md`) e auditoria gerados; aguarda envio ao Gemini e conferência. Experimento principal: 14 das 18 (n = 14). Restam AGT-015 a AGT-018, com data de corte em 30/11/2026.
@@ -17,8 +18,8 @@
 - Experimento principal: AGT-001 a AGT-011 concluídas e classificadas (AP-3): 11 das 18 (n = 11). AGT-001 a AGT-010 transcritas e conferidas no Docs; AGT-011 pendente. Próxima atividade: AGT-012 (administração de reservas e passageiros), sem instrução redigida.
 - **AGT-010 concluída e classificada AP-3 pelos pesquisadores (21/11/2026)**; commits f983b15 e ac63597. **Prompt do Docs gerado** (`TCC/relatorios/PROMPT-DOCS-AGT-010-2026-11-21.md`) e auditoria (`AUDITORIA-SINCRONIA-AGT-010-2026-11-21.md`); transcrita e conferida no Docs em 21/11/2026.
 - Experimento principal: AGT-001 a AGT-010 concluídas e classificadas pelos pesquisadores (AP-3): 10 das 18 (n = 10). AGT-001 a AGT-009 transcritas e conferidas no Docs; AGT-010 também transcrita e conferida. Piloto com o Codex (n = 5) é separado e nunca somado.
-- Próxima atividade: AGT-016 (painel administrativo, RF-041 e RF-042). Não existe `AGT-016.md`: não há instrução redigida nem aprovada. O agente só redige a instrução quando os pesquisadores disserem "vamos".
-- Nada em andamento. Último commit de atividade: `8e486ff` (AGT-015), com o hash em `dfafd89`.
+- Próxima atividade: AGT-017 (testes integrados e validação das regras, todos os RN). Não existe `AGT-017.md`: não há instrução redigida nem aprovada. O agente só redige a instrução quando os pesquisadores disserem "vamos".
+- Nada em andamento. Último commit de atividade: `8b4bbef` (AGT-016), com o hash em `1c96c0e`.
 - Auditoria de sincronia do Docs contra o repositório feita em 20/11/2026: `TCC/relatorios/AUDITORIA-SINCRONIA-2026-11-20.md` (69 itens: 48 OK, 13 DIVERGE, 6 perguntas ao autor, 2 fora do alcance). O Docs não foi alterado pelo agente.
 
 ## Já aplicado no Docs (fora da sessão do agente)

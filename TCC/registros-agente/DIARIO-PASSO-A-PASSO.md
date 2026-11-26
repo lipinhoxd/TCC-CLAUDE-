@@ -1602,3 +1602,31 @@ nova. A classificação (AP-1, AP-2, AP-3 ou RP) cabe ao pesquisador; o agente n
 **Ações:** o agente criou TCC/registros-agente/AGT-016.md (Seções 1 a 5, com a instrução original na Seção 5 e os critérios de aceitação). Conforme a Seção 5, nenhum arquivo de código é criado antes das decisões; o agente apresenta as três paradas ao pesquisador. Docs não alterado.
 
 **Pendente:** decisões 1 a 3 do pesquisador; envio dos dossiês ao Gemini e conferência do Docs.
+
+## Entrada 120 — AGT-016: decisões respondidas e início da implementação
+
+**Hora do sistema:** 2026-11-26T18:27:18-03:00
+
+**Pedido do pesquisador:** "recomendadas".
+
+**Decisões:** 1.1 A a 1.4 A (indicadores, cinco linhas de valores, todo o histórico, sem exportação); 2.1 A a 2.5 A (histórico do administrador e do sistema, com filtros, autor por número, sem auditar a consulta); 3.1 A a 3.3 A (painel efetiva prazos, sem situação da rotina, Painel e Histórico na administração). Detalhes na Seção 6 do registro.
+
+**Ações:** início da implementação. Docs não alterado.
+
+## Entrada 121 — AGT-016: implementação, verificações e relatório do agente
+
+**Hora do sistema:** 2026-11-26T18:42:38-03:00 (verificação final da implementação: 2026-11-26T18:41:46-03:00)
+
+**Ações:** criados server/admin/painel.ts e as telas de Painel e Histórico, com duas rotas administrativas; documentação atualizada. npm run check: 720 de 720 testes em 38 arquivos, lint, tipos e build sem erro. Treze mutações detectadas e restauradas. Percurso em API e navegador reais com dados fictícios, com ajustes no banco declarados, repetido depois da correção de um defeito de interface do agente (campo de filtro sobreposto). Sem migração, sem dependência nova, sem commit. Erros do agente e correções na Seção 9 do registro. Docs não alterado.
+
+**Pendente:** avaliação e classificação do pesquisador.
+
+## Entrada 122 — AGT-016: classificação AP-3, fechamento, dossiê e auditoria
+
+**Hora do sistema:** 2026-11-26T18:45:38-03:00
+
+**Pedido do pesquisador:** "ap 3" (26/11/2026, 18:43:56). Antes dele houve um aviso automático da ferramenta sobre o acompanhamento de uma página antiga, que não é mensagem do pesquisador e não foi tratado como resposta.
+
+**Ações:** fechamento padrão: critérios marcados, Seções 11 a 14 e 16 preenchidas (revisão do código registrada pela autorização permanente), métricas, quadro, matriz e ficha; npm run check com 720 de 720 testes; commits 8b4bbef (atividade) e 1c96c0e (hash). Gerados o dossiê para o Gemini (com Quadro 3, análise e Seção 5.4 para n = 16) e a auditoria de sincronia. Estado do Docs e próximos passos atualizados. Docs não alterado nem relido.
+
+**Pendente:** envio ao Gemini e conferência; pontos abertos das AGT-014 e 015; AGT-017 só quando o pesquisador disser "vamos".

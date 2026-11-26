@@ -83,6 +83,8 @@ No parágrafo que começa com "No experimento principal, a tecnologia de persist
 
 > **Atualização (2026-11-26T16:56:17-03:00):** com a AGT-015, vale a seção J de `DOSSIE-GEMINI-AGT-015-2026-11-26.md` (n = 15), que substitui também a seção J do dossiê da AGT-014.
 
+> **Atualização (2026-11-26T18:45:38-03:00):** com a AGT-016, vale a seção J de `DOSSIE-GEMINI-AGT-016-2026-11-26.md` (n = 16), que substitui as seções J anteriores.
+
 ## PARTE B — Quadro 3 e análise (decisão dos pesquisadores em 26/11/2026: refazer)
 
 Enviar **depois** do dossiê da AGT-013 (os números abaixo já incluem a AGT-013).

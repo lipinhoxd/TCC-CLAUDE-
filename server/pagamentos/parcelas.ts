@@ -13,8 +13,6 @@ export interface LinhaPagamento {
 
 export function proximaParcela(modalidade: 'integral' | 'parcelada', linhas: readonly LinhaPagamento[]): ParcelaPagamento | null {
   const da = (parcela: ParcelaPagamento): LinhaPagamento | undefined => linhas.find((l) => l.parcela === parcela);
-  // Pagamento devolvido (AGT-013): a reserva nao recebe novo pagamento; o destino dela e decisao da organizacao.
-  if (linhas.some((l) => l.situacao === 'estornado')) return null;
   if (modalidade === 'integral') return da('unica')?.situacao === 'confirmado' ? null : 'unica';
   const primeira = da('primeira');
   if (primeira?.situacao !== 'confirmado') return 'primeira';

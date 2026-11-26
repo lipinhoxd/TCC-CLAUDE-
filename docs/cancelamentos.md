@@ -15,6 +15,7 @@ provedor é simulado e não há provedor real.
 | Centavos | 50% é metade arredondada para baixo. |
 | Processamento | O reembolso nasce **pendente** e o administrador o confirma no provedor simulado. O pagamento vira **estornado** só quando o valor inteiro é devolvido (a 50% continua confirmado). Reembolso **recusado** pode ser tentado de novo, sem criar outro. |
 | Pendências | Nas pendências (pagamento sem vaga e segunda parcela tardia), o administrador cria um reembolso de **100% do pagamento** na mesma fila. |
+| Reserva após o reembolso da pendência | Decisão complementar do pesquisador (26/11/2026): **processado** o reembolso de uma pendência, a reserva que ainda aguardava pagamento é **cancelada** (auditoria `reserva.cancelamento_reembolso`, sem mexer em vagas). Reembolso recusado não cancela. |
 | Excursão cancelada pela organização | **Uma única transação**, com justificativa, prévia e confirmação, **só antes da partida**. Afeta as reservas em Aguardando pagamento e Pronto para embarque, **inclusive a parcelada só com a primeira paga, com 100%** (RN-031), e as pendências da excursão (100%). Concluídas e já canceladas (inclusive por inadimplência) não são afetadas. Retenções canceladas, vagas liberadas, pagamentos pendentes recusados, excursão **Cancelada**. A rota comum de situação (AGT-005) continua bloqueando o cancelamento com reservas ativas. |
 
 ## Rotas
@@ -38,15 +39,14 @@ fica em `reembolso.motivo` e na auditoria.
 
 ## Auditoria
 
-`reserva.cancelamento_passageiro`, `reserva.cancelamento_organizacao`, `excursao.cancelamento` (com a justificativa), `reembolso.criado`,
+`reserva.cancelamento_passageiro`, `reserva.cancelamento_organizacao`, `reserva.cancelamento_reembolso`, `excursao.cancelamento` (com a justificativa), `reembolso.criado`,
 `reembolso.processado`, `reembolso.recusado`, `pagamento.recusado` (por cancelamento), `pagamento.estornado` e `retencao.cancelada`.
 Só situações, ids e valores em centavos; sem dados pessoais nem de cartão.
 
 ## Limitações conhecidas
 
 1. Sem provedor real: nenhum dinheiro é movimentado.
-2. Depois de reembolsar uma pendência, a reserva continua em Aguardando pagamento, não recebe novo pagamento nem retém vaga e pode ser cancelada pelo
-   passageiro. **O destino automático dessa reserva não foi definido** (pergunta aos pesquisadores).
+2. Entre a criação e o processamento do reembolso de uma pendência, a reserva continua em Aguardando pagamento.
 3. Quem já estava cancelado por inadimplência não é reembolsado quando a organização cancela a excursão (decisão 3).
 4. Reserva cancelada sem reembolso não tem linha em `reembolso`; o motivo está na auditoria.
 5. Sem aviso ao passageiro além da tela (AGT-015); sem tarefa agendada (AGT-014).

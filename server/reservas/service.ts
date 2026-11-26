@@ -348,11 +348,6 @@ export class ReservaService {
    * transacao IMMEDIATE, entao dois pedidos pela ultima vaga resultam em uma retencao e um 409 (RN-021, RN-040).
    */
   iniciarCheckout(passageiroId: number, reservaId: number): ReservaDto {
-    // AGT-013: com pagamento devolvido nao ha o que pagar, entao nao se retem vaga.
-    const devolvido = this.db
-      .prepare("SELECT 1 AS x FROM pagamento p JOIN reserva r ON r.id = p.reserva_id WHERE r.id = ? AND r.usuario_id = ? AND p.situacao = 'estornado' LIMIT 1")
-      .get(reservaId, passageiroId);
-    if (devolvido !== undefined) throw new HttpError(409, 'pagamento_estornado');
     const agora = this.relogio();
     const hoje = utcParaBrasilia(agora).data;
     const dela = this.db.prepare('SELECT excursao_id FROM reserva WHERE id = ? AND usuario_id = ?').get(reservaId, passageiroId);

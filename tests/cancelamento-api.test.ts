@@ -573,19 +573,48 @@ describe('com a API', () => {
       expect((await adm('GET', '/api/admin/pendencias')).json?.['total']).toBe(0);
     });
 
-    it('depois do estorno de uma pendencia a reserva nao recebe novo pagamento nem retem vaga, mas pode ser cancelada', async () => {
+    it('processado o reembolso da pendencia, a reserva aguardando pagamento e cancelada, com auditoria e sem mexer em vagas', async () => {
       const exc = publicar();
+      const outra = await paga(beatriz, exc);
       const id = await reservar(ana, exc);
+      await ana('POST', `/api/reservas/${id}/checkout`);
       const pid = sinalizar(id);
       await adm('POST', `/api/admin/pendencias/${pid}/reembolso`);
-      await processar(idDoReembolso(), 'aprovado');
-      const ver = reservaDe(await ana('GET', `/api/reservas/${id}`));
-      expect(ver).toMatchObject({ situacao: 'aguardando_pagamento', proxima_parcela: null, pode_cancelar: true });
-      expect((await ana('POST', `/api/reservas/${id}/checkout`)).json).toEqual({ error: 'pagamento_estornado' });
-      expect((await ana('POST', `/api/reservas/${id}/pagamento`)).json).toEqual({ error: 'pagamento_estornado' });
-      expect(contar('retencao_vaga')).toBe(0);
-      expect((await cancelar(ana, id, 100)).status).toBe(200);
+      expect(situacaoDe('reserva', id)).toBe('aguardando_pagamento'); // so o processamento cancela
+      const rid = Number(db.prepare('SELECT id FROM reembolso WHERE pagamento_id = ?').get(pid)?.['id']);
+      expect((await processar(rid, 'aprovado')).status).toBe(200);
+      expect(situacaoDe('reserva', id)).toBe('cancelada');
+      expect(contar('retencao_vaga', "reserva_id = " + id + " AND situacao = 'ativa'")).toBe(0);
+      expect(ocupadas(exc)).toBe(1);
+      expect(situacaoDe('reserva', outra)).toBe('pronto_para_embarque');
       expect(contar('reembolso')).toBe(1);
+      const ev = db.prepare("SELECT ator_usuario_id AS a, estado_novo AS n FROM auditoria WHERE acao = 'reserva.cancelamento_reembolso'").get();
+      expect(ev?.['a']).toBe(adminId);
+      expect(JSON.parse(String(ev?.['n']))).toMatchObject({ situacao: 'cancelada', vaga_liberada: false, reembolso_id: rid });
+      expect((await ana('POST', `/api/reservas/${id}/pagamento`)).status).toBe(409);
+      expect((await processar(rid, 'aprovado')).status).toBe(200);
+      expect(contar('auditoria', "acao = 'reserva.cancelamento_reembolso'")).toBe(1);
+      expect(await reservar(ana, exc)).toBeGreaterThan(id);
+    });
+
+    it('reembolso de pendencia recusado nao cancela a reserva', async () => {
+      const id = await reservar(ana, publicar());
+      const pid = sinalizar(id);
+      await adm('POST', `/api/admin/pendencias/${pid}/reembolso`);
+      await processar(idDoReembolso(), 'recusado');
+      expect(situacaoDe('reserva', id)).toBe('aguardando_pagamento');
+      expect(contar('auditoria', "acao = 'reserva.cancelamento_reembolso'")).toBe(0);
+    });
+
+    it('atomicidade: falha ao cancelar desfaz tambem o processamento do reembolso', async () => {
+      const id = await reservar(ana, publicar());
+      const pid = sinalizar(id);
+      await adm('POST', `/api/admin/pendencias/${pid}/reembolso`);
+      db.exec("CREATE TRIGGER tg_falha BEFORE INSERT ON auditoria WHEN NEW.acao = 'reserva.cancelamento_reembolso' BEGIN SELECT RAISE(ABORT, 'falha injetada'); END;");
+      expect((await processar(idDoReembolso(), 'aprovado')).status).toBe(500);
+      expect(situacaoDe('reembolso', idDoReembolso())).toBe('pendente');
+      expect(situacaoDe('pagamento', pid)).toBe('confirmado');
+      expect(situacaoDe('reserva', id)).toBe('aguardando_pagamento');
     });
 
     it('pagamento sem pendencia nao gera reembolso por essa rota', async () => {

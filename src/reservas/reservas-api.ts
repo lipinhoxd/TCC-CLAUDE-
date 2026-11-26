@@ -177,7 +177,6 @@ export const MENSAGEM_RESERVA: Record<string, string> = {
   excursao_nao_encontrada: 'Esta excursão não foi encontrada ou não está disponível.',
   reserva_nao_cancelavel: 'Esta reserva não pode mais ser cancelada por aqui.',
   reserva_com_pagamento: 'Esta reserva já tem pagamento e não pode ser cancelada por aqui.',
-  pagamento_estornado: 'O pagamento desta reserva foi devolvido e ela não recebe novo pagamento. Você pode cancelá-la.',
   reembolso_mudou: 'O prazo mudou desde a consulta e o valor do reembolso é outro. Confira o novo valor antes de confirmar.',
   excursao_ja_partiu: 'A excursão já partiu e a reserva não pode mais ser cancelada.',
 };

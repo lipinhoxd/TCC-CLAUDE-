@@ -18,6 +18,7 @@ import type { Calculo, PagamentoPago } from './regra.ts';
  * 2. O reembolso nasce "pendente" e o administrador o confirma no provedor simulado; o pagamento vira "estornado" so quando o valor
  *    inteiro e devolvido; reembolso recusado pode ser tentado de novo, sem criar outro; pendencias (sem vaga, segunda tardia) geram,
  *    a pedido do administrador, um reembolso de 100% do pagamento na mesma fila.
+ *    Decisao complementar (26/11/2026): processado o reembolso de uma pendencia, a reserva ainda Aguardando pagamento e cancelada.
  * 3. Cancelamento da excursao: uma unica transacao, com justificativa, so antes da partida; reservas Aguardando e Pronto sao
  *    canceladas com 100% do pago (inclusive a parcelada so com a primeira, RN-031); pendencias da excursao tambem 100%; concluidas e
  *    ja canceladas nao sao afetadas.
@@ -442,6 +443,13 @@ export class CancelamentoService {
             estadoNovo: { situacao: 'estornado', reserva_id: reembolso.reserva_id, reembolso_id: reembolsoId },
             ocorridoEm: agora,
           });
+        }
+      }
+      // Processado o reembolso de uma pendencia, a reserva que ainda aguardava pagamento e cancelada (decisao do pesquisador).
+      if (destino === 'processado' && reembolso.motivo === 'pendencia') {
+        const reserva = this.db.prepare("SELECT * FROM reserva WHERE id = ? AND situacao = 'aguardando_pagamento'").get(reembolso.reserva_id);
+        if (reserva !== undefined) {
+          this.aplicarCancelamento(reserva, adminId, agora, { valor: 0, percentual: 0, motivo: 'pendencia' }, 'reserva.cancelamento_reembolso', { reembolso_id: reembolsoId });
         }
       }
       return paraReembolso(this.db.prepare('SELECT * FROM reembolso WHERE id = ?').get(reembolsoId) as Row);

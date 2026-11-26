@@ -6,7 +6,7 @@
 
 ## ATENÇÃO — o que NÃO fazer (regras obrigatórias)
 
-1. **Não criar classes.** Existem somente quatro: AP-1 (verificações atendidas na primeira execução, sem nova instrução corretiva e sem intervenção direta), AP-2 (atendidas após correções do próprio agente, sem intervenção direta), AP-3 (as verificações só foram atendidas com intervenção direta do pesquisador) e RP (não atendidas pela abordagem utilizada). **Não existe "AP-4"** e o AP-3 não deve ser redefinido nem renomeado.
+1. **Classes (revisão metodológica confirmada pelos pesquisadores em 26/11/2026, "o AP-4 foi decisão minha").** São cinco: AP-1 (verificações atendidas na primeira execução, sem nova instrução corretiva e sem intervenção direta), AP-2 (atendidas após correções do próprio agente, sem intervenção direta), AP-3 (atendidas com intervenção planejada de governança e coplanejamento prevista na instrução), AP-4 (atendidas mediante intervenção corretiva do desenvolvedor para reparar falhas de execução, erros de código, alucinações ou desvios de escopo não corrigidos pelo agente) e RP (não atendidas pela abordagem utilizada). No experimento principal, AP-3: 13; AP-4: 0. Não criar outras classes.
 2. **Não criar métricas, percentuais, totais, tabelas, quadros, citações ou análises** que não estejam neste dossiê. Não inferir causalidade, produtividade, qualidade geral nem taxa generalizável; não há grupo de controle.
 3. **Não inventar decisões, telas, funções ou limitações.** As decisões são exatamente as da seção B.
 4. **Não apagar texto existente** e **não duplicar parágrafos**. Ao inserir a ficha, não alterar a ficha anterior (todas as linhas mantêm o rótulo do campo).
@@ -37,7 +37,7 @@ Números: 610 testes automatizados aprovados em 32 arquivos (557 ao final da AGT
 
 Escolhas já adotadas no rascunho aprovado: escopo restrito; valores sempre do servidor, em centavos, sem reembolso acima do pago; transação única, idempotente e auditada; provedor simulado e tela sem promessa de prazo.
 
-**Pergunta aberta aos pesquisadores (não respondida):** depois de reembolsar uma pendência de uma reserva ainda aguardando pagamento, a reserva continua aguardando, sem novo pagamento nem retenção, cancelável pelo passageiro (comportamento implementado), ou deve ser cancelada automaticamente?
+**Decisão complementar, posterior ao fechamento (26/11/2026):** processado o reembolso de uma pendência, a reserva que ainda aguardava pagamento é cancelada, com auditoria e sem mexer em vagas (o reembolso recusado não cancela). Implementada pelo agente e verificada com 612 testes aprovados e uma mutação detectada; não percorrida no navegador (commit fdec2ba). Os números da seção D são os do fechamento.
 
 ## C. O que foi implementado e onde
 
@@ -64,7 +64,7 @@ Escolhas já adotadas no rascunho aprovado: escopo restrito; valores sempre do s
 
 ## F. Limitações e pontos para revisão humana (RN-044)
 
-Limitações: sem provedor real; destino da reserva após reembolso de pendência não decidido; reserva sem reembolso sem linha em reembolso; excursão cancelada some da consulta pública; sem aviso fora da tela e sem tarefa agendada; justificativa livre; concorrência sem teste de carga; um navegador, sem leitor de tela.
+Limitações: sem provedor real; cancelamento após reembolso de pendência verificado só em teste automatizado; reserva sem reembolso sem linha em reembolso; excursão cancelada some da consulta pública; sem aviso fora da tela e sem tarefa agendada; justificativa livre; concorrência sem teste de carga; um navegador, sem leitor de tela.
 Revisão aprovada pelos pesquisadores no fechamento: regra e serviço de cancelamentos, estorno, liberação de vaga, cancelamento da excursão, migração 4, o campo de percentual previsto, as interpretações das decisões 1 e 3 (100% da primeira parcela no cancelamento pela organização; nada para quem já estava cancelado por inadimplência) e as mudanças em código e testes anteriores. A avaliação humana (Seção 11 do registro) foi redigida pelo agente a pedido dos pesquisadores; a classificação foi decidida por eles.
 
 ## G. Dados para quadros, contagens e referências cruzadas
@@ -74,6 +74,7 @@ Revisão aprovada pelos pesquisadores no fechamento: regra e serviço de cancela
 - Duração: 16,30 min de relógio (13:34:02 a 13:50:20 de 26/11/2026).
 - Esquema do banco: a AGT-013 criou a migração 4; as anteriores são 1 (esquema inicial), 2 (AGT-009) e 3 (AGT-010).
 - Próximas atividades: a partir da AGT-014 (processos automáticos), seguida de comunicação (AGT-015), painel administrativo (AGT-016), testes integrados (AGT-017) e revisão técnica (AGT-018).
+- Data de corte da execução experimental: 30/11/2026 (definida em 26/11/2026, por delegação do pesquisador).
 - Apêndice D: AGT-013 (principal, AP-3): RF-032 a RF-035 com evidência; RF-026 com evidência (com as AGT-009 e AGT-012); RN-027 a RN-032 com evidência. Pastas server/cancelamentos e src; documento docs/cancelamentos.md; 610 testes; commit b27f70e.
 - Linha das métricas: AGT-013,Claude Code (Claude Sonnet 5.5),Pagamentos / Cancelamentos e reembolsos,16.30,1,610,610,0,lacuna de novo pagamento apos estorno de pendencia detectada e corrigida pelo agente; 2 testes do agente errados (ordem do vencimento e relogio avancado e voltado) corrigidos; testes de atividades anteriores atualizados por campos novos e migracao 4; heredoc de shell falhou (duracao inclui documentacao mutacoes e percurso no navegador; espera pelas decisoes nao contada),Nao,Sim,Decisao sobre cancelamentos reembolsos e pagamentos (3 paradas previstas),AP-3,b27f70e
 
@@ -91,14 +92,14 @@ Revisão aprovada pelos pesquisadores no fechamento: regra e serviço de cancela
 - **Duração:** 16,30 min em relógio (decisões respondidas e início da implementação às 13:34:02 e verificação final às 13:50:20, de 26/11/2026), incluindo documentação, mutações e percurso em navegador real. A espera pelas decisões e pela classificação não é contada. Exclui a revisão humana.
 - **Pausas ou interrupções:** Uma parada obrigatória, prevista na instrução, com três decisões. Sem interrupção da sessão durante a implementação.
 - **Intervenção humana:** Sim: decisão sobre cancelamentos, reembolsos e pagamentos (regra de cálculo; processamento e pendências; cancelamento da excursão).
-- **Decisão técnica:** Antecedência em períodos exatos até a partida (100%, 50% e 0%), metade arredondada para baixo, parcelada não quitada sem reembolso; reembolso pendente confirmado pelo administrador no provedor simulado, estorno só quando devolvido por inteiro; pendências com reembolso integral; cancelamento da excursão em uma única transação, com justificativa, 100% inclusive para a primeira parcela; migração 4 (reembolso.pagamento_id e índices únicos); sem dependência nova.
+- **Decisão técnica:** Antecedência em períodos exatos até a partida (100%, 50% e 0%), metade arredondada para baixo, parcelada não quitada sem reembolso; reembolso pendente confirmado pelo administrador no provedor simulado, estorno só quando devolvido por inteiro; pendências com reembolso integral; cancelamento da excursão em uma única transação, com justificativa, 100% inclusive para a primeira parcela; migração 4 (reembolso.pagamento_id e índices únicos); sem dependência nova. Decisão complementar, posterior ao fechamento: processado o reembolso de uma pendência, a reserva que aguardava pagamento é cancelada (612 testes após a alteração; commit fdec2ba).
 - **Versão do agente:** Claude Code, modelo Claude Sonnet 5.5 (claude-sonnet-5-5). Versão da extensão do VS Code: 2.1.332 (instalada em 26/11/2026 às 12:19; a 2.1.331 está obsoleta); qual versão executou a atividade [DADO NÃO REGISTRADO].
 - **Ambiente:** Windows 11, Node.js v26.13.0, npm 11.20.0, React 19.3.1, Vite 8.3.8, TypeScript 6.0.3, Vitest 5.1.0.
 - **Commits:** b27f70e (atividade e registro).
 - **Evidências:** Registro (Seções 6 a 10); diário (Entradas 102 a 105); METRICAS.csv; server/cancelamentos/, src/pages/CancelarReserva.tsx, src/pages/AdminCancelamentos.tsx, tests/ e docs/cancelamentos.md.
 - **Classificação final:** AP-3 (decisão do pesquisador, 26/11/2026; critério único: decisão exigida pela instrução = AP-3).
 - **Segundo avaliador:** [DADO NÃO REGISTRADO] (não designado).
-- **Limitações:** Sem provedor real; destino da reserva após o reembolso de uma pendência não decidido; reserva sem reembolso sem linha em reembolso; excursão cancelada some da consulta pública; sem aviso fora da tela nem tarefa agendada; justificativa livre; datas de partida e pendência ajustadas no banco para a demonstração; correção do novo pagamento após estorno verificada só em teste automatizado; concorrência sem teste de carga; um navegador, sem leitor de tela. A avaliação humana foi redigida pelo agente a pedido do pesquisador.
+- **Limitações:** Sem provedor real; reserva sem reembolso sem linha em reembolso; excursão cancelada some da consulta pública; sem aviso fora da tela nem tarefa agendada; justificativa livre; datas de partida e pendência ajustadas no banco para a demonstração; cancelamento da reserva após o reembolso de pendência (decisão posterior ao fechamento) verificado só em teste automatizado; concorrência sem teste de carga; um navegador, sem leitor de tela. A avaliação humana foi redigida pelo agente a pedido do pesquisador.
 
 ## I. Registro completo da atividade (cópia literal)
 
@@ -379,3 +380,20 @@ Commit relacionado: b27f70e
 ## 16. Observações finais
 
 A duração registrada (16,30 min, de 13:34:02 a 13:50:20 em 26/11/2026) é tempo de relógio da implementação depois das decisões e inclui a documentação, as verificações por mutação e o percurso em navegador real; a espera pelas decisões e pela classificação não é contada. Sem interrupção da sessão durante a implementação. Migração nova (versão 4), pequena e justificada; sem dependência nova. Pergunta aberta (Seção 10, item 8): o destino da reserva ainda aguardando pagamento depois do reembolso de uma pendência não foi decidido; o código mantém a reserva aguardando, sem novo pagamento nem retenção, cancelável pelo passageiro, até decisão. A versão da ferramenta (extensão 2.1.332, a mais recente instalada) não pôde ser confirmada como a que executou a atividade.
+
+## 17. Alteração posterior ao fechamento (decisão do pesquisador)
+
+Registrada em 2026-11-26T14:12:26-03:00. Depois do fechamento (commits b27f70e e 49a512e), o pesquisador respondeu à pergunta aberta da Seção 10 (item 8): a reserva que ainda
+aguarda pagamento, depois do reembolso de uma pendência, **é cancelada** ("Nada, ela é cancelada. Corrija essa parte").
+
+Commit: fdec2ba.
+
+Alteração feita pelo agente: ao **processar** (aprovar) o reembolso de uma pendência, a reserva em Aguardando pagamento passa a Cancelada na mesma
+transação, com cancelamento da retenção, auditoria `reserva.cancelamento_reembolso` e sem mexer em vagas (a reserva não ocupava vaga); o reembolso
+recusado não cancela; falha no cancelamento desfaz também o processamento. O momento (no processamento, e não na criação do reembolso) foi interpretação
+do agente, informada ao pesquisador. A proteção provisória descrita na Seção 9, item 3 (recusa de novo pagamento por pagamento estornado), foi retirada,
+porque a reserva cancelada já não aceita pagamento; server/pagamentos/ voltou a ser igual ao anterior à AGT-013.
+
+Verificação: npm run check em 2026-11-26T14:12:26-03:00: lint, tipos e build sem erro; 612 testes aprovados em 32 arquivos (3 testes novos no lugar de 1). Uma mutação
+(retirar o cancelamento) fez 2 testes falharem e o arquivo foi restaurado. Essa alteração não foi percorrida no navegador. Os números das Seções 8 a 13 e
+das métricas são os do fechamento. A classificação (AP-3) não foi alterada; se esta alteração a afeta, a decisão é dos pesquisadores.

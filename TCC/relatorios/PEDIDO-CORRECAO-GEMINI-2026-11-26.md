@@ -1,7 +1,7 @@
 # Pedido de correção ao Gemini (26/11/2026) — depois da aplicação da AGT-012
 
 **Destino:** Gemini (Google Docs "VERSÃO BASE DO TCC"). Substitui o pedido de 24/11/2026.
-**Status:** proposta do agente. Enviar só depois da aprovação dos pesquisadores. A Parte A pode ser enviada de imediato; a Parte B só se a classe "AP-4" **não** foi uma decisão dos pesquisadores.
+**Status (atualizado em 2026-11-26T14:12:26-03:00):** proposta do agente. A **Parte A** pode ser enviada; as **Partes B e C** (atualizadas em 2026-11-26T14:18:06-03:00) vão depois do dossiê da AGT-013. A restauração das quatro classes foi **retirada**: o pesquisador confirmou que a "AP-4" é decisão dele. O pesquisador pediu para refazer o Quadro 3 e a análise e delegou a data de corte.
 
 ## Regras para o Gemini
 
@@ -79,65 +79,40 @@ No parágrafo que começa com "No experimento principal, a tecnologia de persist
 
 ---
 
-## PARTE B — somente se a "AP-4" NÃO foi decisão dos pesquisadores
+## PARTE B — Quadro 3 e análise (decisão dos pesquisadores em 26/11/2026: refazer)
 
-A rubrica do repositório tem quatro classes (AP-1, AP-2, AP-3 e RP). O Docs passou a ter cinco e redefiniu o AP-3.
+Enviar **depois** do dossiê da AGT-013 (os números abaixo já incluem a AGT-013).
 
-### B0. Tabela das classes
-Na tabela das classificações, remover a linha "AP-4 — Aprovado com intervenção corretiva" e voltar o rótulo "AP-3 — Aprovado com intervenção planejada de governança" para "AP-3 — Aprovado com intervenção humana".
+### B1. Substituir o parágrafo de introdução, o título, a tabela e a fonte do Quadro 3 por:
 
-### B1. Seção das classificações (parágrafo que começa com "São utilizadas cinco classificações")
-Substituir o parágrafo inteiro por:
+> A síntese dos registros dos dois conjuntos é apresentada no Quadro 3, que os mantém em colunas separadas e não os soma.
 
-> São utilizadas quatro classificações. AP-1 indica atividade aprovada na primeira execução, sem nova instrução corretiva ou intervenção direta. AP-2 indica atividade aprovada após uma ou mais correções realizadas pelo próprio agente mediante nova interação. AP-3 indica atividade que necessitou de intervenção direta do desenvolvedor para atingir os critérios de aceitação. RP representa atividade não concluída satisfatoriamente pela abordagem utilizada.
+**Quadro 3 — Síntese dos registros por conjunto de atividades**
 
-### B2. Parágrafo que começa com "Para tornar a classificação reproduzível"
-Substituir o parágrafo inteiro por:
+| Registro | Piloto (Codex, n = 5) | Experimento principal (Claude Code, n = 13) |
+| --- | --- | --- |
+| Atividades concluídas e classificadas | 5 de 5 executadas | 13 de 18 previstas |
+| AP-1 | 4 | 0 |
+| AP-2 | 0 | 0 |
+| AP-3 | 1 | 13 |
+| AP-4 | 0 | 0 |
+| RP | 0 | 0 |
+| Atividades com 1 tentativa | 3 | 12 |
+| Atividades com 2 tentativas | 1 | 1 |
+| Atividades com número de tentativas não registrado | 1 | 0 |
+| Testes aprovados na primeira e na última atividade avaliada | 6 (AGT-001) e 198 (AGT-005) | 15 (AGT-001) e 610 (AGT-013) |
+| Atividades com intervenção humana registrada | 1 | 13 |
 
-> Para tornar a classificação reproduzível, adotam-se definições operacionais. Tentativa é uma execução da instrução pelo agente, do envio da instrução ao relatório final, a partir de um estado conhecido do repositório; conta como nova tentativa uma nova instrução corretiva ou uma execução refeita, e não conta a interrupção por limite de uso retomada sem reinício. Intervenção humana é o ato direto do pesquisador, necessário para a atividade atingir os critérios, como esclarecimento de requisito, decisão de arquitetura ou alteração de código. Tempo é a duração cronológica pelo relógio do sistema, da execução da instrução ao relatório do agente, sem a revisão humana, com as pausas combinadas informadas à parte. A rubrica completa e o campo para um segundo avaliador independente constam do Apêndice F; até o momento não há segundo avaliador designado, o que é registrado como ameaça à validade.
+Fonte: elaborado pelos autores, a partir dos registros AGT e das planilhas de métricas (26/11/2026). As classificações são as registradas; a distinção entre AP-3 e AP-4 foi adotada em revisão posterior à AGT-010.
 
-### B3. Parágrafo dos indicadores ("Os indicadores quantitativos previstos incluem")
-Substituir o parágrafo inteiro por:
+### B2. Substituir o parágrafo que começa com "Sob uma perspectiva analítica" por:
 
-> Os indicadores quantitativos previstos incluem distribuição das classificações, taxa de AP-1, taxa de AP-2, taxa de intervenção humana, taxa de conclusão, número de tentativas e duração das atividades. Também são considerados a quantidade e os resultados dos testes quando aplicáveis. Esses indicadores são descritivos e devem ser interpretados em conjunto.
-
-### B4. Parágrafo das limitações do método ("Os resultados estão sujeitos a limitações")
-Substituir o parágrafo inteiro por:
-
-> Os resultados estão sujeitos a limitações. O estudo utiliza um único projeto, um único agente e um domínio específico; o desenvolvimento foi reiniciado após um piloto com outro agente; o agente, além de executar as tarefas, redige parte da documentação do trabalho, inclusive a especificação do experimento principal, sob revisão dos pesquisadores; as atividades possuem níveis de complexidade diferentes; a forma de redigir instruções e a quantidade de contexto podem influenciar as respostas; o pesquisador acumula os papéis de desenvolvedor e avaliador; e ferramentas de IA podem sofrer atualizações durante o período experimental. Também constitui ameaça à validade o fato de o agente orientar o pesquisador, a pedido deste, na escolha da classificação de cada atividade, explicando o que cada categoria significa e recomendando uma opção; a decisão e a responsabilidade permanecem do pesquisador, mas a orientação pode influenciar a classificação.
-
-### B5. Parágrafo "Após a ampliação da amostra do experimento principal" (Capítulo 7)
-Substituir o parágrafo inteiro por:
-
-> Após a ampliação da amostra do experimento principal, serão calculadas frequências e proporções de AP-1, AP-2, AP-3 e RP, taxa de conclusão, número de tentativas, duração e ocorrência de intervenção humana. As dificuldades serão agrupadas por categoria e relacionadas ao tipo de tarefa, e atividades representativas serão analisadas qualitativamente. O piloto com o Codex será descrito à parte, sem composição estatística com o experimento principal. A discussão final confrontará os resultados com a literatura e responderá à questão de pesquisa.
-
-### B6. Apêndice F, parágrafo "Classes."
-Substituir o parágrafo inteiro por:
-
-> Classes. AP-1: verificações atendidas na primeira execução, sem nova instrução corretiva e sem intervenção direta. AP-2: atendidas após correções do próprio agente, sem intervenção direta (no experimento principal, a decisão do pesquisador exigida pela instrução conta como intervenção direta e leva a AP-3). AP-3: atendidas somente com intervenção direta do pesquisador. RP: não atendidas pela abordagem utilizada.
-
-### B7. Trocas de trecho (Resumo, Abstract, Seções 6.1 e outras)
-- Trocar `(as doze aprovadas com intervenção planejada de governança, AP-3, e nenhuma exigindo intervenção corretiva, AP-4)` por `(as doze aprovadas com intervenção humana, segundo o critério único adotado pelo pesquisador)` (todas as ocorrências).
-- Trocar `(all twelve approved with planned governance intervention, AP-3, and zero requiring corrective intervention, AP-4)` por `(all twelve approved with human intervention, under a single criterion adopted by the researcher)` (todas as ocorrências).
-- Trocar `aprovada com intervenção planejada de governança (AP-3)` por `aprovada com intervenção humana (AP-3)` (todas as ocorrências).
-- Trocar `approved with planned governance intervention (AP-3)` por `approved with human intervention (AP-3)` (todas as ocorrências).
-- Trocar `AP-2, AP-4 ou RP` por `AP-2 ou RP` (todas as ocorrências).
-- Trocar `(intervenção planejada de governança) e nenhuma exigiu a classificação AP-4 (intervenção corretiva) ou RP` por `e nenhuma foi classificada como RP` (todas as ocorrências).
-- Trocar `(intervenção planejada de governança) e nenhuma registrada como AP-4 (intervenção corretiva) ou RP` por `e nenhuma registrada como RP` (todas as ocorrências).
-- Trocar `(intervenção planejada de governança) e registrada no commit` por `e registrada no commit` (todas as ocorrências).
-
-### B8. Quadro 3 e análise "Sob uma perspectiva analítica"
-Remover o parágrafo de introdução do Quadro 3, o título, a tabela e a fonte do Quadro 3, e o parágrafo que começa com "Sob uma perspectiva analítica". Eles trazem percentuais, "34 decisões", dados do piloto não conferidos, afirmações de causalidade e as palavras inglesas "controlled" e "established". (Se os pesquisadores quiserem manter um quadro de síntese, ele deve ser refeito só com dados de `METRICAS.csv`, sem AP-4 e sem inferência.)
-
-### B9. Trechos restantes a conferir depois das trocas
-- AP-3 — Aprovado com intervenção planejada de governança
-- AP-4 — Aprovado com intervenção corretiva
-- | AP-3 (Intervenção planejada de governança) | 1 (20,0%) | 12 (100,0%) |
-- | AP-4 (Intervenção corretiva) | 0 (0,0%) | 0 (0,0%) |
-- Sob uma perspectiva analítica, a predominância absoluta da classificação AP-3 (12 de 12 atividades) e a ausência da classificação AP-4 (0 de 12 atividades) no experimento principal refletem diretamente o desenho rigoroso e controlled do protocolo experimental, e não a ocorrência de falhas técnicas do agente / Esse comportamento evidencia a relevância de diferenciar conceitualmente as intervenções 
+> No subconjunto avaliado do experimento principal (n = 13), as 13 atividades foram classificadas como AP-3 e nenhuma como AP-4. As instruções dessas atividades previam paradas para decisão dos pesquisadores, e a classificação AP-3 registra essas intervenções planejadas. A distribuição descreve somente as atividades avaliadas: não permite concluir sobre o desempenho do agente nem estabelecer relação de causa, e não há grupo de controle. A distinção entre AP-3 e AP-4 foi adotada em revisão posterior à AGT-010, o que constitui uma limitação a considerar na leitura desses números. O piloto com o Codex (n = 5) é apresentado em coluna própria e não é somado nem comparado estatisticamente ao experimento principal.
 
 ---
 
-## PARTE C — decisão dos pesquisadores
+## PARTE C — data de corte (definida em 26/11/2026)
 
-**Seção 5.4:** o Docs diz que a data de corte "será definida ao término da execução experimental". Confirmar esse texto ou informar a nova data. Os registros do repositório traziam a proposta de 24/11/2026, já passada, com 12 das 18 atividades concluídas.
+### C1. Seção 5.4: substituir o parágrafo que começa com "As próximas atividades do experimento principal incluem" por:
+
+> As próximas atividades do experimento principal incluem, a partir da AGT-014, processos automáticos, comunicação, painel administrativo, testes integrados e revisão técnica. Restam 5 atividades planejadas (AGT-014 a AGT-018) para a conclusão do ciclo experimental. A data de corte da execução experimental é 30/11/2026; as atividades não concluídas até essa data serão tratadas e registradas como trabalhos futuros.

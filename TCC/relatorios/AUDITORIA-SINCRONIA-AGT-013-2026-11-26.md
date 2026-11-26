@@ -26,3 +26,9 @@ Escopo: os dados que o dossiê `TCC/relatorios/DOSSIE-GEMINI-AGT-013-2026-11-26.
 - Pergunta sobre o destino da reserva após o reembolso de uma pendência.
 - Pendências humanas adiadas: DOIs das referências 1 e 8; data de corte; verificação de telefone e token; segundo avaliador; versão da ferramenta; campos [INFORMAR].
 - Fora do alcance: o piloto (nada tocado).
+
+## Atualização (2026-11-26T14:12:26-03:00)
+
+- K12 resolvida: o pesquisador decidiu que a reserva é cancelada; implementado e registrado na Seção 17 do registro; o dossiê foi gerado de novo (612 testes após a alteração; métricas e contagens do fechamento inalteradas).
+- Classe AP-4: o pesquisador confirmou que foi decisão dele. `docs/rubrica-avaliacao.md` passou a ter AP-3 (governança planejada) e AP-4 (corretiva); o dossiê foi ajustado. O `CLAUDE.md` ainda lista só AP-1, AP-2, AP-3 e RP (alteração pendente de autorização).
+- Continuam abertos: Quadro 3 e análise (dados sem origem, inferência causal, palavras em inglês), ficha da AGT-012 ausente, ficha da AGT-011, data de corte.

@@ -57,8 +57,13 @@ prova ganho de produtividade.
 | --- | --- |
 | **AP-1** | Verificações atendidas na primeira execução, sem nova instrução corretiva e sem intervenção direta. |
 | **AP-2** | Verificações atendidas após correções feitas pelo próprio agente em nova interação, sem intervenção direta. |
-| **AP-3** | As verificações só foram atendidas com intervenção direta do pesquisador. |
+| **AP-3** | As verificações foram atendidas com intervenção planejada de governança e coplanejamento prevista na instrução (decisões de arquitetura, segurança, escopo ou regras de negócio antes da codificação). |
+| **AP-4** | As verificações foram atendidas mediante intervenção corretiva do pesquisador para reparar falhas de execução, erros de código, alucinações ou desvios de escopo não corrigidos pelo agente. |
 | **RP** | As verificações não foram atendidas pela abordagem utilizada. |
+
+Revisão metodológica confirmada pelo pesquisador em 26/11/2026 ("o AP-4 foi decisão minha"): a antiga classe genérica de intervenção direta foi
+desmembrada em AP-3 (intervenção planejada de governança) e AP-4 (intervenção corretiva), como revisão posterior aos dados (post-hoc) após a AGT-010.
+As atividades AGT-001 a AGT-013 do experimento principal permanecem AP-3; nenhuma foi reclassificada. A definição anterior fica no histórico do Git.
 
 Critério aplicado no experimento principal (decisão do pesquisador, 13/11/2026): quando a própria instrução manda parar e a atividade só prossegue com uma decisão do pesquisador (arquitetura, segurança ou escopo), há intervenção direta e a classificação é AP-3. AP-2 fica reservada às correções feitas pelo próprio agente em nova interação, sem decisão do pesquisador.
 

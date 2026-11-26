@@ -140,3 +140,11 @@ AGT-012 aplicada em parte; divergências abertas (ficha da AGT-012 ausente, fich
 ## AGT-013 (26/11/2026)
 
 Dossiê: `TCC/relatorios/DOSSIE-GEMINI-AGT-013-2026-11-26.md`. Auditoria: `TCC/relatorios/AUDITORIA-SINCRONIA-AGT-013-2026-11-26.md`. **Aguardando o pesquisador enviar ao Gemini**; depois, reler o Docs e conferir (n = 13; AGT-014 a AGT-018 não iniciadas; Quadro 2; ficha obrigatória; Seção 5.3; Apêndice D; nada novo inventado). Commits da atividade: b27f70e e 49a512e. As divergências desde a AGT-012 continuam abertas.
+
+## 2026-11-26T14:12:26-03:00: AP-4 confirmada e decisão complementar da AGT-013
+
+O pesquisador confirmou a classe "AP-4" (rubrica atualizada; a Parte B de restauração foi retirada do pedido de correção) e decidiu que a reserva é cancelada após o reembolso de uma pendência (dossiê da AGT-013 gerado de novo; enviar essa versão).
+
+## 2026-11-26T14:18:06-03:00: Quadro 3, análise e data de corte
+
+Pedido de correção atualizado: Partes B (Quadro 3 e análise refeitos só com dados dos registros) e C (Seção 5.4 com data de corte 30/11/2026). Ordem de envio: Parte A, dossiê da AGT-013, Partes B e C.

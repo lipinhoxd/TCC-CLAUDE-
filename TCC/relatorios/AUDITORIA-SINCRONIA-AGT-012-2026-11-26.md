@@ -50,3 +50,7 @@ Releitura do Docs (revisão AHj4eMTjYFHQMHb9OQr24qA0mTDF5ZlE87AuMWVlGJaLA7CKYP2v
 | Z10 | Seção 5.4, data de corte | Texto sem data permanece | Pergunta ao autor |
 
 Pedido de correção consolidado: `TCC/relatorios/PEDIDO-CORRECAO-GEMINI-2026-11-26.md` (substitui o de 24/11/2026), com os textos exatos extraídos da leitura anterior à AGT-011.
+
+## Atualização (2026-11-26T14:12:26-03:00)
+
+Z7 resolvida como decisão dos pesquisadores: "o AP-4 foi decisão minha". A rubrica do repositório foi atualizada; a Parte B do pedido de correção foi retirada.

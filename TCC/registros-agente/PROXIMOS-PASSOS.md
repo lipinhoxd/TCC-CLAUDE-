@@ -3,7 +3,8 @@
 ## Onde parou
 - **AGT-009 concluída e classificada AP-3 pelos pesquisadores (20/11/2026)**; commits c051823 e 8b1b1cf. **Transcrita e conferida no Docs em 21/11/2026** (17 trocas e 3 inserções). Próxima atividade: AGT-010 (pagamento parcelado; RF-024, RF-027, RF-028; RN-012, RN-013, RN-017 a RN-020), sem instrução redigida.
 - **AGT-013 concluída e classificada AP-3 pelos pesquisadores (26/11/2026)**; commits b27f70e e 49a512e. Dossiê para o Gemini (`TCC/relatorios/DOSSIE-GEMINI-AGT-013-2026-11-26.md`) e auditoria gerados; aguarda envio ao Gemini e conferência. Experimento principal: 13 das 18 (n = 13). Próxima atividade: AGT-014 (processos automáticos), sem instrução redigida.
-- **Pergunta aberta:** destino da reserva ainda aguardando pagamento depois do reembolso de uma pendência (hoje: segue aguardando, sem novo pagamento, cancelável pelo passageiro).
+- Decidido em 26/11/2026: a reserva aguardando pagamento é cancelada quando o reembolso da pendência é processado (implementado e commitado). Classe AP-4 confirmada pelo pesquisador (rubrica e `CLAUDE.md` atualizados).
+- **Data de corte da execução experimental: 30/11/2026** (definida pelo agente em 26/11/2026, por delegação do pesquisador: "coloque você mesmo"; substitui a proposta de 24/11/2026).
 - **AGT-012 concluída e classificada AP-3 pelos pesquisadores (26/11/2026)**; commits 482f981 e a797a32. Dossiê para o Gemini (`TCC/relatorios/DOSSIE-GEMINI-AGT-012-2026-11-26.md`) e auditoria gerados; aguarda envio ao Gemini e conferência por releitura.
 - Experimento principal: AGT-001 a AGT-012 concluídas e classificadas (AP-3): 12 das 18 (n = 12). Próxima atividade: AGT-013 (cancelamentos e reembolsos), sem instrução redigida.
 - **Pendente de aprovação:** correções do Docs da AGT-011 (`PEDIDO-CORRECAO-GEMINI-AGT-011-2026-11-24.md`), com as decisões sobre o Quadro 3 e a Seção 5.4.

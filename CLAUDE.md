@@ -12,7 +12,7 @@ atividades `AGT-XXX` (ver `docs/especificacao/07-PLANO-DE-ATIVIDADES.md`).
    conflito na especificação: pergunte aos pesquisadores e registre a pergunta e a resposta
    como intervenção humana. Não decida em silêncio sobre pagamentos, vagas, autenticação,
    autorização, dados pessoais, cancelamentos ou reembolsos.
-3. **Não classifique** a atividade (AP-1, AP-2, AP-3, RP) e não declare aprovação. A
+3. **Não classifique** a atividade (AP-1, AP-2, AP-3, AP-4, RP) e não declare aprovação. A
    classificação é exclusiva dos pesquisadores.
 4. **Não faça commit** sem pedido explícito. Mensagens de commit de atividade seguem
    `AGT-XXX: resumo`; registros seguem `DOCS: resumo`.
@@ -44,7 +44,7 @@ pesquisadores: decisões, intervenções, resultados e classificações já feit
 - Linguagem acadêmica, impessoal, em terceira pessoa. Sem primeira pessoa e sem tom de log.
 - Crase e regência corretas. Usar "projeto" (não "design"), "capacidades", "data-limite", "revisão humana" e números em algarismos.
 - Não usar "revisão independente" nem "validação independente" enquanto não houver segundo avaliador.
-- Termos padronizados: IA/Inteligência Artificial Generativa, agente, AGT-XXX, AP-1, AP-2, AP-3, RP, RF, RNF, RN.
+- Termos padronizados: IA/Inteligência Artificial Generativa, agente, AGT-XXX, AP-1, AP-2, AP-3, AP-4, RP, RF, RNF, RN.
 
 ### Contagens e cautela
 - Escrever "n = X" com denominador explícito. Experimento principal: 7 das 18 atividades; piloto com o Codex: n = 5. Nunca somar os dois conjuntos.

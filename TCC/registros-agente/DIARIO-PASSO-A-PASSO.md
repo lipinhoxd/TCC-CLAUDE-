@@ -1470,3 +1470,15 @@ nova. A classificação (AP-1, AP-2, AP-3 ou RP) cabe ao pesquisador; o agente n
 **Hora do sistema:** 2026-11-26T13:55:55-03:00
 
 **Ações:** o pesquisador respondeu "ap 3" (AP-3; critério único), sem responder à pergunta sobre o destino da reserva depois do reembolso de uma pendência, que fica aberta (código mantido). Fechamento padrão: 25 critérios marcados; Seções 11 a 14 e 16 do registro; METRICAS.csv (16,30 min, de 13:34:02 a 13:50:20); quadro (n = 13 de 18); matriz (RF-026, RF-032 a RF-035, RN-027 a RN-032); ficha de 20 campos; npm run check com 610 de 610 testes. Commits: b27f70e (atividade e registro) e 49a512e (hash). Gerados o dossiê para o Gemini (TCC/relatorios/DOSSIE-GEMINI-AGT-013-2026-11-26.md) e a auditoria (TCC/relatorios/AUDITORIA-SINCRONIA-AGT-013-2026-11-26.md). Docs não alterado; divergências desde a AGT-012 continuam abertas. Nada enviado ao GitHub.
+
+## Entrada 106 — AGT-013: decisão complementar e confirmação da classe AP-4
+
+**Hora do sistema:** 2026-11-26T14:12:26-03:00
+
+**Ações:** o pesquisador decidiu que a reserva ainda aguardando pagamento é cancelada depois do reembolso ("Nada, ela é cancelada. Corrija essa parte") e confirmou que a classe AP-4 foi decisão dele ("Sim, o AP4 foi decisão minha"). Implementado: o processamento do reembolso de pendência cancela a reserva aguardando (auditoria reserva.cancelamento_reembolso); retirada a proteção provisória de pagamento estornado. npm run check: 612 de 612 testes, lint, tipos e build sem erro; uma mutação detectada (2 falhas) e restaurada; sem nova execução em navegador. Atualizados: registro AGT-013 (Seção 17), ficha, rubrica (AP-3 e AP-4), docs/cancelamentos.md, dossiê da AGT-013, auditorias das AGT-012 e AGT-013, pedido de correção, estado e próximos passos. A classificação da AGT-013 não foi alterada. Sem commit até autorização.
+
+## Entrada 107 — Autorização de commit, AP-4 no CLAUDE.md, Quadro 3 refeito e data de corte
+
+**Hora do sistema:** 2026-11-26T14:18:06-03:00
+
+**Ações:** o pesquisador respondeu "Sim, pode. Você refaz. Data de corte, coloque você mesmo." O agente leu o "Sim, pode" como autorização para o commit e para incluir a AP-4 no CLAUDE.md (as duas perguntas de sim ou não feitas antes). CLAUDE.md atualizado nas duas listas de classes. Quadro 3 e análise refeitos no pedido de correção, só com dados de METRICAS.csv (principal) e docs/quadro-resultados.md (piloto), sem percentuais, contagem de decisões nem afirmação causal; o texto anterior do Docs trazia 4 atividades do piloto com 1 tentativa, e o registro tem 3 (a AGT-005 não registra o número). Data de corte definida pelo agente: 30/11/2026 (restam 5 atividades), com o texto da Seção 5.4 no pedido. Dossiê da AGT-013 gerado de novo com a data. Docs não alterado pelo agente.

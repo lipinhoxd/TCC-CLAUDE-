@@ -27,6 +27,40 @@ export interface Pagamento {
   requer_tratamento_administrativo: boolean;
 }
 
+export interface ReembolsoReserva {
+  valor_centavos: number;
+  percentual_aplicado: number;
+  motivo: 'cancelamento_passageiro' | 'cancelamento_organizacao' | 'pendencia';
+  situacao: 'pendente' | 'processado' | 'recusado';
+}
+
+/** Previa do cancelamento (AGT-013): calculada no servidor, mostrada antes de confirmar. */
+export interface PreviaCancelamento {
+  permitido: boolean;
+  motivo_impedimento: 'reserva_nao_cancelavel' | 'excursao_ja_partiu' | null;
+  percentual: 0 | 50 | 100;
+  valor_pago_centavos: number;
+  valor_elegivel_centavos: number;
+  valor_reembolso_centavos: number;
+  parcelada_nao_quitada: boolean;
+  tem_pagamento_a_tratar: boolean;
+}
+
+export type ResultadoPrevia =
+  | { ok: true; previa: PreviaCancelamento }
+  | { ok: false; motivo: 'acesso' | 'rede' | 'erro' };
+
+async function previaCancelamento(id: number): Promise<ResultadoPrevia> {
+  try {
+    const r = await apiRequest<{ previa?: PreviaCancelamento }>('GET', `/api/reservas/${id}/cancelamento`);
+    if (r.status === 200 && r.data?.previa !== undefined) return { ok: true, previa: r.data.previa };
+    if (r.status === 401 || r.status === 403) return { ok: false, motivo: 'acesso' };
+    return { ok: false, motivo: 'erro' };
+  } catch (erro) {
+    return { ok: false, motivo: erro instanceof NetworkError ? 'rede' : 'erro' };
+  }
+}
+
 export interface Reserva {
   id: number;
   situacao: 'aguardando_pagamento' | 'pronto_para_embarque' | 'concluida' | 'cancelada';
@@ -43,6 +77,8 @@ export interface Reserva {
   };
   valores: { total_centavos: number; parcelas: ParcelaReserva[] };
   pode_desistir: boolean;
+  pode_cancelar: boolean;
+  reembolsos: ReembolsoReserva[];
   retencao: Retencao | null;
   pagamento: Pagamento | null;
   proxima_parcela: ParcelaPagamento | null;
@@ -112,6 +148,9 @@ export const reservasApi = {
   /** Resultado do provedor simulado; so existe fora de producao (AGT-009). */
   simular: (id: number, resultado: 'aprovado' | 'recusado') => chamar('POST', `/api/reservas/${id}/pagamento/simulacao`, { resultado }),
   desistir: (id: number) => chamar('POST', `/api/reservas/${id}/desistir`),
+  /** Previa do reembolso e cancelamento da propria reserva (AGT-013). */
+  previaCancelamento,
+  cancelar: (id: number, percentualPrevisto: number) => chamar('POST', `/api/reservas/${id}/cancelamento`, { percentual_previsto: percentualPrevisto }),
 };
 
 export const ROTULO_SITUACAO_RESERVA: Record<Reserva['situacao'], string> = {
@@ -138,6 +177,9 @@ export const MENSAGEM_RESERVA: Record<string, string> = {
   excursao_nao_encontrada: 'Esta excursão não foi encontrada ou não está disponível.',
   reserva_nao_cancelavel: 'Esta reserva não pode mais ser cancelada por aqui.',
   reserva_com_pagamento: 'Esta reserva já tem pagamento e não pode ser cancelada por aqui.',
+  pagamento_estornado: 'O pagamento desta reserva foi devolvido e ela não recebe novo pagamento. Você pode cancelá-la.',
+  reembolso_mudou: 'O prazo mudou desde a consulta e o valor do reembolso é outro. Confira o novo valor antes de confirmar.',
+  excursao_ja_partiu: 'A excursão já partiu e a reserva não pode mais ser cancelada.',
 };
 
 export const MENSAGEM_MODALIDADE: Record<string, string> = {

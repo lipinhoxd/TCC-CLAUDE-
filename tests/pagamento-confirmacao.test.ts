@@ -205,7 +205,7 @@ describe('estados inesperados', () => {
 
 describe('migracao 2 (coluna da pendencia administrativa)', () => {
   it('existe, aceita so o valor previsto, tem indice e nao altera pagamentos antigos', () => {
-    expect(migrations.map((m) => m.version)).toEqual([1, 2, 3]);
+    expect(migrations.map((m) => m.version)).toEqual([1, 2, 3, 4]);
     const colunas = a.prepare('PRAGMA table_info(pagamento)').all().map((c) => c['name']);
     expect(colunas).toContain('pendencia_administrativa');
     expect(a.prepare('SELECT pendencia_administrativa AS p FROM pagamento WHERE id = ?').get(pagamentos[0] as number)?.['p']).toBeNull();
@@ -217,14 +217,14 @@ describe('migracao 2 (coluna da pendencia administrativa)', () => {
 
   it('a migracao 1 nao foi editada e as duas se aplicam em ordem sobre um banco novo e sobre um banco ja na versao 1', () => {
     const novo = openDatabase(':memory:');
-    expect(runMigrations(novo)).toEqual([1, 2, 3]);
+    expect(runMigrations(novo)).toEqual([1, 2, 3, 4]);
     expect(runMigrations(novo)).toEqual([]);
     const antigo = openDatabase(':memory:');
     expect(runMigrations(antigo, migrations.slice(0, 1))).toEqual([1]);
     antigo
       .prepare("INSERT INTO usuario (nome_completo, cpf, email, data_nascimento, telefone, senha_hash, perfil, criado_em, atualizado_em) VALUES ('P', '11144477735', 'p@exemplo.com', '1990-01-01', '+5511900000000', 'x', 'passageiro', ?, ?)")
       .run(ISO, ISO);
-    expect(runMigrations(antigo)).toEqual([2, 3]);
+    expect(runMigrations(antigo)).toEqual([2, 3, 4]);
     expect(Number(antigo.prepare('SELECT COUNT(*) AS n FROM usuario').get()?.['n'])).toBe(1);
     novo.close();
     antigo.close();

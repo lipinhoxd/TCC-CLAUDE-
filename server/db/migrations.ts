@@ -175,4 +175,14 @@ ALTER TABLE reserva ADD COLUMN motivo_cancelamento TEXT
   CHECK (motivo_cancelamento IS NULL OR motivo_cancelamento = 'inadimplencia');
 `,
   },
+  {
+    // AGT-013: um reembolso por cancelamento de reserva e no maximo um por pagamento sinalizado (idempotencia no banco).
+    version: 4,
+    name: 'reembolso_por_pagamento',
+    sql: `
+ALTER TABLE reembolso ADD COLUMN pagamento_id INTEGER REFERENCES pagamento (id) ON DELETE RESTRICT;
+CREATE UNIQUE INDEX uq_reembolso_cancelamento ON reembolso (reserva_id) WHERE pagamento_id IS NULL;
+CREATE UNIQUE INDEX uq_reembolso_pagamento ON reembolso (pagamento_id) WHERE pagamento_id IS NOT NULL;
+`,
+  },
 ];

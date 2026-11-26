@@ -2,6 +2,7 @@ import type { IncomingMessage, ServerResponse } from 'node:http';
 import { authorize, readJson, sendError, sendJson } from '../auth/routes.ts';
 import type { AuthService } from '../auth/service.ts';
 import { HttpError } from '../auth/support.ts';
+import type { CancelamentoService } from '../cancelamentos/service.ts';
 import type { PagamentoService } from '../pagamentos/service.ts';
 import type { ReservaService } from './service.ts';
 
@@ -24,12 +25,18 @@ interface Contexto {
   id: number;
   servico: ReservaService;
   pagamentos: PagamentoService | undefined;
+  cancelamentos: CancelamentoService | undefined;
 }
 
 /** As rotas de pagamento exigem o servico de pagamento; as demais rotas de reserva nao dependem dele. */
 function exigir(pagamentos: PagamentoService | undefined): PagamentoService {
   if (pagamentos === undefined) throw new HttpError(503, 'servico_indisponivel');
   return pagamentos;
+}
+
+function exigirCancelamentos(cancelamentos: CancelamentoService | undefined): CancelamentoService {
+  if (cancelamentos === undefined) throw new HttpError(503, 'servico_indisponivel');
+  return cancelamentos;
 }
 
 interface Rota {
@@ -80,6 +87,17 @@ const ROTAS: Rota[] = [
     },
   },
   {
+    // AGT-013: previa do reembolso e cancelamento da propria reserva.
+    padrao: /^\/api\/reservas\/(\d{1,15})\/cancelamento$/,
+    metodos: {
+      GET: ({ res, passageiroId, id, cancelamentos }) => sendJson(res, 200, { previa: exigirCancelamentos(cancelamentos).previa(passageiroId, id) }),
+      POST: async ({ req, res, passageiroId, id, cancelamentos }) => {
+        const servico = exigirCancelamentos(cancelamentos);
+        sendJson(res, 200, { reserva: servico.cancelarReserva(passageiroId, id, await readJson(req)) });
+      },
+    },
+  },
+  {
     padrao: /^\/api\/reservas\/(\d{1,15})\/desistir$/,
     metodos: {
       POST: ({ res, passageiroId, id, servico }) => sendJson(res, 200, { reserva: servico.desistir(passageiroId, id) }),
@@ -94,6 +112,7 @@ export async function handleReservaRoute(
   auth: AuthService | undefined,
   servico: ReservaService | undefined,
   pagamentos?: PagamentoService,
+  cancelamentos?: CancelamentoService,
 ): Promise<boolean> {
   for (const rota of ROTAS) {
     const encontrado = rota.padrao.exec(pathname);
@@ -110,7 +129,7 @@ export async function handleReservaRoute(
     }
     try {
       const contexto = authorize(req, auth, ['passageiro']);
-      await tratador({ req, res, passageiroId: contexto.user.id, id: Number(encontrado[1] ?? 0), servico, pagamentos });
+      await tratador({ req, res, passageiroId: contexto.user.id, id: Number(encontrado[1] ?? 0), servico, pagamentos, cancelamentos });
     } catch (error) {
       // Banco ocupado alem do busy_timeout (AGT-008, decisao 2): resposta curta e segura, sem detalhes internos.
       if (error instanceof Error && BANCO_OCUPADO.test(error.message)) {

@@ -28,6 +28,8 @@ function reserva(extra: Record<string, unknown> = {}): Record<string, unknown> {
     },
     valores: { total_centavos: 150001, parcelas: [{ parcela: 'unica', valor_centavos: 150001, vencimento: null, situacao_pagamento: null }] },
     pode_desistir: true,
+    pode_cancelar: false,
+    reembolsos: [],
     retencao: null,
     pagamento: null,
     proxima_parcela: 'unica',

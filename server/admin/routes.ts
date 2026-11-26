@@ -1,6 +1,8 @@
 import type { IncomingMessage, ServerResponse } from 'node:http';
 import { authorize, readJson, sendError, sendJson } from '../auth/routes.ts';
 import type { AuthService } from '../auth/service.ts';
+import type { CancelamentoService } from '../cancelamentos/service.ts';
+import { HttpError } from '../auth/support.ts';
 import type { AdminService } from './service.ts';
 
 /**
@@ -20,6 +22,12 @@ interface Contexto {
   id: number;
   consulta: Record<string, string | undefined>;
   servico: AdminService;
+  cancelamentos: CancelamentoService | undefined;
+}
+
+function exigir(cancelamentos: CancelamentoService | undefined): CancelamentoService {
+  if (cancelamentos === undefined) throw new HttpError(503, 'servico_indisponivel');
+  return cancelamentos;
 }
 
 interface Rota {
@@ -39,6 +47,32 @@ const ROTAS: Rota[] = [
     },
   },
   { padrao: /^\/api\/admin\/pendencias$/, metodos: { GET: ({ res, consulta, servico }) => sendJson(res, 200, servico.listarPendencias(consulta)) } },
+  {
+    // AGT-013: cria (ou devolve) o reembolso integral de um pagamento sinalizado.
+    padrao: /^\/api\/admin\/pendencias\/(\d{1,15})\/reembolso$/,
+    metodos: { POST: ({ res, atorId, id, cancelamentos }) => sendJson(res, 200, { reembolso: exigir(cancelamentos).reembolsarPendencia(atorId, id) }) },
+  },
+  {
+    // AGT-013: previa e cancelamento da excursao pela organizacao.
+    padrao: /^\/api\/admin\/excursoes\/(\d{1,15})\/cancelamento$/,
+    metodos: {
+      GET: ({ res, id, cancelamentos }) => sendJson(res, 200, { previa: exigir(cancelamentos).previaExcursao(id) }),
+      POST: async ({ req, res, atorId, id, cancelamentos }) => {
+        const servico = exigir(cancelamentos);
+        sendJson(res, 200, { cancelamento: servico.cancelarExcursao(atorId, id, await readJson(req)) });
+      },
+    },
+  },
+  { padrao: /^\/api\/admin\/reembolsos$/, metodos: { GET: ({ res, consulta, cancelamentos }) => sendJson(res, 200, exigir(cancelamentos).listarReembolsos(consulta)) } },
+  {
+    padrao: /^\/api\/admin\/reembolsos\/(\d{1,15})\/processar$/,
+    metodos: {
+      POST: async ({ req, res, atorId, id, cancelamentos }) => {
+        const servico = exigir(cancelamentos);
+        sendJson(res, 200, { reembolso: servico.processarReembolso(atorId, id, await readJson(req)) });
+      },
+    },
+  },
   { padrao: /^\/api\/admin\/passageiros$/, metodos: { GET: ({ res, consulta, servico }) => sendJson(res, 200, servico.listarPassageiros(consulta)) } },
   {
     padrao: /^\/api\/admin\/passageiros\/(\d{1,15})$/,
@@ -60,6 +94,7 @@ export async function handleAdminRoute(
   pathname: string,
   auth: AuthService | undefined,
   servico: AdminService | undefined,
+  cancelamentos?: CancelamentoService,
 ): Promise<boolean> {
   for (const rota of ROTAS) {
     const encontrado = rota.padrao.exec(pathname);
@@ -75,7 +110,7 @@ export async function handleAdminRoute(
     }
     try {
       const contexto = authorize(req, auth, ['administrador']);
-      await tratador({ req, res, atorId: contexto.user.id, id: Number(encontrado[1] ?? 0), consulta: consultaDe(req), servico });
+      await tratador({ req, res, atorId: contexto.user.id, id: Number(encontrado[1] ?? 0), consulta: consultaDe(req), servico, cancelamentos });
     } catch (error) {
       if (error instanceof Error && BANCO_OCUPADO.test(error.message)) {
         sendJson(res, 503, { error: 'banco_ocupado' }, { 'Retry-After': '1' });

@@ -3,6 +3,7 @@ import type { IncomingMessage, Server, ServerResponse } from 'node:http';
 import { handleAdminRoute } from './admin/routes.ts';
 import type { AdminService } from './admin/service.ts';
 import type { AuthConfig } from './auth/config.ts';
+import type { CancelamentoService } from './cancelamentos/service.ts';
 import { handleAuthRoute, sendJson } from './auth/routes.ts';
 import type { AuthService } from './auth/service.ts';
 import { handleExcursaoRoute } from './excursoes/routes.ts';
@@ -23,6 +24,8 @@ export interface AppOptions {
   pagamentos?: PagamentoService;
   /** Administracao de reservas e passageiros (AGT-012); as rotas tambem exigem o servico de autenticacao. */
   admin?: AdminService;
+  /** Cancelamentos e reembolsos (AGT-013); sem ele, as rotas respondem 503. */
+  cancelamentos?: CancelamentoService;
 }
 
 async function handle(req: IncomingMessage, res: ServerResponse, options: AppOptions): Promise<void> {
@@ -45,11 +48,11 @@ async function handle(req: IncomingMessage, res: ServerResponse, options: AppOpt
     return;
   }
 
-  if (await handleReservaRoute(req, res, pathname, options.auth?.service, options.reservas, options.pagamentos)) {
+  if (await handleReservaRoute(req, res, pathname, options.auth?.service, options.reservas, options.pagamentos, options.cancelamentos)) {
     return;
   }
 
-  if (await handleAdminRoute(req, res, pathname, options.auth?.service, options.admin)) {
+  if (await handleAdminRoute(req, res, pathname, options.auth?.service, options.admin, options.cancelamentos)) {
     return;
   }
 

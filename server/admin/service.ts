@@ -347,6 +347,12 @@ export class AdminService {
     return this.obterReserva(reservaId);
   }
 
+  /** AGT-013: reembolso ja criado para o pagamento sinalizado, se houver. */
+  private reembolsoDoPagamento(pagamentoId: number): { id: number; situacao: string } | null {
+    const r = this.db.prepare('SELECT id, situacao FROM reembolso WHERE pagamento_id = ?').get(pagamentoId);
+    return r === undefined ? null : { id: n(r['id']), situacao: t(r['situacao']) };
+  }
+
   /* ---------------------------------------------------------- pendencias */
 
   /** Pagamentos confirmados que dependem da administracao (decisao 3): so listar e filtrar, sem acao. */
@@ -373,6 +379,7 @@ export class AdminService {
         reserva: { id: n(l['r_id']), situacao: t(l['r_situacao']) },
         passageiro: { id: n(l['u_id']), nome_completo: t(l['nome_completo']) },
         excursao: { id: n(l['e_id']), nome: t(l['e_nome']) },
+        reembolso: this.reembolsoDoPagamento(n(l['p_id'])),
       };
     });
     const pendencias = tipo === undefined || tipo === '' ? todas : todas.filter((p) => p.tipo === tipo);

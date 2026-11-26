@@ -71,6 +71,7 @@ export class PagamentoService {
       if (t(reserva['situacao']) === 'cancelada' && reserva['motivo_cancelamento'] === 'inadimplencia') {
         throw new HttpError(409, 'prazo_da_segunda_parcela_vencido');
       }
+      if (linhas.some((l) => l['situacao'] === 'estornado')) throw new HttpError(409, 'pagamento_estornado');
       if (parcela === null) throw new HttpError(409, 'pagamento_ja_confirmado');
       if (this.provedor === undefined) throw new HttpError(503, 'pagamento_indisponivel');
       if (t(reserva['situacao']) !== 'aguardando_pagamento') throw new HttpError(409, 'reserva_nao_pendente');

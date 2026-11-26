@@ -78,6 +78,10 @@ export interface ReservaDto {
   };
   valores: { total_centavos: number; parcelas: Parcela[] };
   pode_desistir: boolean;
+  /** AGT-013: a reserva ativa pode ser cancelada pelo passageiro (antes da partida). */
+  pode_cancelar: boolean;
+  /** AGT-013: reembolsos registrados para a reserva. */
+  reembolsos: Array<{ valor_centavos: number; percentual_aplicado: number; motivo: string; situacao: string }>;
   /** Retencao mais recente da reserva, ou null se o checkout ainda nao foi iniciado. */
   retencao: RetencaoDto | null;
   /** Pagamento da parcela em andamento (a proxima a pagar ou, sem proxima, o mais recente), ou null se nenhum foi iniciado. */
@@ -209,6 +213,12 @@ export class ReservaService {
         })),
       },
       pode_desistir: situacao === 'aguardando_pagamento' && !comPagamento,
+      pode_cancelar:
+        (situacao === 'aguardando_pagamento' || situacao === 'pronto_para_embarque') && this.relogio().getTime() < new Date(t(excursao['partida_utc'])).getTime(),
+      reembolsos: this.db
+        .prepare('SELECT valor_centavos, percentual_aplicado, motivo, situacao FROM reembolso WHERE reserva_id = ? ORDER BY id')
+        .all(Number(reserva['id']))
+        .map((x) => ({ valor_centavos: Number(x['valor_centavos']), percentual_aplicado: Number(x['percentual_aplicado']), motivo: t(x['motivo']), situacao: t(x['situacao']) })),
       retencao: this.retencaoDe(Number(reserva['id'])),
       pagamento,
       proxima_parcela: proxima,
@@ -338,6 +348,11 @@ export class ReservaService {
    * transacao IMMEDIATE, entao dois pedidos pela ultima vaga resultam em uma retencao e um 409 (RN-021, RN-040).
    */
   iniciarCheckout(passageiroId: number, reservaId: number): ReservaDto {
+    // AGT-013: com pagamento devolvido nao ha o que pagar, entao nao se retem vaga.
+    const devolvido = this.db
+      .prepare("SELECT 1 AS x FROM pagamento p JOIN reserva r ON r.id = p.reserva_id WHERE r.id = ? AND r.usuario_id = ? AND p.situacao = 'estornado' LIMIT 1")
+      .get(reservaId, passageiroId);
+    if (devolvido !== undefined) throw new HttpError(409, 'pagamento_estornado');
     const agora = this.relogio();
     const hoje = utcParaBrasilia(agora).data;
     const dela = this.db.prepare('SELECT excursao_id FROM reserva WHERE id = ? AND usuario_id = ?').get(reservaId, passageiroId);

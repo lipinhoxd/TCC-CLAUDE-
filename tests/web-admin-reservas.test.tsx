@@ -332,13 +332,13 @@ describe('detalhe e alteracao manual (RF-039)', () => {
 describe('pendencias administrativas (RF-026)', () => {
   const PENDENCIAS = {
     pendencias: [
-      { tipo: 'confirmado_sem_vaga', pagamento: { id: 3, parcela: 'unica', situacao: 'confirmado', valor_centavos: 15000, confirmado_em: '2026-11-19T12:30:00.000Z' }, reserva: { id: 31, situacao: 'aguardando_pagamento' }, passageiro: { id: 2, nome_completo: 'Ana Passageira Ficticia' }, excursao: { id: 7, nome: 'Excursao Ficticia Serra' } },
-      { tipo: 'segunda_parcela_apos_vencimento', pagamento: { id: 4, parcela: 'segunda', situacao: 'confirmado', valor_centavos: 7500, confirmado_em: '2026-12-07T12:00:00.000Z' }, reserva: { id: 30, situacao: 'cancelada' }, passageiro: { id: 3, nome_completo: 'Beatriz Souza Ficticia' }, excursao: { id: 7, nome: 'Excursao Ficticia Serra' } },
+      { tipo: 'confirmado_sem_vaga', pagamento: { id: 3, parcela: 'unica', situacao: 'confirmado', valor_centavos: 15000, confirmado_em: '2026-11-19T12:30:00.000Z' }, reserva: { id: 31, situacao: 'aguardando_pagamento' }, passageiro: { id: 2, nome_completo: 'Ana Passageira Ficticia' }, excursao: { id: 7, nome: 'Excursao Ficticia Serra' }, reembolso: null },
+      { tipo: 'segunda_parcela_apos_vencimento', pagamento: { id: 4, parcela: 'segunda', situacao: 'confirmado', valor_centavos: 7500, confirmado_em: '2026-12-07T12:00:00.000Z' }, reserva: { id: 30, situacao: 'cancelada' }, passageiro: { id: 3, nome_completo: 'Beatriz Souza Ficticia' }, excursao: { id: 7, nome: 'Excursao Ficticia Serra' }, reembolso: null },
     ],
     total: 2,
   };
 
-  it('lista as pendencias sem acao e filtra por tipo', async () => {
+  it('lista as pendencias com a acao de reembolso (AGT-013) e filtra por tipo', async () => {
     const calls = mockApi({
       ...comoAdmin,
       'GET /api/admin/pendencias': () => json(200, PENDENCIAS),
@@ -350,7 +350,7 @@ describe('pendencias administrativas (RF-026)', () => {
     expect(linhas).toHaveLength(2);
     expect(linhas[0]?.textContent).toContain('Pagamento confirmado sem vaga');
     expect(linhas[1]?.textContent).toContain('Segunda parcela confirmada depois do vencimento');
-    expect(within(tabela).queryByRole('button')).toBeNull();
+    expect(within(tabela).getAllByRole('button', { name: 'Reembolsar' })).toHaveLength(2);
     fireEvent.change(screen.getByLabelText('Tipo'), { target: { value: 'confirmado_sem_vaga' } });
     await waitFor(() => expect(within(screen.getByRole('table', { name: 'Pendências administrativas' })).getAllByRole('row')).toHaveLength(2));
     expect(chamadas(calls, 'GET', '/api/admin/pendencias?tipo=confirmado_sem_vaga')).toHaveLength(1);

@@ -6,6 +6,7 @@ import { MENSAGEM_RESERVA, ROTULO_SITUACAO_RESERVA, reservasApi } from '../reser
 import { Link } from '../router.tsx';
 import { useSession } from '../session.tsx';
 import { Notice, usePageTitle } from '../ui.tsx';
+import { CancelarReserva, Reembolsos } from './CancelarReserva.tsx';
 import { ROTULO_PAGAMENTO, ROTULO_PARCELA, vagaOcupada } from './Reservas.tsx';
 
 /**
@@ -52,7 +53,7 @@ function LinhaReserva({ reserva }: { reserva: Reserva }) {
       <td>{formatarReais(reserva.valores.total_centavos)}</td>
       <td>
         <Link to={`/reservas/${reserva.id}`}>Ver detalhe</Link>
-        {reserva.situacao === 'aguardando_pagamento' ? (
+        {reserva.situacao === 'aguardando_pagamento' && reserva.proxima_parcela !== null ? (
           <>
             {' · '}
             <Link to={`/reservas/${reserva.id}/checkout`}>Continuar o pagamento</Link>
@@ -304,12 +305,23 @@ export function DetalheReserva({ id }: { id: number }) {
           </tbody>
         </table>
       </div>
-      {aguardando && !semVagaAdm ? (
+      {aguardando && !semVagaAdm && reserva.proxima_parcela !== null ? (
         <p>
           <Link to={`/reservas/${reserva.id}/checkout`} className="btn btn-primary">
             Continuar o pagamento
           </Link>
         </p>
+      ) : null}
+      <Reembolsos reserva={reserva} />
+      {reserva.pode_cancelar && !reserva.pode_desistir ? (
+        <CancelarReserva
+          id={reserva.id}
+          aoCancelar={(r) => {
+            setReserva(r);
+            setAviso({ tipo: 'success', texto: 'Reserva cancelada.' });
+          }}
+          aoNegar={() => setNegado(true)}
+        />
       ) : null}
       {reserva.pode_desistir ? (
         <section aria-labelledby="desistir-titulo" className="panel">

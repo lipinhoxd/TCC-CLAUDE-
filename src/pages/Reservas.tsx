@@ -186,7 +186,7 @@ export function Checkout({ id }: { id: number }) {
   useEffect(() => {
     if (reserva === null || autoIniciou.current) return;
     autoIniciou.current = true;
-    if (reserva.situacao === 'aguardando_pagamento' && !vagaOcupada(reserva) && reserva.retencao?.situacao !== 'ativa') void iniciar();
+    if (reserva.situacao === 'aguardando_pagamento' && reserva.proxima_parcela !== null && !vagaOcupada(reserva) && reserva.retencao?.situacao !== 'ativa') void iniciar();
   }, [reserva]);
 
   // O servidor informa os segundos restantes; a contagem na tela usa o relogio local a partir dessa medida.

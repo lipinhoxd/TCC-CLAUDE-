@@ -372,6 +372,7 @@ describe('pendencias administrativas (RF-026, RN-022; decisao 3)', () => {
       reserva: { id: reservaId, situacao: 'aguardando_pagamento' },
       passageiro: { id: anaId, nome_completo: 'Ana Passageira Ficticia' },
       excursao: { id, nome: 'Excursao Ficticia Serra' },
+      reembolso: null,
     });
     expect(lista(await adm('GET', '/api/admin/reservas'), 'reservas')[0]?.['tem_pendencia']).toBe(true);
     expect(((await adm('GET', `/api/admin/reservas/${reservaId}`)).json?.['reserva'] as Record<string, unknown>)['pendencias']).toEqual(['confirmado_sem_vaga']);

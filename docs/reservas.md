@@ -1,5 +1,7 @@
 # Reservas (AGT-007 a AGT-011)
 
+Cancelamento e reembolso (AGT-013): ver [cancelamentos.md](cancelamentos.md).
+
 Solicitação de reserva individual do passageiro e checkout (RF-018 a RF-020), sobre as tabelas `reserva`, `excursao`,
 `retencao_vaga` e `auditoria`. criar a
 reserva não altera `vagas_ocupadas` e não cria linhas em `pagamento`; o pagamento integral (AGT-009) e o parcelado (AGT-010) só nascem no checkout, com provedor simulado fora de produção. Desde a AGT-008, **abrir o checkout inicia a retenção

@@ -578,6 +578,9 @@ function EditorExcursao({ id }: FormularioProps) {
               </li>
             ))}
           </ul>
+          <p>
+            <Link to={`/admin/excursoes/${excursao.id}/cancelamento`}>Cancelar a excursão com reembolso aos passageiros</Link>
+          </p>
           {confirmarCancelamento ? (
             <div className="confirm" role="alertdialog" aria-labelledby="confirma-titulo">
               <p id="confirma-titulo">

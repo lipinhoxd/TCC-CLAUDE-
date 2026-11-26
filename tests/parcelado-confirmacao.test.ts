@@ -236,14 +236,14 @@ describe('vencimento da segunda parcela (RN-019, RN-020)', () => {
 
 describe('migracao 3 (motivo do cancelamento)', () => {
   it('existe, aceita so inadimplencia, nao altera reservas antigas e se aplica sobre um banco ja na versao 2', () => {
-    expect(migrations.map((m) => m.version)).toEqual([1, 2, 3]);
+    expect(migrations.map((m) => m.version)).toEqual([1, 2, 3, 4]);
     expect(a.prepare('PRAGMA table_info(reserva)').all().map((c) => c['name'])).toContain('motivo_cancelamento');
     expect(a.prepare('SELECT motivo_cancelamento AS m FROM reserva WHERE id = ?').get(reservas[0] as number)?.['m']).toBeNull();
     expect(() => a.prepare("UPDATE reserva SET motivo_cancelamento = 'qualquer' WHERE id = ?").run(reservas[0] as number)).toThrow(/CHECK|constraint/i);
     expect(() => a.prepare("UPDATE reserva SET motivo_cancelamento = 'inadimplencia' WHERE id = ?").run(reservas[0] as number)).not.toThrow();
     const antigo = openDatabase(':memory:');
     expect(runMigrations(antigo, migrations.slice(0, 2))).toEqual([1, 2]);
-    expect(runMigrations(antigo)).toEqual([3]);
+    expect(runMigrations(antigo)).toEqual([3, 4]);
     expect(runMigrations(antigo)).toEqual([]);
     antigo.close();
   });

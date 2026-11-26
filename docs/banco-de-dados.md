@@ -92,3 +92,5 @@ negócio ficam para as atividades seguintes.
 `tests/db-schema.test.ts`, `tests/db-transaction-audit.test.ts` e `tests/db-concorrencia.test.ts`
 cobrem migrações (inclusive do zero em arquivo), restrições, transações com rollback, auditoria e
 concorrência entre conexões. Todos os dados são fictícios.
+
+**Versão 4 (AGT-013):** `reembolso.pagamento_id` e dois índices únicos (um reembolso de cancelamento por reserva; um por pagamento sinalizado). Não altera linhas existentes; ver [cancelamentos.md](cancelamentos.md).

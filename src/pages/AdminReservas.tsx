@@ -10,6 +10,7 @@ import {
   ROTULO_PAGAMENTO,
   ROTULO_PARCELA,
   ROTULO_SITUACAO,
+  ROTULO_SITUACAO_REEMBOLSO,
   ROTULO_TIPO_PENDENCIA,
   adminReservasApi,
 } from '../admin/reservas-admin-api.ts';
@@ -30,7 +31,7 @@ const instanteBr = (iso: string): string => {
   return `${dataBr(data)} ${hora.slice(0, 5)}`;
 };
 
-function Restrito({ visitante }: { visitante: boolean }) {
+export function Restrito({ visitante }: { visitante: boolean }) {
   return (
     <>
       <h1>Área administrativa</h1>
@@ -46,7 +47,7 @@ function Restrito({ visitante }: { visitante: boolean }) {
 }
 
 /** Mostra o conteudo so para o administrador; visitante e passageiro veem aviso de acesso restrito, sem consultar a API. */
-function SoAdministrador({ children, negado }: { children: ReactNode; negado?: boolean }) {
+export function SoAdministrador({ children, negado }: { children: ReactNode; negado?: boolean }) {
   const { status, user } = useSession();
   if (status === 'loading') return <p aria-busy="true">Carregando…</p>;
   if (user === null) return <Restrito visitante />;
@@ -54,25 +55,26 @@ function SoAdministrador({ children, negado }: { children: ReactNode; negado?: b
   return <>{children}</>;
 }
 
-function SubMenu() {
+export function SubMenu() {
   return (
     <nav aria-label="Administração" className="actions">
       <Link to="/admin/excursoes">Excursões</Link>
       <Link to="/admin/reservas">Reservas</Link>
       <Link to="/admin/passageiros">Passageiros</Link>
       <Link to="/admin/pendencias">Pendências</Link>
+      <Link to="/admin/reembolsos">Reembolsos</Link>
     </nav>
   );
 }
 
-function mensagemDeFalha(r: Extract<Resultado<unknown>, { ok: false }>): string {
+export function mensagemDeFalha(r: Extract<Resultado<unknown>, { ok: false }>): string {
   if (r.motivo === 'rede') return 'Sem conexão com o servidor. Tente novamente.';
   if (r.motivo === 'recusa') return MENSAGEM_ADMIN[r.codigo] ?? 'Não foi possível concluir. Confira os dados e tente de novo.';
   return 'Não foi possível carregar agora.';
 }
 
 /** Carrega um recurso e guarda o resultado; `acesso` indica sessao sem permissao. */
-function useCarga<T>(carregar: () => Promise<Resultado<T>>, dependencias: unknown[], ativo: boolean) {
+export function useCarga<T>(carregar: () => Promise<Resultado<T>>, dependencias: unknown[], ativo: boolean) {
   const [dados, setDados] = useState<T | null>(null);
   const [falha, setFalha] = useState<string | null>(null);
   const [naoEncontrada, setNaoEncontrada] = useState(false);
@@ -102,7 +104,7 @@ function useCarga<T>(carregar: () => Promise<Resultado<T>>, dependencias: unknow
   return { dados, setDados, falha, naoEncontrada, negado, carregando };
 }
 
-function Paginacao({ pagina, limite, total, aoMudar }: { pagina: number; limite: number; total: number; aoMudar: (pagina: number) => void }) {
+export function Paginacao({ pagina, limite, total, aoMudar }: { pagina: number; limite: number; total: number; aoMudar: (pagina: number) => void }) {
   const ultima = Math.max(1, Math.ceil(total / limite));
   return (
     <nav aria-label="Paginação" className="actions">
@@ -330,7 +332,7 @@ function DetalheReserva({ id }: { id: number }) {
       <SubMenu />
       {aviso ? <Notice kind={aviso.tipo}>{aviso.texto}</Notice> : null}
       {atual.pendencias.length > 0 ? (
-        <Notice kind="info">Pendência administrativa: {atual.pendencias.map((p) => ROTULO_TIPO_PENDENCIA[p]).join('; ')}. O tratamento e o reembolso são feitos em outra etapa.</Notice>
+        <Notice kind="info">Pendência administrativa: {atual.pendencias.map((p) => ROTULO_TIPO_PENDENCIA[p]).join('; ')}. O reembolso é feito na página de pendências.</Notice>
       ) : null}
       <dl className="detalhes">
         <dt>Passageiro</dt>
@@ -411,7 +413,7 @@ function DetalheReserva({ id }: { id: number }) {
         {disponiveis.length === 0 ? (
           <p>
             Nenhuma alteração manual está disponível para esta reserva
-            {atual.alteracoes_permitidas.some((a) => a.motivo === 'reserva_com_pagamento') ? ': ela tem pagamento pendente ou confirmado (o reembolso é tratado em outra etapa)' : ''}.
+            {atual.alteracoes_permitidas.some((a) => a.motivo === 'reserva_com_pagamento') ? ': ela tem pagamento pendente ou confirmado' : ''}.
           </p>
         ) : (
           <p className="actions">
@@ -498,14 +500,26 @@ function ListaPendencias() {
   const { status, user } = useSession();
   const ativo = status === 'ready' && user?.perfil === 'administrador';
   const [tipo, setTipo] = useState('');
-  const carga = useCarga(() => adminReservasApi.listarPendencias(tipo === '' ? undefined : tipo), [tipo], ativo);
+  const [versao, setVersao] = useState(0);
+  const [ocupado, setOcupado] = useState(false);
+  const [erroReembolso, setErroReembolso] = useState<string | null>(null);
+  const carga = useCarga(() => adminReservasApi.listarPendencias(tipo === '' ? undefined : tipo), [tipo, versao], ativo);
+  const reembolsar = async (pagamentoId: number) => {
+    setOcupado(true);
+    setErroReembolso(null);
+    const r = await adminReservasApi.reembolsarPendencia(pagamentoId);
+    setOcupado(false);
+    if (r.ok) setVersao((v) => v + 1);
+    else setErroReembolso(mensagemDeFalha(r));
+  };
   if (carga.negado) return <Restrito visitante={false} />;
   const d = carga.dados;
   return (
     <>
       <h1>Pendências administrativas</h1>
       <SubMenu />
-      <p className="hint">Pagamentos confirmados que dependem da organização. Aqui só se consulta: o tratamento e o reembolso são feitos em outra etapa.</p>
+      <p className="hint">Pagamentos confirmados que dependem da organização. O reembolso é integral e entra na fila de reembolsos.</p>
+      {erroReembolso ? <Notice kind="error">{erroReembolso}</Notice> : null}
       <div className="field">
         <label htmlFor="f-tipo">Tipo</label>
         <select id="f-tipo" value={tipo} onChange={(e) => setTipo(e.target.value)}>
@@ -531,6 +545,7 @@ function ListaPendencias() {
                 <th scope="col">Passageiro</th>
                 <th scope="col">Excursão</th>
                 <th scope="col">Pagamento</th>
+                <th scope="col">Reembolso</th>
               </tr>
             </thead>
             <tbody>
@@ -544,6 +559,15 @@ function ListaPendencias() {
                   <td>{p.excursao.nome}</td>
                   <td>
                     {ROTULO_PARCELA[p.pagamento.parcela]}: {formatarReais(p.pagamento.valor_centavos)}, pago em {instanteBr(p.pagamento.confirmado_em)}
+                  </td>
+                  <td>
+                    {p.reembolso === null ? (
+                      <button type="button" className="btn btn-secondary" disabled={ocupado} onClick={() => void reembolsar(p.pagamento.id)}>
+                        Reembolsar
+                      </button>
+                    ) : (
+                      <Link to="/admin/reembolsos">Reembolso: {ROTULO_SITUACAO_REEMBOLSO[p.reembolso.situacao]}</Link>
+                    )}
                   </td>
                 </tr>
               ))}

@@ -39,6 +39,8 @@ function reserva(extra: Record<string, unknown> = {}): Record<string, unknown> {
     excursao: { id: 7, nome: 'Excursao Ficticia Serra', local: 'Serra Ficticia', ponto_embarque: 'Praca Ficticia', data_inicial: '2026-12-10', data_final: '2026-12-12', partida_brasilia: { data: '2026-12-10', hora: '07:00' } },
     valores: { total_centavos: 150001, parcelas: [{ parcela: 'unica', valor_centavos: 150001, vencimento: null, situacao_pagamento: null }] },
     pode_desistir: true,
+    pode_cancelar: false,
+    reembolsos: [],
     retencao: { situacao: 'ativa', expira_em: '2026-11-19T12:10:00.000Z', segundos_restantes: 600 },
     pagamento: null,
     proxima_parcela: 'unica',

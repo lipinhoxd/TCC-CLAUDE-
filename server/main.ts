@@ -1,5 +1,6 @@
 import { AdminService } from './admin/service.ts';
 import { createApp } from './app.ts';
+import { CancelamentoService } from './cancelamentos/service.ts';
 import { loadAuthConfig } from './auth/config.ts';
 import { AuthService } from './auth/service.ts';
 import { fileOutbox, noOutbox } from './auth/support.ts';
@@ -31,6 +32,7 @@ const server = createApp({
   reservas,
   pagamentos: new PagamentoService(db, reservas, provedor),
   admin: new AdminService(db),
+  cancelamentos: new CancelamentoService(db, reservas, provedor),
 });
 
 server.listen(port, host, () => {

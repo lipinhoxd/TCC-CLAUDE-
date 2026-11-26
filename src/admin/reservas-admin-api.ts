@@ -20,6 +20,42 @@ export const ROTULO_TIPO_PENDENCIA: Record<TipoPendencia, string> = {
 export const ROTULO_PARCELA = { unica: 'Parcela única', primeira: 'Primeira parcela', segunda: 'Segunda parcela' } as const;
 export const ROTULO_PAGAMENTO = { pendente: 'Aguardando confirmação', confirmado: 'Pago', falhou: 'Recusado', estornado: 'Estornado' } as const;
 
+export type SituacaoReembolso = 'pendente' | 'processado' | 'recusado';
+export const ROTULO_SITUACAO_REEMBOLSO: Record<SituacaoReembolso, string> = { pendente: 'Pendente', processado: 'Processado', recusado: 'Recusado' };
+export const ROTULO_MOTIVO_REEMBOLSO = {
+  cancelamento_passageiro: 'Cancelamento pelo passageiro',
+  cancelamento_organizacao: 'Cancelamento pela organização',
+  pendencia: 'Pendência (pagamento sem vaga)',
+} as const;
+
+export interface Reembolso {
+  id: number;
+  reserva_id: number;
+  valor_centavos: number;
+  percentual_aplicado: number;
+  motivo: keyof typeof ROTULO_MOTIVO_REEMBOLSO;
+  situacao: SituacaoReembolso;
+  criado_em: string;
+  passageiro: string;
+  excursao: string;
+}
+
+export interface PreviaExcursao {
+  excursao: { id: number; nome: string; situacao: string; partida_utc: string };
+  permitido: boolean;
+  motivo_impedimento: 'excursao_ja_cancelada' | 'excursao_ja_partiu' | null;
+  reservas: Array<{ id: number; passageiro: string; situacao: SituacaoReserva; valor_reembolso_centavos: number }>;
+  pendencias: Array<{ pagamento_id: number; reserva_id: number; valor_centavos: number }>;
+  valor_total_centavos: number;
+}
+
+export interface ResumoCancelamento {
+  ja_cancelada: boolean;
+  reservas_canceladas: number;
+  reembolsos_criados: number;
+  valor_total_centavos: number;
+}
+
 export interface Pagina {
   total: number;
   pagina: number;
@@ -88,6 +124,7 @@ export interface Pendencia {
   reserva: { id: number; situacao: SituacaoReserva };
   passageiro: { id: number; nome_completo: string };
   excursao: { id: number; nome: string };
+  reembolso: { id: number; situacao: SituacaoReembolso } | null;
 }
 
 export interface PassageiroResumo {
@@ -164,6 +201,12 @@ export const adminReservasApi = {
   listarPassageiros: (filtros: Record<string, string | number | undefined>) =>
     chamar<{ passageiros: PassageiroResumo[] } & Pagina>('GET', `/api/admin/passageiros${consulta(filtros)}`),
   obterPassageiro: (id: number) => chamar<{ passageiro: PassageiroDetalhe }>('GET', `/api/admin/passageiros/${id}`),
+  reembolsarPendencia: (pagamentoId: number) => chamar<{ reembolso: { id: number } }>('POST', `/api/admin/pendencias/${pagamentoId}/reembolso`),
+  previaExcursao: (id: number) => chamar<{ previa: PreviaExcursao }>('GET', `/api/admin/excursoes/${id}/cancelamento`),
+  cancelarExcursao: (id: number, justificativa: string) => chamar<{ cancelamento: ResumoCancelamento }>('POST', `/api/admin/excursoes/${id}/cancelamento`, { justificativa }),
+  listarReembolsos: (filtros: Record<string, string | number | undefined>) =>
+    chamar<{ reembolsos: Reembolso[]; processamento_disponivel: boolean } & Pagina>('GET', `/api/admin/reembolsos${consulta(filtros)}`),
+  processarReembolso: (id: number, resultado: 'aprovado' | 'recusado') => chamar<{ reembolso: { id: number } }>('POST', `/api/admin/reembolsos/${id}/processar`, { resultado }),
 };
 
 export const MENSAGEM_ADMIN: Record<string, string> = {
@@ -171,7 +214,12 @@ export const MENSAGEM_ADMIN: Record<string, string> = {
   reserva_com_pagamento: 'A reserva tem pagamento pendente ou confirmado e não pode ser cancelada por aqui. O reembolso é tratado em outra etapa.',
   excursao_nao_terminou: 'A excursão ainda não terminou: só é possível concluir a reserva depois da data final.',
   banco_ocupado: 'O sistema está ocupado agora. Tente de novo em instantes.',
-  nao_encontrada: 'Reserva não encontrada.',
+  nao_encontrada: 'Registro não encontrado.',
+  excursao_ja_partiu: 'A excursão já partiu e não pode mais ser cancelada por aqui.',
+  reembolso_ja_processado: 'Este reembolso já foi processado.',
+  reembolso_excede_pago: 'O reembolso passaria do valor pago e não foi processado.',
+  pagamento_sem_pendencia: 'Este pagamento não tem pendência.',
+  pagamento_indisponivel: 'O processamento de reembolso não está disponível neste ambiente.',
 };
 
 export const ROTULO_ACAO_AUDITORIA: Record<string, string> = {
@@ -191,4 +239,7 @@ export const ROTULO_ACAO_AUDITORIA: Record<string, string> = {
   'pagamento.recusado': 'Pagamento recusado',
   'pagamento.confirmado': 'Pagamento confirmado',
   'pagamento.confirmado_sem_vaga': 'Pagamento confirmado sem vaga',
+  'pagamento.estornado': 'Pagamento estornado',
+  'reserva.cancelamento_passageiro': 'Cancelamento pelo passageiro',
+  'reserva.cancelamento_organizacao': 'Cancelamento pela organização',
 };

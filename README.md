@@ -68,6 +68,8 @@ O passageiro reserva uma vaga no detalhe da excursão e chega ao checkout (`/res
 
 O administrador consulta reservas, pagamentos, pendências e passageiros em `/admin/reservas`, `/admin/passageiros` e `/admin/pendencias` (CPF e telefone mascarados na lista; consulta ao detalhe do passageiro auditada) e pode cancelar uma reserva sem pagamento ou marcar como concluída uma reserva pronta cuja excursão terminou, sempre com justificativa e auditoria. Ver [docs/administracao-reservas.md](docs/administracao-reservas.md).
 
+O passageiro cancela a própria reserva vendo antes o reembolso (100%, 50% ou nenhum, pela antecedência), e a organização cancela uma excursão com reembolso integral; os reembolsos são confirmados pelo administrador em um provedor **simulado**. Ver [docs/cancelamentos.md](docs/cancelamentos.md).
+
 ## Consulta pública de excursões
 
 Lista e detalhe das excursões publicadas (`/excursoes`, `/excursoes/:id`) e API pública de leitura (`GET /api/excursoes`). Para ver com dados fictícios: `npm run admin:create` e `npm run seed:demo`. Imagens em `public/imagens/`. Detalhes e limitações em [docs/consulta-publica.md](docs/consulta-publica.md).

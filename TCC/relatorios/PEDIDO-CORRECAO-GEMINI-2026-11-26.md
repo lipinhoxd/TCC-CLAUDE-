@@ -75,7 +75,7 @@ Na coluna de intervenção humana, trocar "Sim (decisão sobre área do passagei
 No trecho sobre a AGT-011, trocar "decisão sobre área do passageiro e conclusão" por "decisão sobre situação da reserva e dados do passageiro".
 
 ### A6. Seção 4.8
-No parágrafo que começa com "No experimento principal, a tecnologia de persistência", acrescentar ao final: "Desde o esquema inicial (versão 1), apenas as AGT-009 e AGT-010 criaram migrações (versões 2 e 3)."
+No parágrafo que começa com "No experimento principal, a tecnologia de persistência", acrescentar ao final: "Desde o esquema inicial (versão 1) até a AGT-013, apenas as AGT-009, AGT-010 e AGT-013 criaram migrações (versões 2, 3 e 4)."
 
 ---
 

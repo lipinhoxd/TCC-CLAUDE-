@@ -28,5 +28,6 @@ de cada uma é escrita pelos pesquisadores, preservada sem alterações em
 Uma atividade pode ter várias tentativas sem novo identificador quando o objetivo é o mesmo.
 Mudanças significativas de escopo são registradas.
 
-**Data de corte do desenvolvimento:** 24/11/2026 (proposta). Atividades não concluídas até lá
-viram trabalhos futuros no TCC.
+**Data de corte do desenvolvimento:** 30/11/2026 (definida em 26/11/2026, por delegação do
+pesquisador; substitui a proposta de 24/11/2026). Atividades não concluídas até lá viram trabalhos
+futuros no TCC.

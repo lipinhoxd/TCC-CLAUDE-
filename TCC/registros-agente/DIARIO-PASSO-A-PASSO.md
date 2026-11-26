@@ -1482,3 +1482,25 @@ nova. A classificação (AP-1, AP-2, AP-3 ou RP) cabe ao pesquisador; o agente n
 **Hora do sistema:** 2026-11-26T14:18:06-03:00
 
 **Ações:** o pesquisador respondeu "Sim, pode. Você refaz. Data de corte, coloque você mesmo." O agente leu o "Sim, pode" como autorização para o commit e para incluir a AP-4 no CLAUDE.md (as duas perguntas de sim ou não feitas antes). CLAUDE.md atualizado nas duas listas de classes. Quadro 3 e análise refeitos no pedido de correção, só com dados de METRICAS.csv (principal) e docs/quadro-resultados.md (piloto), sem percentuais, contagem de decisões nem afirmação causal; o texto anterior do Docs trazia 4 atividades do piloto com 1 tentativa, e o registro tem 3 (a AGT-005 não registra o número). Data de corte definida pelo agente: 30/11/2026 (restam 5 atividades), com o texto da Seção 5.4 no pedido. Dossiê da AGT-013 gerado de novo com a data. Docs não alterado pelo agente.
+
+## Entrada 108 — AGT-014: rascunho da instrução apresentado
+
+**Hora do sistema:** 2026-11-26T15:39:29-03:00
+
+**Pedido do pesquisador:** "vamos" (iniciar a AGT-014).
+
+**Ações:** o agente leu a especificação (RF-022, RF-028, RF-036, RN-025 e os fluxos), o código dos três efeitos avaliados na leitura e na gravação (server/vagas/) e as pendências que a documentação atribui à AGT-014, e publicou o rascunho da instrução em página privada (https://claude.ai/artifact/HEjGyr5PoMXwwcvmfH9HH7), com três paradas: forma de execução da rotina; situações sem regra na especificação; situação da excursão e acompanhamento. Nenhum arquivo AGT-014.md e nenhum código foram criados.
+
+**Correções do agente:** a frase A6 do pedido de correção ao Gemini afirmava que apenas as AGT-009 e AGT-010 criaram migrações; passou a incluir a AGT-013 (versões 2, 3 e 4). A linha da data de corte em 07-PLANO-DE-ATIVIDADES.md ainda trazia a proposta de 24/11/2026; passou a 30/11/2026, definida por delegação do pesquisador.
+
+**Pendente:** aprovação ou correções do pesquisador sobre o rascunho; envio ao Gemini e conferência do Docs. Sem commit.
+
+## Entrada 109 — AGT-014: instrução aprovada, registro criado e parada das três decisões
+
+**Hora do sistema:** 2026-11-26T15:41:05-03:00
+
+**Pedido do pesquisador:** "aprovo" (instrução da AGT-014).
+
+**Ações:** o agente criou TCC/registros-agente/AGT-014.md (Seções 1 a 5, com a instrução original na Seção 5 e os critérios de aceitação). Conforme a Seção 5, nenhum arquivo de código é criado antes das decisões; o agente apresenta as três paradas ao pesquisador. Entram no commit de registro as correções da entrada 108 (frase A6 do pedido ao Gemini e data de corte no plano de atividades). Docs não alterado.
+
+**Pendente:** decisões 1 a 3 do pesquisador; envio ao Gemini e conferência do Docs.

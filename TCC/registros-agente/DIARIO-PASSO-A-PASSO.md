@@ -1446,3 +1446,15 @@ nova. A classificação (AP-1, AP-2, AP-3 ou RP) cabe ao pesquisador; o agente n
 **Hora do sistema:** 2026-11-26T13:21:23-03:00
 
 **Ações:** o pesquisador disse "feito". Releitura do Docs (1.018 elementos): n = 12 em todos os trechos de contagem, parágrafo da 5.3 da AGT-012 fiel ao dossiê, Quadro 2, Apêndice D, 4.8 e 5.4 conforme; duplicação da AGT-003 removida. Divergências abertas: ficha da AGT-012 não inserida; ficha da AGT-011 sem o rótulo "Limitações" e com os erros anteriores; classe "AP-4" e redefinição do AP-3 inclusive na metodologia e no Apêndice F; Quadro 3 e análise com dados e inferências sem origem; correções da AGT-011 não aplicadas. O agente não alterou o Docs. Gerado o pedido consolidado TCC/relatorios/PEDIDO-CORRECAO-GEMINI-2026-11-26.md (substitui o de 24/11), pendente de aprovação; perguntas ao autor sobre AP-4, Quadro 3 e data de corte.
+
+## Entrada 102 — AGT-013: rascunho da instrução publicado
+
+**Hora do sistema:** 2026-11-26T13:31:03-03:00
+
+**Ações:** o pesquisador respondeu "vamos". Rascunho da instrução da AGT-013 (cancelamentos e reembolsos) publicado em página privada (https://claude.ai/artifact/9aZTLdtY3f7UqRD8Q4nJL2). Nada criado no repositório para a AGT-013; aguardando "aprovo". Continuam sem resposta as perguntas ao autor sobre a classe "AP-4", o Quadro 3 e a data de corte (Entrada 101).
+
+## Entrada 103 — AGT-013: rascunho aprovado e parada das três decisões
+
+**Hora do sistema:** 2026-11-26T13:32:03-03:00
+
+**Ações:** o pesquisador respondeu "aprovo" ao rascunho da AGT-013 (https://claude.ai/artifact/9aZTLdtY3f7UqRD8Q4nJL2). Registrado TCC/registros-agente/AGT-013.md (Seções 1 a 5 preenchidas, 25 critérios, Seção 5 sem alterações depois da aprovação; aprovação em 2026-11-26T13:31:48-03:00). Versão da extensão do VS Code: 2.1.332 (instalada em 26/11/2026 às 12:19; a 2.1.331 está obsoleta), sem poder confirmar qual executa esta sessão. Nenhum arquivo de código criado. Parada obrigatória: aguardando as decisões 1 a 3 (regra de cálculo do reembolso; processamento do reembolso e das pendências; cancelamento da excursão pela organização).

@@ -1458,3 +1458,15 @@ nova. A classificação (AP-1, AP-2, AP-3 ou RP) cabe ao pesquisador; o agente n
 **Hora do sistema:** 2026-11-26T13:32:03-03:00
 
 **Ações:** o pesquisador respondeu "aprovo" ao rascunho da AGT-013 (https://claude.ai/artifact/9aZTLdtY3f7UqRD8Q4nJL2). Registrado TCC/registros-agente/AGT-013.md (Seções 1 a 5 preenchidas, 25 critérios, Seção 5 sem alterações depois da aprovação; aprovação em 2026-11-26T13:31:48-03:00). Versão da extensão do VS Code: 2.1.332 (instalada em 26/11/2026 às 12:19; a 2.1.331 está obsoleta), sem poder confirmar qual executa esta sessão. Nenhum arquivo de código criado. Parada obrigatória: aguardando as decisões 1 a 3 (regra de cálculo do reembolso; processamento do reembolso e das pendências; cancelamento da excursão pela organização).
+
+## Entrada 104 — AGT-013: decisões, implementação, verificação e relatório
+
+**Hora do sistema:** 2026-11-26T13:50:56-03:00
+
+**Ações:** o pesquisador respondeu "recomendadas" às três decisões (26/11/2026, 13:34:02). Implementados server/cancelamentos/ (regra e serviço), migração 4, rotas do passageiro e da administração, telas de cancelamento, reembolsos e cancelamento de excursão. Verificação final (npm run check, 13:49:25 a 13:50:20): lint, tipos e build sem erro; 610 de 610 testes (40 + 13 novos). Seis mutações detectadas e restauradas. Execução em navegador real concluída (13:44 a 13:47), com datas de partida ajustadas e uma pendência inserida no banco para a demonstração; depois dela, o agente corrigiu uma lacuna própria (novo pagamento oferecido após o estorno de pendência), coberta por teste automatizado. Registro AGT-013.md, Seções 6 a 10 preenchidas, com uma pergunta aos pesquisadores (destino da reserva após reembolso de pendência). Sem commit; aguardando a classificação.
+
+## Entrada 105 — AGT-013: classificação AP-3 e fechamento padrão
+
+**Hora do sistema:** 2026-11-26T13:55:55-03:00
+
+**Ações:** o pesquisador respondeu "ap 3" (AP-3; critério único), sem responder à pergunta sobre o destino da reserva depois do reembolso de uma pendência, que fica aberta (código mantido). Fechamento padrão: 25 critérios marcados; Seções 11 a 14 e 16 do registro; METRICAS.csv (16,30 min, de 13:34:02 a 13:50:20); quadro (n = 13 de 18); matriz (RF-026, RF-032 a RF-035, RN-027 a RN-032); ficha de 20 campos; npm run check com 610 de 610 testes. Commits: b27f70e (atividade e registro) e 49a512e (hash). Gerados o dossiê para o Gemini (TCC/relatorios/DOSSIE-GEMINI-AGT-013-2026-11-26.md) e a auditoria (TCC/relatorios/AUDITORIA-SINCRONIA-AGT-013-2026-11-26.md). Docs não alterado; divergências desde a AGT-012 continuam abertas. Nada enviado ao GitHub.

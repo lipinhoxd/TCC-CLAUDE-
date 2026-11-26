@@ -2,6 +2,8 @@
 
 ## Onde parou
 - **AGT-009 concluída e classificada AP-3 pelos pesquisadores (20/11/2026)**; commits c051823 e 8b1b1cf. **Transcrita e conferida no Docs em 21/11/2026** (17 trocas e 3 inserções). Próxima atividade: AGT-010 (pagamento parcelado; RF-024, RF-027, RF-028; RN-012, RN-013, RN-017 a RN-020), sem instrução redigida.
+- **AGT-013 concluída e classificada AP-3 pelos pesquisadores (26/11/2026)**; commits b27f70e e 49a512e. Dossiê para o Gemini (`TCC/relatorios/DOSSIE-GEMINI-AGT-013-2026-11-26.md`) e auditoria gerados; aguarda envio ao Gemini e conferência. Experimento principal: 13 das 18 (n = 13). Próxima atividade: AGT-014 (processos automáticos), sem instrução redigida.
+- **Pergunta aberta:** destino da reserva ainda aguardando pagamento depois do reembolso de uma pendência (hoje: segue aguardando, sem novo pagamento, cancelável pelo passageiro).
 - **AGT-012 concluída e classificada AP-3 pelos pesquisadores (26/11/2026)**; commits 482f981 e a797a32. Dossiê para o Gemini (`TCC/relatorios/DOSSIE-GEMINI-AGT-012-2026-11-26.md`) e auditoria gerados; aguarda envio ao Gemini e conferência por releitura.
 - Experimento principal: AGT-001 a AGT-012 concluídas e classificadas (AP-3): 12 das 18 (n = 12). Próxima atividade: AGT-013 (cancelamentos e reembolsos), sem instrução redigida.
 - **Pendente de aprovação:** correções do Docs da AGT-011 (`PEDIDO-CORRECAO-GEMINI-AGT-011-2026-11-24.md`), com as decisões sobre o Quadro 3 e a Seção 5.4.
@@ -10,8 +12,8 @@
 - Experimento principal: AGT-001 a AGT-011 concluídas e classificadas (AP-3): 11 das 18 (n = 11). AGT-001 a AGT-010 transcritas e conferidas no Docs; AGT-011 pendente. Próxima atividade: AGT-012 (administração de reservas e passageiros), sem instrução redigida.
 - **AGT-010 concluída e classificada AP-3 pelos pesquisadores (21/11/2026)**; commits f983b15 e ac63597. **Prompt do Docs gerado** (`TCC/relatorios/PROMPT-DOCS-AGT-010-2026-11-21.md`) e auditoria (`AUDITORIA-SINCRONIA-AGT-010-2026-11-21.md`); transcrita e conferida no Docs em 21/11/2026.
 - Experimento principal: AGT-001 a AGT-010 concluídas e classificadas pelos pesquisadores (AP-3): 10 das 18 (n = 10). AGT-001 a AGT-009 transcritas e conferidas no Docs; AGT-010 também transcrita e conferida. Piloto com o Codex (n = 5) é separado e nunca somado.
-- Próxima atividade: AGT-013 (cancelamentos e reembolsos). Não existe `AGT-013.md`: não há instrução redigida nem aprovada. O agente só redige a instrução quando os pesquisadores disserem "vamos".
-- Nada em andamento. Último commit de atividade: `482f981` (AGT-012), com o hash em `a797a32`.
+- Próxima atividade: AGT-014 (processos automáticos). Não existe `AGT-014.md`: não há instrução redigida nem aprovada. O agente só redige a instrução quando os pesquisadores disserem "vamos".
+- Nada em andamento. Último commit de atividade: `b27f70e` (AGT-013), com o hash em `49a512e`.
 - Auditoria de sincronia do Docs contra o repositório feita em 20/11/2026: `TCC/relatorios/AUDITORIA-SINCRONIA-2026-11-20.md` (69 itens: 48 OK, 13 DIVERGE, 6 perguntas ao autor, 2 fora do alcance). O Docs não foi alterado pelo agente.
 
 ## Já aplicado no Docs (fora da sessão do agente)

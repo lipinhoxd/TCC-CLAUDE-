@@ -22,7 +22,8 @@ campos de avaliação: docs/rubrica-avaliacao.md (repositório)".
 | 008 | AP-3 | 23e87fb | sim | sim | sim | sim | sim |
 | 009 | AP-3 | c051823 | sim | sim | sim | sim | sim |
 | 010 | AP-3 | f983b15 | sim | sim | sim | sim | sim |
-| 011 | AP-3 | c8ed387 | pendente | pendente | pendente | pendente | pendente |
+| 011 | AP-3 | c8ed387 | sim, com divergências | sim, com divergências | sim, com divergências | sim | divergente no Resumo e no Abstract |
+| 012 | AP-3 | 482f981 | pendente | pendente | pendente | pendente | pendente |
 
 Critério único de classificação (AP-3 quando a instrução manda parar e a atividade só prossegue com
 decisão do pesquisador) está na rubrica, na Seção 6.3 e no Apêndice F do Docs.
@@ -122,3 +123,11 @@ Desde 24/11/2026 o pesquisador envia o material ao Gemini, que tem acesso ao Doc
 ## AGT-011 (24/11/2026)
 
 Dossiê: `TCC/relatorios/DOSSIE-GEMINI-AGT-011-2026-11-24.md` (ficha de 20 campos, decisões, verificações, limitações, contagens que mudam e cópia literal do registro). Auditoria: `TCC/relatorios/AUDITORIA-SINCRONIA-AGT-011-2026-11-24.md`. **Aguardando o pesquisador enviar ao Gemini**; depois, reler o Docs e conferir contra o dossiê (n = 11; AGT-012 a AGT-018 não iniciadas; Quadro 2; ficha; Seção 5.3; Apêndice D). Commits da atividade: c8ed387 e ee1aca0.
+
+## AGT-011: conferência de 24/11/2026
+
+O Gemini aplicou a AGT-011 com divergências (ver `TCC/relatorios/AUDITORIA-SINCRONIA-AGT-011-2026-11-24.md`). O pedido de correção (`TCC/relatorios/PEDIDO-CORRECAO-GEMINI-AGT-011-2026-11-24.md`) aguarda aprovação.
+
+## AGT-012 (26/11/2026)
+
+Dossiê: `TCC/relatorios/DOSSIE-GEMINI-AGT-012-2026-11-26.md` (com a lista do que o Gemini não deve inventar). Auditoria: `TCC/relatorios/AUDITORIA-SINCRONIA-AGT-012-2026-11-26.md`. **Aguardando o pesquisador enviar ao Gemini**; depois, reler o Docs e conferir (n = 12; AGT-013 a AGT-018 não iniciadas; Quadro 2; ficha; Seção 5.3; Apêndice D; nada novo inventado). Commits da atividade: 482f981 e a797a32.

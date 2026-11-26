@@ -1422,3 +1422,21 @@ nova. A classificação (AP-1, AP-2, AP-3 ou RP) cabe ao pesquisador; o agente n
 **Hora do sistema:** 2026-11-24T21:48:03-03:00
 
 **Ações:** ao registrar a AGT-012, a pasta de extensões do VS Code mostrou duas versões do Claude Code: 2.1.331 (instalada em 24/11/2026 às 17:12:36) e 2.1.330 (de 21/11/2026, marcada como obsoleta). As Entradas 92 e 96 e o registro, a ficha e o dossiê da AGT-011 diziam que a 2.1.330 era a única presente, o que estava incorreto para 24/11/2026 (a 2.1.331 já estava instalada antes da execução da AGT-011, que ocorreu das 21:17 às 21:26). Corrigidos o registro AGT-011.md (Seções 1, 9 e 16), a ficha, o dossiê para o Gemini, o pedido de correção e o registro AGT-012.md. Continua sem ser possível confirmar qual versão executou a atividade ([DADO NÃO REGISTRADO]); a sessão em curso pode ter sido iniciada antes da instalação da 2.1.331. As Entradas 92 e 96 foram mantidas como estavam, por serem histórico.
+
+## Entrada 98 — AGT-012: decisões, implementação, verificação e relatório
+
+**Hora do sistema:** 2026-11-24T22:05:36-03:00
+
+**Ações:** o pesquisador respondeu "recomendadas" às três decisões (24/11/2026, 21:49:20): dados pessoais mascarados na lista e completos no detalhe com consulta auditada; só transições manuais sem efeito financeiro (cancelar reserva sem pagamento e marcar concluída a reserva pronta cuja excursão terminou); pendências só para consulta. Implementados server/admin/ (serviço e rotas), cliente e páginas de administração, rotas e itens de menu. Verificação final (npm run check, 22:04:33 a 22:04:52): lint, tipos e build sem erro; 557 de 557 testes (34 + 21 novos). Cinco mutações detectadas e restauradas. Execução em navegador real concluída; a conclusão manual foi demonstrada por chamada direta e as datas da excursão foram alteradas no banco; a pendência foi inserida no banco para a demonstração. Erro do agente: um sed corrompeu docs/administracao-reservas.md (arquivo apagado e reescrito antes de qualquer commit). Achado para revisão: a conclusão manual quase sempre é redundante com a automática da AGT-011. Registro AGT-012.md, Seções 6 a 10 preenchidas. Sem commit; aguardando a classificação pelos pesquisadores.
+
+## Entrada 99 — Retorno do pesquisador: relatório da AGT-012 publicado e alterações externas encontradas no repositório
+
+**Hora do sistema:** 2026-11-26T12:22:33-03:00
+
+**Ações:** o pesquisador voltou ("retornei"). npm run check refeito (26/11/2026, 12:21): lint, tipos e build sem erro; 557 de 557 testes. Relatório da AGT-012 publicado em página privada (https://claude.ai/artifact/MdMqT3vMwcyhUUL2wmx6zg). Encontradas alterações feitas fora da sessão do agente em 24/11/2026, entre 23:21 e 23:23: o ramo master foi renomeado para main; foi adicionado o remoto origin (repositório no GitHub); os arquivos da AGT-012 foram colocados no índice; e o README.md recebeu ao final um trecho em UTF-16 (o título "# TCC-CLAUDE-"), que faz o Git tratar o arquivo como binário. Não há commit novo nem referência remota local (não há indício de envio concluído; o GitHub não foi consultado). O agente não desfez nem corrigiu essas alterações; aguarda a decisão do pesquisador.
+
+## Entrada 100 — AGT-012: classificação AP-3 e fechamento padrão
+
+**Hora do sistema:** 2026-11-26T12:25:45-03:00
+
+**Ações:** o pesquisador respondeu "ap 3 sim" (AP-3 e autorização para retirar o trecho corrompido do README.md; o envio ao GitHub não foi pedido e não foi feito). Retirado o trecho em UTF-16 do fim do README.md (sem outras diferenças em relação à versão anterior, além do parágrafo da AGT-012). Fechamento padrão: 25 critérios marcados; Seções 11 a 14 e 16 do registro; METRICAS.csv (15,53 min, de 21:49:20 a 22:04:52 de 24/11); quadro (n = 12 de 18); matriz (RF-026, RF-037 a RF-039, RN-034 e RN-035); ficha de 20 campos; npm run check com 557 de 557 testes. Commits: 482f981 (atividade e registro) e a797a32 (hash). Gerados o dossiê para o Gemini (TCC/relatorios/DOSSIE-GEMINI-AGT-012-2026-11-26.md, com a lista do que não inventar) e a auditoria (TCC/relatorios/AUDITORIA-SINCRONIA-AGT-012-2026-11-26.md). Correção de registro: a Entrada 96 informou 24 critérios para a AGT-012; o registro tem 25. Docs não alterado; aguardando o envio ao Gemini. Correções do Docs da AGT-011 continuam pendentes de aprovação.

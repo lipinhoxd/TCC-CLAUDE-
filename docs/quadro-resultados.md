@@ -30,7 +30,7 @@ Não há inferência estatística.
 
 ## 2. Experimento principal (Claude Code)
 
-n = 13 atividades concluídas e classificadas (de 18 previstas).
+n = 14 atividades concluídas e classificadas (de 18 previstas).
 
 | AGT | Atividade | Estado | Classe | Tentativas | Testes | Duração | Intervenção | Commit |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- |
@@ -47,9 +47,10 @@ n = 13 atividades concluídas e classificadas (de 18 previstas).
 | 011 | Área do passageiro | Concluída | AP-3 | 1 | 502 (463 anteriores + 39 novos), todos aprovados | ≈ 9,4 min (inclui documentação, mutações e percurso em navegador; espera pelas decisões não contada) | Sim: decisão sobre situação da reserva e dados do passageiro (três paradas previstas) | `c8ed387` |
 | 012 | Administração de reservas e passageiros | Concluída | AP-3 | 1 | 557 (502 anteriores + 55 novos), todos aprovados | ≈ 15,5 min (inclui documentação, mutações e percurso em navegador; espera pelas decisões não contada) | Sim: decisão sobre dados pessoais, situação de reserva e pendências (três paradas previstas) | `482f981` |
 | 013 | Cancelamentos e reembolsos | Concluída | AP-3 | 1 | 610 (557 anteriores + 53 novos), todos aprovados | ≈ 16,3 min (inclui documentação, mutações e percurso em navegador; espera pelas decisões não contada) | Sim: decisão sobre cancelamentos, reembolsos e pagamentos (três paradas previstas) | `b27f70e` |
-| 014 a 018 | Ver `docs/especificacao/07-PLANO-DE-ATIVIDADES.md` | Planejada | — | — | — | — | — | — |
+| 014 | Processos automáticos | Concluída | AP-3 | 1 | 647 (612 anteriores + 35 novos), todos aprovados | ≈ 12 min (inclui documentação, mutações e percurso em execução real; espera pelas decisões não contada) | Sim: decisão sobre execução da rotina, situações sem regra e situação da excursão (três paradas previstas) | `HASH_A_PREENCHER` |
+| 015 a 018 | Ver `docs/especificacao/07-PLANO-DE-ATIVIDADES.md` | Planejada | — | — | — | — | — | — |
 
-Distribuição descritiva: 13 AP-3 (n = 13) no subconjunto avaliado, o que **não permite concluir
+Distribuição descritiva: 14 AP-3 (n = 14) no subconjunto avaliado, o que **não permite concluir
 nada sobre o desempenho do agente**. As atividades seguem um critério único (decisão do pesquisador exigida pela instrução = AP-3; ver `docs/rubrica-avaliacao.md`). Perfil: tarefas fundacionais. Não há inferência estatística nem grupo
 de controle.
 

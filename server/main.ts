@@ -7,6 +7,9 @@ import { fileOutbox, noOutbox } from './auth/support.ts';
 import { loadServerConfig } from './config.ts';
 import { ExcursaoService } from './excursoes/service.ts';
 import { PagamentoService } from './pagamentos/service.ts';
+import { iniciarAgendador } from './processos/agendador.ts';
+import type { Agendador } from './processos/agendador.ts';
+import { loadRotinaConfig } from './processos/config.ts';
 import { provedorDoAmbiente } from './pagamentos/provedor.ts';
 import { loadReservaConfig } from './reservas/config.ts';
 import { ReservaService } from './reservas/service.ts';
@@ -16,6 +19,7 @@ import { runMigrations } from './db/migrate.ts';
 
 const { host, port } = loadServerConfig();
 const authConfig = loadAuthConfig();
+const rotinaConfig = loadRotinaConfig();
 const db = openDatabase(loadDatabaseConfig().path);
 runMigrations(db);
 
@@ -35,11 +39,16 @@ const server = createApp({
   cancelamentos: new CancelamentoService(db, reservas, provedor),
 });
 
+let agendador: Agendador | undefined;
+
 server.listen(port, host, () => {
   console.log(`API em http://${host}:${port}`);
+  // Processos automaticos (AGT-014): so depois de a API estar no ar; parados antes de fechar o banco.
+  agendador = iniciarAgendador({ db, intervaloMs: rotinaConfig.intervaloMs });
 });
 
 function shutdown(): void {
+  agendador?.parar();
   server.close(() => {
     db.close();
     process.exit(0);

@@ -223,6 +223,18 @@ describe('detalhe e alteracao manual (RF-039)', () => {
     expect(within(screen.getByRole('table', { name: 'Eventos de auditoria da reserva' })).getByText('Reserva criada')).not.toBeNull();
   });
 
+  it('o cancelamento automatico aparece no historico com texto proprio e como acao do sistema (AGT-014)', async () => {
+    const automatica = detalhe({
+      situacao: 'cancelada',
+      auditoria: [{ id: 11, ator_usuario_id: null, acao: 'reserva.cancelamento_automatico', entidade: 'reserva', registro_id: 31, estado_anterior: { situacao: 'aguardando_pagamento' }, estado_novo: { situacao: 'cancelada', motivo: 'excursao_terminada_sem_pagamento' }, ocorrido_em: '2026-12-13T03:00:00.000Z' }],
+    });
+    mockApi({ ...comoAdmin, 'GET /api/admin/reservas/31': () => json(200, { reserva: automatica }) });
+    abrir('/admin/reservas/31');
+    const tabela = await screen.findByRole('table', { name: 'Eventos de auditoria da reserva' });
+    expect(within(tabela).getByText('Cancelamento automático (excursão terminada, sem pagamento)')).not.toBeNull();
+    expect(within(tabela).getByText('Sistema')).not.toBeNull();
+  });
+
   it('cancelar pede justificativa e confirmacao e envia situacao e justificativa, sem enviar o administrador', async () => {
     const calls = mockApi({
       ...comoAdmin,

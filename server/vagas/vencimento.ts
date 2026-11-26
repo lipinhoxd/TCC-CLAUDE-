@@ -4,7 +4,7 @@ import { liberarVaga } from './disponibilidade.ts';
 
 /**
  * Vencimento da segunda parcela (AGT-010, RN-019, RN-020, RN-032, RF-028). Decisoes do pesquisador (21/11/2026, "recomendadas"):
- * o vencimento e avaliado na leitura e na gravacao, sem tarefa em segundo plano (a rotina agendada completa e da AGT-014);
+ * o vencimento e avaliado na leitura e na gravacao e, desde a AGT-014, tambem pela rotina automatica (server/processos/);
  * a disponibilidade ja trata a vaga como liberada pelo prazo e a gravacao seguinte efetiva a liberacao; depois dela a reserva
  * fica Cancelada, com o motivo "inadimplencia" (reserva.motivo_cancelamento) e a primeira parcela permanece confirmada e nao
  * reembolsavel.

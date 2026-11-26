@@ -17,7 +17,7 @@ export type Situacao = 'rascunho' | 'publicada' | 'encerrada' | 'cancelada';
 
 /**
  * Matriz de situacoes (decisao 1 da AGT-005): quatro situacoes; "concluida" fica para os processos
- * automaticos (AGT-014). Encerrada = o administrador fechou as vendas. As acoes abaixo sao manuais.
+ * automaticos; na AGT-014 o pesquisador decidiu nao cria-la. Encerrada = o administrador fechou as vendas. As acoes abaixo sao manuais.
  */
 export const TRANSICOES: Record<Situacao, readonly Situacao[]> = {
   rascunho: ['publicada', 'cancelada'],

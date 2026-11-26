@@ -76,7 +76,8 @@ reembolso não estão definidas na especificação (a RN-037 está como "[confir
   O banco ocupado além do `busy_timeout` de 5 s vira 503 `banco_ocupado` na API, sem nova tentativa automática.
 - **Implementado na AGT-009:** `server/pagamentos/confirmacao.ts` converte a retenção em ocupação (`ocuparVaga` com a retenção consumida) na
   mesma transação que marca o pagamento e a reserva. Detalhes em `docs/reservas.md`.
-- **Pendente (AGT-014):** a rotina agendada de expiração. O contador `vagas_ocupadas`
+- **Implementado na AGT-014:** a rotina automática (`server/processos/`), que executa cada passo em sua própria transação
+  `IMMEDIATE`, sem migração (ver `docs/processos-automaticos.md`). O contador `vagas_ocupadas`
   é mantido pela aplicação (não há gatilho que o recalcule a partir de reservas e retenções).
 
 ## Camada de acesso

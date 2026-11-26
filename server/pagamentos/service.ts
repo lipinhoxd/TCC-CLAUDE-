@@ -17,7 +17,7 @@ import type { ProvedorPagamento } from './provedor.ts';
  * provedor simulado interno fora de producao; a linha de pagamento nasce ao clicar em Pagar; a parcela unica e a primeira exigem
  * retencao ativa; a segunda parcela vai da confirmacao da primeira ate as 23:59:59 da data limite (Brasilia), sem retencao, porque a vaga
  * ja esta ocupada; o recusado vira "falhou" e pode ser tentado de novo, reaproveitando a mesma linha (uq_pagamento_parcela); o pendente
- * nunca confirmado continua pendente (a rotina que o fecha e da AGT-014). O servidor decide a parcela e o valor (preco da excursao em
+ * nunca confirmado continua pendente (decisao 2.1 da AGT-014: a rotina nao o fecha). O servidor decide a parcela e o valor (preco da excursao em
  * centavos; parcelas por dividirEmDuas); nada de dado de cartao ou de conta e guardado.
  */
 

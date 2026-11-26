@@ -4,12 +4,12 @@ import { registrarAuditoria } from '../db/audit.ts';
 
 /**
  * Conclusao da reserva (AGT-011, RN-025, RN-026). Decisoes do pesquisador (24/11/2026, "recomendadas"): a conclusao e avaliada na
- * leitura e na gravacao, sem tarefa em segundo plano (a rotina agendada completa e da AGT-014), e a passagem para Concluida e
+ * leitura e na gravacao e, desde a AGT-014, tambem pela rotina automatica (server/processos/), e a passagem para Concluida e
  * gravada com auditoria do sistema.
  *
  * Elegivel: so a reserva em "Pronto para embarque". A reserva fica Concluida a partir de 00:00 (Brasilia) do dia seguinte a data final
  * da excursao ("um dia apos a data final"). A conclusao nao altera pagamentos nem vagas: a vaga de uma reserva concluida continua
- * ocupada. Reserva em "Aguardando pagamento" depois do fim da excursao nao e elegivel (limitacao registrada; cabe a AGT-014).
+ * ocupada. Reserva em "Aguardando pagamento" depois do fim da excursao nao e elegivel (a sem pagamento e cancelada pela rotina: ver encerramento.ts).
  */
 
 const CONDICAO_CONCLUIDA = `r.situacao = 'pronto_para_embarque' AND e.data_final < ?`;

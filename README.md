@@ -50,6 +50,7 @@ Em desenvolvimento, o front-end encaminha as chamadas a `/api` para a API (mesma
 | `npm run db:reset` | Apaga o banco local e o recria do zero pelas migrações. |
 | `npm run admin:create` | Cria o administrador a partir das variáveis `ADMIN_*` (ver `.env.example`). |
 | `npm run seed:demo` | Cria excursões fictícias de demonstração (só desenvolvimento; exige o administrador). |
+| `npm run rotina` | Executa uma vez os processos automáticos (a API também os executa sozinha; ver abaixo). |
 
 ## Banco de dados
 
@@ -69,6 +70,10 @@ O passageiro reserva uma vaga no detalhe da excursão e chega ao checkout (`/res
 O administrador consulta reservas, pagamentos, pendências e passageiros em `/admin/reservas`, `/admin/passageiros` e `/admin/pendencias` (CPF e telefone mascarados na lista; consulta ao detalhe do passageiro auditada) e pode cancelar uma reserva sem pagamento ou marcar como concluída uma reserva pronta cuja excursão terminou, sempre com justificativa e auditoria. Ver [docs/administracao-reservas.md](docs/administracao-reservas.md).
 
 O passageiro cancela a própria reserva vendo antes o reembolso (100%, 50% ou nenhum, pela antecedência), e a organização cancela uma excursão com reembolso integral; os reembolsos são confirmados pelo administrador em um provedor **simulado**. Ver [docs/cancelamentos.md](docs/cancelamentos.md).
+
+## Processos automáticos
+
+A API executa, na inicialização e a cada 60 segundos (`ROTINA_INTERVALO_SEGUNDOS`; 0 desliga), a expiração das retenções, o vencimento da segunda parcela, a conclusão das reservas e o cancelamento das reservas sem pagamento de excursões terminadas. Ver [docs/processos-automaticos.md](docs/processos-automaticos.md).
 
 ## Consulta pública de excursões
 

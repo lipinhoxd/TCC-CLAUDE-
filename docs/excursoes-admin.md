@@ -10,7 +10,7 @@ de imagens.
 | Ponto | Decisão |
 | --- | --- |
 | RN-036 e RN-037 | Confirmadas como escritas na especificação, ao aprovar a instrução. |
-| Situações | Quatro: `rascunho`, `publicada`, `encerrada`, `cancelada`. "Concluída" fica para os processos automáticos (AGT-014), sem migração. **Encerrada** = o administrador fechou as vendas; as reservas existentes continuam. |
+| Situações | Quatro: `rascunho`, `publicada`, `encerrada`, `cancelada`. "Concluída" ficou prevista para os processos automáticos; na AGT-014 o pesquisador decidiu não criá-la. **Encerrada** = o administrador fechou as vendas; as reservas existentes continuam. |
 | Transições (todas pelo administrador) | rascunho → publicada, cancelada; publicada → encerrada, rascunho (despublicar), cancelada; encerrada → cancelada; cancelada → nenhuma. **Despublicar e cancelar são bloqueados** (409) enquanto houver reserva ou retenção ativa, até a AGT-013 tratar os reembolsos. |
 | Campos protegidos (RN-036) | Com reserva ou retenção ativa ficam bloqueados: preço, parcelamento, prazo da 2ª parcela, capacidade, data inicial, data final e partida. Continuam editáveis: nome, descrição, imagem, local e ponto de embarque. |
 | Validações | Preço de R$ 0,01 a R$ 100.000,00 (zero é recusado, porque o pagamento exige valor positivo); capacidade de 1 a 1.000 e nunca menor que as vagas ocupadas; data inicial não pode estar no passado (só é checada quando o campo muda); data final não anterior à inicial; partida na data inicial ou no dia anterior (Brasília); prazo da 2ª parcela anterior ao dia da partida (RN-013); publicar exige partida no futuro e, com parcelamento, prazo ainda por vir. |
@@ -84,7 +84,7 @@ sem alteração. Revisar `authorize`.
 ## Limitações conhecidas
 
 1. Não há reembolso: cancelar ou despublicar com reserva ou retenção ativa é bloqueado até a AGT-013.
-2. "Concluída" não existe; excursões encerradas ficam como `encerrada` até a AGT-014.
+2. "Concluída" não existe (decisão da AGT-014); excursões encerradas ficam como `encerrada`.
 3. A pasta `imagens/` não existe e nada serve os arquivos; a AGT-006 precisa decidir isso.
 4. Os limites de preço e de capacidade, e a regra da partida (data inicial ou dia anterior), são escolhas do agente
    aprovadas pelo pesquisador, e a especificação não as define.

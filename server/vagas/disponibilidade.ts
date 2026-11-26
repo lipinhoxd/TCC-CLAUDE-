@@ -5,8 +5,8 @@ import { registrarAuditoria } from '../db/audit.ts';
  * Capacidade, retencao temporaria e ocupacao de vagas (AGT-008, RN-014, RN-015, RN-021, RN-040).
  *
  * Decisoes do pesquisador: a disponibilidade e calculada pelas retencoes ativas e nao expiradas, sem coluna nova
- * (vagas_ocupadas guarda so a ocupacao definitiva, RN-015); a expiracao e avaliada na leitura e na gravacao, sem
- * tarefa em segundo plano (a rotina agendada completa e da AGT-014).
+ * (vagas_ocupadas guarda so a ocupacao definitiva, RN-015); a expiracao e avaliada na leitura e na gravacao e, desde a
+ * AGT-014, tambem pela rotina automatica (server/processos/).
  *
  * Toda funcao que grava exige uma transacao aberta (withTransaction, modo IMMEDIATE): o bloqueio de escrita e obtido
  * no inicio e a condicao e reavaliada na gravacao, entao uma leitura antiga nunca causa excedente (RN-040).
@@ -59,8 +59,8 @@ function exigirTransacao(db: DatabaseSync): void {
 }
 
 /**
- * Marca como expiradas as retencoes ativas cujo prazo passou, com auditoria (RF-022). Sem tarefa em segundo plano:
- * quem le ou grava vagas chama esta funcao. Devolve quantas expiraram.
+ * Marca como expiradas as retencoes ativas cujo prazo passou, com auditoria (RF-022). Quem le ou
+ * grava vagas chama esta funcao, e a rotina da AGT-014 tambem. Devolve quantas expiraram.
  */
 export function expirarVencidas(db: DatabaseSync, agora: Date, escopo: { excursaoId?: number; reservaId?: number } = {}): number {
   exigirTransacao(db);

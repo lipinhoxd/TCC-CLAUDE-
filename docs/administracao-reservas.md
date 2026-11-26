@@ -47,7 +47,7 @@ acesso restrito sem consultar a API de administração.
 1. **Conclusão manual quase sempre desnecessária:** a conclusão automática (AGT-011) roda em qualquer leitura de administração e na do passageiro; por isso a
    reserva elegível costuma já estar Concluída quando o administrador a abre, e o botão "Marcar como concluída" só aparece se ninguém leu antes (a rota
    direta continua funcionando). Registrado para revisão humana.
-2. **Sem tratamento de pendência** (marcar como tratada) nem reembolso: AGT-013. **Sem tarefa agendada:** AGT-014.
+2. **Sem tratamento de pendência** (marcar como tratada) nem reembolso: AGT-013. **Tarefa agendada:** implementada depois, na AGT-014 (`docs/processos-automaticos.md`); com ela, a conclusão manual só tem efeito antes da execução seguinte ou com a rotina desligada.
 3. **Justificativa livre** não é filtrada quanto a dados pessoais.
 4. **Leitura com escrita:** abrir o detalhe de um passageiro grava a auditoria da consulta; qualquer leitura de administração efetiva vencimento e conclusão.
 5. A busca por CPF parcial (3 dígitos ou mais) pode revelar a existência de um CPF; o administrador já vê os dados completos no detalhe, mas a lista continua mascarada.

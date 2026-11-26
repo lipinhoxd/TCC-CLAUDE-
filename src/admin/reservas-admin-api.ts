@@ -243,4 +243,5 @@ export const ROTULO_ACAO_AUDITORIA: Record<string, string> = {
   'reserva.cancelamento_passageiro': 'Cancelamento pelo passageiro',
   'reserva.cancelamento_organizacao': 'Cancelamento pela organização',
   'reserva.cancelamento_reembolso': 'Cancelada após o reembolso da pendência',
+  'reserva.cancelamento_automatico': 'Cancelamento automático (excursão terminada, sem pagamento)',
 };

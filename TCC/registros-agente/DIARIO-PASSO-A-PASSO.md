@@ -1582,3 +1582,23 @@ nova. A classificação (AP-1, AP-2, AP-3 ou RP) cabe ao pesquisador; o agente n
 **Ações:** fechamento padrão: critérios marcados, Seções 11 a 14 e 16 preenchidas (revisão do código registrada pela autorização permanente), métricas, quadro, matriz e ficha; npm run check com 685 de 685 testes; commits 8e486ff (atividade) e dfafd89 (hash). Gerados o dossiê para o Gemini (com Quadro 3, análise e Seção 5.4 para n = 15) e a auditoria de sincronia. Estado do Docs e próximos passos atualizados. Docs não alterado nem relido.
 
 **Pendente:** envio ao Gemini e conferência; pontos abertos das AGT-014 e AGT-015; AGT-016 só quando o pesquisador disser "vamos".
+
+## Entrada 118 — AGT-016: rascunho da instrução apresentado
+
+**Hora do sistema:** 2026-11-26T17:57:07-03:00
+
+**Pedido do pesquisador:** "vamos" (iniciar a AGT-016).
+
+**Ações:** o agente leu a especificação (RF-041, RF-042 e RN-033 a RN-035, RN-041 e RN-042), as rotas administrativas existentes e as ações de auditoria gravadas pelo sistema, e publicou o rascunho da instrução em página privada (https://claude.ai/artifact/1ArjGGGZB8hW6izB1EFGpf), com três paradas: conteúdo do painel; histórico e auditoria; leitura, acompanhamento e acesso. Nenhum arquivo AGT-016.md e nenhum código foram criados.
+
+**Pendente:** aprovação ou correções do pesquisador sobre o rascunho; envio dos dossiês ao Gemini e conferência do Docs. Sem commit.
+
+## Entrada 119 — AGT-016: instrução aprovada, registro criado e parada das três decisões
+
+**Hora do sistema:** 2026-11-26T17:59:42-03:00
+
+**Pedido do pesquisador:** "aprovo" (instrução da AGT-016).
+
+**Ações:** o agente criou TCC/registros-agente/AGT-016.md (Seções 1 a 5, com a instrução original na Seção 5 e os critérios de aceitação). Conforme a Seção 5, nenhum arquivo de código é criado antes das decisões; o agente apresenta as três paradas ao pesquisador. Docs não alterado.
+
+**Pendente:** decisões 1 a 3 do pesquisador; envio dos dossiês ao Gemini e conferência do Docs.

@@ -79,6 +79,8 @@ No parágrafo que começa com "No experimento principal, a tecnologia de persist
 
 ---
 
+> **Atualização (2026-11-26T16:06:19-03:00):** as Partes B e C abaixo ficaram desatualizadas com a AGT-014. **Não enviá-las**: a seção J de `DOSSIE-GEMINI-AGT-014-2026-11-26.md` as substitui. A Parte A continua válida.
+
 ## PARTE B — Quadro 3 e análise (decisão dos pesquisadores em 26/11/2026: refazer)
 
 Enviar **depois** do dossiê da AGT-013 (os números abaixo já incluem a AGT-013).

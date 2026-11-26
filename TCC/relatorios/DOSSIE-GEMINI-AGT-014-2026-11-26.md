@@ -1,0 +1,439 @@
+# Dossiê bruto da AGT-014 para o Gemini (26/11/2026)
+
+**Destino:** Google Docs "VERSÃO BASE DO TCC" (ID 1AsQfKuB3HdHjJ8Pn2nGqc4VGmyJp-GqDr1z3o1KBH3I), por meio do Gemini.
+**Origem dos dados:** `TCC/registros-agente/AGT-014.md`, `TCC/metricas/METRICAS.csv`, `docs/fichas-agt/principal/AGT-014.md`, `docs/quadro-resultados.md`, `docs/matriz-rastreabilidade.md`, `docs/processos-automaticos.md`, `git log` (commits ce9cf5e e d3ae627) e o relatório em página privada (https://claude.ai/artifact/2S3fVNe6WpGxWpN9gkWCPw).
+**Natureza do arquivo:** conteúdo bruto, sem formatação final. O Gemini decide em que seções cada informação entra e como é escrita, **sem acrescentar nada que não esteja aqui**.
+
+## ATENÇÃO — o que NÃO fazer (regras obrigatórias)
+
+1. **Classes (revisão metodológica confirmada pelos pesquisadores em 26/11/2026).** São cinco: AP-1 (verificações atendidas na primeira execução, sem nova instrução corretiva e sem intervenção direta), AP-2 (atendidas após correções do próprio agente, sem intervenção direta), AP-3 (atendidas com intervenção planejada de governança e coplanejamento prevista na instrução), AP-4 (atendidas mediante intervenção corretiva do desenvolvedor para reparar falhas de execução, erros de código, alucinações ou desvios de escopo não corrigidos pelo agente) e RP (não atendidas pela abordagem utilizada). No experimento principal, AP-3: 14; AP-4: 0. Não criar outras classes.
+2. **Não criar métricas, percentuais, totais, tabelas, quadros, citações ou análises** que não estejam neste dossiê. Não inferir causalidade, produtividade, qualidade geral nem taxa generalizável; não há grupo de controle.
+3. **Não inventar decisões, telas, funções ou limitações.** As decisões são exatamente as da seção B. A atividade **não criou tela nova** e **não criou a situação "Concluída" de excursão**.
+4. **Não apagar texto existente** (salvo as substituições da seção J) e **não duplicar parágrafos**. Ao inserir a ficha, não alterar as fichas anteriores (todas as linhas mantêm o rótulo do campo).
+5. **Não mudar data de corte, escopo ou cronograma.**
+6. A contagem deve ser a mesma no **Resumo, no Abstract**, nas Seções 5.1, 6.1 e 6.4 e no Capítulo 7: experimento principal **n = 14** de 18; piloto **n = 5**; nunca somados.
+7. Dado ausente: "[DADO NÃO REGISTRADO]". Nada de palavras em inglês fora do Abstract e dos termos técnicos já usados.
+8. **A ficha da AGT-014 é obrigatória.** Ao final, informar uma linha por trecho alterado e confirmar que a ficha foi inserida.
+
+## Ordem em relação aos envios anteriores
+
+1. Se ainda não enviados: a **Parte A** de `TCC/relatorios/PEDIDO-CORRECAO-GEMINI-2026-11-26.md` e depois o dossiê da AGT-013.
+2. Este dossiê. A seção J **substitui as Partes B e C** daquele pedido (não enviar as Partes B e C antigas; se já foram aplicadas, a seção J atualiza o resultado).
+
+## Regras de escrita do TCC
+
+Linguagem acadêmica, impessoal, em terceira pessoa; sem primeira pessoa e sem tom de log; "projeto" (não "design"), "capacidades", "data-limite", "revisão humana", números em algarismos. Não usar "revisão independente" nem "validação independente". A classificação é sempre dos pesquisadores. Tabelas e quadros: título acima, "Fonte: elaborado pelos autores" abaixo e remissão no texto.
+
+## A. Resumo da atividade
+
+A AGT-014 (Processos automáticos) é a 14.ª das 18 atividades do experimento principal com o Claude Code (Claude Sonnet 5.5). Foi executada em 26/11/2026, em uma tentativa, sem nova instrução, e classificada como AP-3 pelos pesquisadores no mesmo dia (resposta "ap 3", 16:03:21). A instrução foi escrita pelo agente a partir da especificação e aprovada pelo pesquisador às 15:41:05; as três decisões foram respondidas às 15:45:40 ("recomendadas"). A implementação terminou, com a verificação final aprovada, às 15:57:39 (11,98 min de relógio, incluindo documentação, mutações e percurso em execução real; as esperas pela aprovação, pelas decisões e pela classificação não são contadas).
+
+Contexto: até a AGT-013, a expiração da retenção, o vencimento da segunda parcela e a conclusão da reserva só eram gravados quando alguém consultava ou alterava os dados.
+
+Entrega: rotina automática que grava essas três mudanças sem consulta de usuário, dentro do processo da API (na inicialização e a cada 60 segundos) e por comando avulso; e um quarto efeito, decidido pelos pesquisadores, o cancelamento da reserva sem pagamento de excursão já terminada.
+
+Números: 647 testes automatizados aprovados em 34 arquivos (612 antes da atividade, após a alteração complementar da AGT-013; 35 novos: 29 da rotina, 5 de processos reais e 1 de interface); lint, verificação de tipos e build aprovados; 9 mutações de verificação detectadas e restauradas; percurso em aplicação e navegador reais (Microsoft Edge sem interface) com dados fictícios; nenhuma migração e nenhuma dependência nova.
+
+## B. As três decisões dos pesquisadores (26/11/2026, 15:45:40) e suas razões
+
+As razões são as das recomendações do agente, aceitas pelo pesquisador sem texto próprio.
+
+1. **Forma de execução da rotina.** Escolhida: temporizador dentro do processo da API e comando de execução avulsa sobre a mesma função; execução na inicialização e a cada 60 segundos (configurável; 0 desliga); avaliação na leitura e na gravação mantida; uma transação para cada efeito; sem tabela nova de execuções. Razão: funciona sem configurar o sistema operacional, mantém um comando para conferência e isola a falha de um efeito. Alternativas descartadas: somente o temporizador (só roda com a API ligada); somente o comando agendado no sistema operacional (nada acontece sem o agendamento, configurado fora do repositório).
+2. **Situações sem regra na especificação.**
+   - Pagamento pendente que nunca é confirmado: **não tratar** (preserva o registro de uma confirmação tardia, RN-022). Descartada: marcar como "falhou" após um prazo.
+   - Reserva abandonada com a retenção expirada: **não tratar** (o passageiro ainda pode retomá-la). Descartada: cancelar após um prazo.
+   - Reserva "Aguardando pagamento" de excursão já terminada, sem pagamento pendente ou confirmado: **cancelar pela rotina** (já não pode ser paga; sem efeito em dinheiro ou vaga). Descartada: não fazer nada. **É uma regra que a especificação não definia, adotada por decisão dos pesquisadores**; o documento de regras de negócio não foi alterado.
+3. **Situação da excursão e acompanhamento.** Sem situação "Concluída" de excursão (ficou sem cumprir a previsão registrada na AGT-005); sem encerramento automático da excursão publicada após a partida (novas reservas já são recusadas); acompanhamento pela auditoria e pelo console, sem tela nova (o painel consolidado é da AGT-016). Descartadas: conclusão automática da excursão (exigiria reconstruir a tabela, mudar o executor de migrações e as telas); encerramento automático; tela de últimas execuções.
+
+Escolhas já adotadas no rascunho aprovado: escopo restrito; a rotina chama as funções que já aplicavam as regras; transação, idempotência, concorrência e auditoria do sistema; nenhuma dependência nova sem decisão.
+
+Escolhas do agente não cobertas pelas decisões (declaradas no relatório): o efeito novo é aplicado só pela rotina; abrange também reservas com pagamento recusado ou estornado; a retenção ainda ativa é cancelada junto; o motivo fica só na auditoria (sem migração); o console escreve a primeira execução e depois só as com alteração ou falha; o erro é descrito pelo texto genérico do banco, sem dados; o comando avulso aplica migrações pendentes; os passos seguem ordem fixa.
+
+## C. O que foi implementado e onde
+
+- `server/processos/rotina.ts` (quatro passos, cada um em transação própria `BEGIN IMMEDIATE`), `agendador.ts` (temporizador), `config.ts` (`ROTINA_INTERVALO_SEGUNDOS`, padrão 60, 0 desliga, até 86400) e `rotina-cli.ts` (comando `npm run rotina`).
+- `server/vagas/encerramento.ts`: regra nova (cancelamento da reserva sem pagamento de excursão terminada; auditoria `reserva.cancelamento_automatico`, sem ator).
+- Reaproveitadas, sem reescrita: `expirarVencidas` (AGT-008), `vencerSegundasParcelas` (AGT-010) e `concluirReservas` (AGT-011).
+- `server/main.ts` inicia a rotina depois de a API estar no ar e a para antes de fechar o banco.
+- Interface: apenas o texto do evento novo no histórico administrativo da reserva ("Cancelamento automático (excursão terminada, sem pagamento)", autor "Sistema").
+- Documentação: `docs/processos-automaticos.md` (novo), README e documentos de reservas, banco de dados, excursões, administração e cancelamentos; comentários de código que anunciavam a rotina como pendente foram atualizados.
+- Efeitos gravados pela rotina: retenção expirada; reserva cancelada por inadimplência com uma vaga liberada; reserva concluída; reserva sem pagamento cancelada. Nenhum passo altera pagamento, reembolso ou excursão.
+
+## D. Verificações (resultados reais)
+
+- Verificação final (`npm run check`): lint sem avisos; `tsc --noEmit` sem erros; 647 de 647 testes em 34 arquivos; build concluído. Refeita no fechamento (26/11/2026, 16:04), com o mesmo resultado. Os testes de processos reais foram repetidos 3 vezes (5 de 5 em cada).
+- Cobertura nova: fronteiras exatas (expiração da retenção; 23:59:59 de Brasília no prazo da segunda parcela; virada do dia seguinte à data final), critérios da regra nova e das decisões de não tratar, repetição, convivência com a leitura, falha provocada no meio da gravação, banco bloqueado, duas conexões, dois processos disputando o bloqueio, temporizador com relógio controlado, comando avulso e subida real da API.
+- Mutações (9, todas detectadas): passo novo retirado (13 testes falharam); pagamento pendente passando a cancelar (1); fronteira da data final trocada (2); falha interrompendo os demais passos (2); sem execução inicial (2); parada sem efeito (1); API sem iniciar a rotina (2); mensagem completa do erro no console (1); cancelamento sem retenção nem auditoria (3).
+- Execução real (26/11/2026; passageiras Ana, Beatriz e Carla; administradora fictícia): 6 reservas montadas pela interface com a rotina desligada; com a API parada, datas ajustadas no banco; API religada com intervalo de 2 s e banco lido antes de qualquer requisição: 1 reserva paga concluída, 2 reservas sem pagamento canceladas com as retenções, 1 parcelada cancelada por inadimplência com a vaga liberada (de 19 para 18), pagamento pendente e reserva abandonada inalterados (retenção da abandonada expirada), excursões continuaram publicadas, 7 eventos de auditoria sem ator. Três execuções a mais e o comando avulso: nenhum evento novo.
+- Concorrência na execução real: lote de 40 segundas parcelas vencidas inserido no banco, 6 comandos simultâneos, a rotina da API e 150 requisições: 40 cancelamentos, 40 eventos, 150 respostas 200, 6 códigos de saída 0 e nenhuma falha. Um dos comandos processou os 40.
+- Telas do passageiro e histórico administrativo conferidos, inclusive em 390 px sem rolagem horizontal da página; banco sem ocupação negativa ou acima da capacidade; auditoria e console sem senha, CPF, e-mail ou nome; console do navegador sem mensagens.
+- **Não exercitado:** Ctrl+C real (no Windows o sinal foi emitido dentro do processo); agendamento do comando no sistema operacional; ordem entre parar a rotina e fechar o banco com teste específico; carga; leitor de tela; outro navegador.
+
+## E. Erros e dificuldades do agente, e correções
+
+1. Um teste novo inseria dados antes de criar as tabelas; percebido na revisão e corrigido antes da execução.
+2. O teste de dois processos simultâneos não garantia a disputa; reforçado para segurar o bloqueio até os dois estarem esperando.
+3. Um script de edição da documentação parou em um trecho que não correspondia ao texto; o restante foi aplicado por um segundo script.
+Nenhum código de produção precisou de correção depois dos testes.
+
+## F. Limitações, pontos abertos e revisão humana (RN-044)
+
+Limitações: a primeira execução sobre um banco existente altera de uma vez todas as reservas elegíveis, sem desfazer pela aplicação; pagamento pendente e reserva abandonada sem prazo; excursão sem situação "Concluída"; rotina só com a API ligada ou pelo comando; execução síncrona (com o banco bloqueado, a API pode ficar até 20 s sem responder); um registro com defeito impede o passo inteiro; a conclusão manual do administrador (AGT-012) só tem efeito antes da execução seguinte ou com a rotina desligada; passageiro sem aviso, e a tela mostra apenas "Cancelada"; sem teste de carga; um navegador, sem leitor de tela.
+
+Pontos abertos (sem resposta dos pesquisadores até este dossiê): (1) incluir ou não a regra do cancelamento automático no documento de regras de negócio; (2) pela leitura do código, sem teste, a confirmação de um pagamento pendente de excursão já terminada não é recusada (comportamento anterior à atividade); (3) a situação "Concluída" da excursão.
+
+Revisão: a revisão do código foi registrada como aprovada pela autorização permanente de 19/11/2026 para o fechamento, com a classificação dada depois da apresentação do relatório; o pesquisador não escreveu observações próprias. A avaliação humana (Seção 11 do registro) foi redigida pelo agente a pedido dos pesquisadores; a classificação foi decidida por eles.
+
+## G. Dados para quadros, contagens e referências cruzadas
+
+- Experimento principal: 14 das 18 atividades concluídas e classificadas (n = 14), todas AP-3; AGT-015 a AGT-018 ainda não iniciadas. Piloto com o Codex: n = 5 (4 AP-1 e 1 AP-3), separado.
+- Quadro 2 (linha nova): Principal, AGT-014 | AP-3 | 1 | 647 (35 novos) | Sim (decisão sobre a execução da rotina, as situações sem regra e a situação da excursão) | ce9cf5e. Data da fonte do quadro: 26/11/2026.
+- Duração: 11,98 min de relógio (15:45:40 a 15:57:39 de 26/11/2026).
+- Esquema do banco: a AGT-014 não criou migração; permanecem as versões 1 (esquema inicial), 2 (AGT-009), 3 (AGT-010) e 4 (AGT-013).
+- Próximas atividades: comunicação (AGT-015), painel administrativo (AGT-016), testes integrados (AGT-017) e revisão técnica (AGT-018).
+- Data de corte da execução experimental: 30/11/2026.
+- Apêndice D: AGT-014 (principal, AP-3): RF-022 (com a AGT-008), RF-028 (com a AGT-010), RF-036 (com a AGT-011) e RN-025 (com a AGT-011) com evidência. Pastas server/processos e server/vagas; documento docs/processos-automaticos.md; 647 testes; commit ce9cf5e.
+- Linha das métricas: AGT-014,Claude Code (Claude Sonnet 5.5),Processamento automatico / Vagas e situacao de reservas,11.98,1,647,647,0,teste novo inseria dados antes das migracoes (corrigido antes de executar); teste de dois processos nao garantia disputa (reforcado); script de documentacao parou no meio e foi completado (duracao inclui documentacao mutacoes e percurso em execucao real; esperas por aprovacao decisoes e classificacao nao contadas),Nao,Sim,Decisao sobre execucao da rotina situacoes sem regra e situacao da excursao (3 paradas previstas),AP-3,ce9cf5e
+
+## H. Ficha AGT-014 (Apêndice E), 20 campos, nesta ordem e com este conteúdo
+
+- **ID e título:** AGT-014 — Processos automáticos
+- **Estudo:** Principal (Claude Code)
+- **Objetivo:** Efetivar, sem depender de consulta ou gravação de usuário, a expiração da retenção, a liberação da vaga por segunda parcela não paga no prazo e a conclusão das reservas um dia após a data final, conforme as decisões do pesquisador.
+- **Requisitos relacionados:** RF-022, RF-028 e RF-036; RNF-002, RNF-004, RNF-007 a RNF-010, RNF-012, RNF-021 a RNF-024 e RNF-027 a RNF-029; RN-025, RN-013 a RN-015, RN-019 a RN-024, RN-026, RN-032 e RN-039 a RN-044.
+- **Comando inicial:** Instrução original na Seção 5 de TCC/registros-agente/AGT-014.md (escrita pelo agente e aprovada pelo pesquisador em 26/11/2026 às 15:41:05; usada sem alterações).
+- **Critérios de aceitação:** 22 critérios na Seção 4 do registro, todos marcados. A avaliação humana (Seção 11) foi redigida pelo agente a pedido do pesquisador, que decidiu a classificação; a revisão do código foi registrada como aprovada pela autorização permanente de 19/11/2026.
+- **Testes:** 647 testes em 34 arquivos, todos aprovados, 0 reprovados (35 novos: 29 da rotina, 5 de processos reais e 1 de interface). Nove mutações de verificação detectadas. Percurso em aplicação e navegador reais (Microsoft Edge sem cabeça) com dados fictícios.
+- **Lint, tipos e build:** Aprovados.
+- **Número de tentativas:** 1.
+- **Duração:** 11,98 min em relógio (decisões respondidas e início da implementação às 15:45:40 e verificação final às 15:57:39, de 26/11/2026), incluindo documentação, mutações e percurso em execução real. A espera pela aprovação, pelas decisões e pela classificação não é contada. Exclui a revisão humana.
+- **Pausas ou interrupções:** Uma parada obrigatória, prevista na instrução, com três decisões. Sem interrupção da sessão durante a implementação.
+- **Intervenção humana:** Sim: decisão sobre a execução da rotina, as situações sem regra na especificação e a situação da excursão e o acompanhamento.
+- **Decisão técnica:** Temporizador dentro da API (60 s, configurável, 0 desliga) e comando avulso sobre a mesma função; uma transação por efeito; avaliação na leitura mantida; pagamento pendente e reserva abandonada sem tratamento; cancelamento da reserva sem pagamento de excursão terminada (regra não definida na especificação); sem situação "Concluída" de excursão, sem tela nova, sem migração e sem dependência nova.
+- **Versão do agente:** Claude Code, modelo Claude Sonnet 5.5 (claude-sonnet-5-5). Versão da extensão do VS Code: 2.1.332 (instalada em 26/11/2026 às 12:19; a 2.1.331 está obsoleta); qual versão executou a atividade [DADO NÃO REGISTRADO].
+- **Ambiente:** Windows 11, Node.js v26.13.0, npm 11.20.0, React 19.3.1, Vite 8.3.8, TypeScript 6.0.3, Vitest 5.1.0.
+- **Commits:** ce9cf5e (atividade e registro).
+- **Evidências:** Registro (Seções 6 a 10); diário (Entradas 108 a 112); METRICAS.csv; server/processos/, server/vagas/encerramento.ts, tests/processos-rotina.test.ts, tests/processos-execucao.test.ts e docs/processos-automaticos.md.
+- **Classificação final:** AP-3 (decisão do pesquisador, 26/11/2026; intervenção planejada de governança prevista na instrução).
+- **Segundo avaliador:** [DADO NÃO REGISTRADO] (não designado).
+- **Limitações:** A primeira execução sobre um banco existente altera de uma vez as reservas elegíveis, sem desfazer pela aplicação; confirmação de pagamento pendente de excursão terminada não recusada (visto no código, não testado, anterior à atividade); pagamento pendente e reserva abandonada sem prazo; excursão sem situação "Concluída"; rotina só com a API ligada ou pelo comando; execução síncrona; registro com defeito trava o passo; passageiro sem aviso; encerramento não exercitado por Ctrl+C; datas e lote inseridos no banco para a demonstração; sem teste de carga; um navegador, sem leitor de tela. A avaliação humana foi redigida pelo agente a pedido do pesquisador.
+
+## I. Registro completo da atividade (cópia literal)
+
+## 1. Identificação
+
+ID da atividade: AGT-014
+
+Título: Processos automáticos
+
+Categoria: Processamento automático / Vagas e situação de reservas (servidor)
+
+Agente (ferramenta e modelo): Claude Code (Anthropic), modelo Claude Sonnet 5.5 (claude-sonnet-5-5). Versão da extensão do VS Code vista na pasta de extensões no início da atividade: 2.1.332 (instalada em 26/11/2026 às 12:19; a 2.1.331 está marcada como obsoleta). Não foi possível confirmar qual versão executou esta atividade.
+
+Data: 26/11/2026
+
+Requisitos relacionados:
+- RF-022 — Expiração da retenção (parte desta atividade; iniciado na AGT-008)
+- RF-028 — Liberação da vaga por segunda parcela não paga no prazo (parte desta atividade; iniciado na AGT-010)
+- RF-036 — Conclusão automática de reservas elegíveis
+- RNF-002, RNF-004, RNF-007 a RNF-010, RNF-012, RNF-021 a RNF-024 e RNF-027 a RNF-029
+
+Regras de negócio relacionadas: RN-025, RN-013 a RN-015, RN-019 a RN-024, RN-026, RN-032, RN-039, RN-040, RN-041 a RN-044.
+Marcado "[confirmar]" na especificação: as situações da excursão (`05-FLUXOS-E-ESTADOS.md`).
+
+## 2. Objetivo
+
+Implementar os processos automáticos que efetivam, sem depender de alguém consultar ou gravar, a expiração da retenção temporária (RF-022), a
+liberação da vaga por segunda parcela não paga no prazo (RF-028) e a conclusão das reservas elegíveis um dia após a data final da excursão
+(RF-036, RN-025), conforme as decisões do pesquisador.
+
+## 3. Resultado esperado
+
+Ao final, o banco deve refletir, sem nenhuma consulta pela API, a expiração das retenções, a liberação única das vagas vencidas e a conclusão
+das reservas elegíveis; a rotina pode ser executada repetidas vezes e junto com requisições sem efeito duplicado nem excesso de capacidade;
+cada alteração é auditada como ação do sistema; uma falha não deixa estado parcial nem derruba a API. Testes automatizados devem cobrir a rotina.
+
+Não deverão ser implementados: comunicação, painel administrativo consolidado, provedor de pagamento real nem mudança nas regras de negócio.
+
+## 4. Critérios de aceitação
+
+- [x] Decisões do pesquisador (forma de execução; situações sem regra; situação da excursão e acompanhamento) tomadas e registradas com justificativa.
+- [x] A rotina usa as mesmas funções da avaliação na leitura e na gravação, sem segunda versão de nenhuma regra.
+- [x] A expiração da retenção é efetivada sem leitura nem gravação por usuário, com teste na fronteira exata do instante de expiração (RF-022).
+- [x] A vaga da segunda parcela vencida é liberada exatamente uma vez e a primeira parcela permanece não reembolsável, com teste na fronteira das 23:59:59 de Brasília (RF-028, RN-019, RN-020, RN-032, RN-039).
+- [x] As reservas elegíveis são concluídas um dia após a data final, com teste na virada do dia em Brasília; reservas não elegíveis não mudam (RF-036, RN-025).
+- [x] Execuções em transação BEGIN IMMEDIATE, com a granularidade da decisão 1.
+- [x] Idempotência: executar duas vezes não repete efeito, não libera vaga duas vezes nem duplica auditoria.
+- [x] Concorrência com requisições e com segunda execução, em duas conexões, sem efeito duplicado, sem exceder a capacidade e sem derrubar o processo com o banco ocupado (RN-021, RN-040).
+- [x] Falha injetada não deixa estado parcial incoerente, não derruba a API, é registrada sem dados pessoais e a execução seguinte tenta de novo (RNF-010, RNF-027).
+- [x] A forma de execução segue a decisão 1; configuração validada, relógio injetável nos testes e rotina parada antes de fechar o banco.
+- [x] As situações sem regra na especificação são tratadas somente como a decisão 2 determinar.
+- [x] A situação da excursão e o acompanhamento das execuções seguem a decisão 3.
+- [x] Toda alteração da rotina auditada como ação do sistema, sem ator e sem dados sensíveis (RN-041, RN-042).
+- [x] Nenhuma rota permite que visitante ou passageiro dispare ou configure a rotina; rota ou tela administrativa, se houver, com autorização no servidor antes de ler o corpo.
+- [x] Testes automatizados cobrindo fronteiras, idempotência, atomicidade, concorrência, agendamento, início e parada, configuração inválida e ausência de regressão; testes de interface se houver tela.
+- [x] Lint, verificação de tipos, testes e build aprovados.
+- [x] Percurso em execução real com dados fictícios, com cada ajuste de data no banco declarado, confirmando no banco os efeitos antes de qualquer consulta pela API, relatado com o que foi e o que não foi exercitado.
+- [x] Confirmado no banco que vagas_ocupadas nunca ficou negativa nem acima da capacidade e que auditoria e logs não têm dados sensíveis.
+- [x] Documentação atualizada, sem credenciais reais; apenas dados fictícios.
+- [x] Nenhuma funcionalidade fora do escopo e nenhuma dependência nova sem decisão; o esquema só muda por migração nova, pequena e justificada, se necessário.
+- [x] Alterações realizadas pelo agente identificáveis.
+- [x] Resultado submetido à revisão humana.
+
+## 5. Instrução original enviada ao agente
+
+Você está iniciando a atividade experimental AGT-014 — Processos automáticos.
+
+CONTEXTO
+
+Este projeto faz parte de um Trabalho de Conclusão de Curso que investiga a utilização de um agente de Inteligência Artificial Generativa como ferramenta de apoio ao desenvolvimento de software sob supervisão humana.
+
+O projeto experimental consiste no desenvolvimento de uma plataforma web para gerenciamento de excursões. A AGT-001 criou a fundação técnica, a AGT-002 o modelo de dados e a persistência (SQLite por meio de node:sqlite, SQL direto, migrações versionadas, transações e auditoria), a AGT-003 o cadastro, a autenticação e o controle de acesso, a AGT-004 a estrutura pública, a AGT-005 o gerenciamento administrativo de excursões (a situação "Concluída" da excursão ficou para os processos automáticos), a AGT-006 a consulta pública, a AGT-007 a solicitação de reserva e o checkout, a AGT-008 a retenção temporária de vaga, a AGT-009 o pagamento integral com provedor simulado, a AGT-010 o pagamento em duas parcelas e o vencimento da segunda, a AGT-011 a área do passageiro e a conclusão das reservas, a AGT-012 a administração de reservas e passageiros e a AGT-013 os cancelamentos e reembolsos (migração 4).
+
+Até aqui, a expiração da retenção (AGT-008), o vencimento da segunda parcela (AGT-010) e a conclusão da reserva (AGT-011) são avaliados somente quando alguém lê ou grava, sem tarefa em segundo plano. Sem uma consulta, o banco continua guardando a situação antiga.
+
+Leia o CLAUDE.md, a especificação em docs/especificacao/ e os documentos docs/banco-de-dados.md, docs/reservas.md, docs/excursoes-admin.md, docs/administracao-reservas.md e docs/cancelamentos.md antes de começar.
+
+OBJETIVO DA ATIVIDADE
+
+Implementar os processos automáticos que efetivam, sem depender de alguém consultar ou gravar, a expiração da retenção temporária (RF-022), a liberação da vaga por segunda parcela não paga no prazo (RF-028) e a conclusão das reservas elegíveis um dia após a data final da excursão (RF-036, RN-025), conforme as decisões do pesquisador.
+
+Reaproveite as funções que já aplicam essas regras (expirarVencidas, vencerSegundasParcelas e concluirReservas), a auditoria e as transações, sem escrever uma segunda versão de nenhuma regra. Nesta atividade, não implemente comunicação por e-mail ou WhatsApp (AGT-015), painel administrativo consolidado e relatórios (AGT-016), provedor de pagamento real nem qualquer mudança nas regras de negócio.
+
+REGRAS DA ESPECIFICAÇÃO QUE VALEM NESTA ATIVIDADE
+
+- RN-014 e RN-015: há retenção temporária durante o checkout, e a retenção não é ocupação definitiva. RN-021 e RN-040: nenhuma operação ocupa vagas acima da capacidade, inclusive sob processamento concorrente.
+- RN-013, RN-019, RN-020 e RN-032: a data limite da segunda parcela vale até as 23:59:59; sem o pagamento no prazo, a vaga é liberada e a primeira parcela permanece não reembolsável.
+- RN-022: confirmação financeira recebida depois da expiração, sem vaga, é registrada para tratamento administrativo.
+- RN-023 a RN-026: situações da reserva; um dia após a data final, as reservas elegíveis ficam automaticamente "Concluída" e permanecem no histórico.
+- RN-039: instantes em UTC, interpretados em America/Sao_Paulo. RN-041 e RN-042: operações automáticas relevantes geram auditoria, sem dados sensíveis. RN-043: o agente não altera regras aprovadas. RN-044: alterações críticas em pagamentos, vagas, cancelamentos e reembolsos exigem revisão humana.
+
+REQUISITOS DESTA ATIVIDADE
+
+- a rotina usa as mesmas funções da avaliação na leitura e na gravação, com o mesmo resultado, e é testada nas fronteiras exatas: o instante de expiração da retenção, as 23:59:59 de Brasília do prazo da segunda parcela e a virada do dia seguinte à data final;
+- cada execução grava em transação BEGIN IMMEDIATE, com a granularidade da decisão 1; é idempotente: executar duas vezes não repete efeito, não libera vaga duas vezes nem duplica auditoria;
+- a rotina convive com as requisições e com uma segunda execução simultânea sem efeito duplicado, sem exceder a capacidade e sem derrubar o processo quando o banco estiver ocupado;
+- uma falha não deixa estado parcial incoerente, não derruba a API, é registrada sem dados pessoais e a execução seguinte tenta de novo;
+- a forma de execução segue a decisão 1; o intervalo, se houver, é configurável e validado como as demais variáveis de ambiente, o relógio pode ser injetado nos testes e o encerramento do servidor para a rotina antes de fechar o banco;
+- as situações que a especificação não define são tratadas somente como a decisão 2 determinar;
+- a situação da excursão e a forma de acompanhar as execuções seguem a decisão 3;
+- toda alteração feita pela rotina é auditada como ação do sistema, sem ator e sem dados sensíveis;
+- nenhuma rota permite que visitante ou passageiro dispare ou configure a rotina; se a decisão 3 criar rota ou tela administrativa, a autorização é verificada no servidor antes de ler o corpo (reutilize authorize);
+- testes automatizados: fronteiras, idempotência, atomicidade com falha injetada, concorrência entre duas conexões, agendamento com relógio controlado, início e parada, configuração inválida e ausência de regressão nas atividades anteriores; testes de interface se houver tela;
+- atualização do README e da documentação (docs/reservas.md, docs/banco-de-dados.md, docs/excursoes-admin.md e um documento dos processos automáticos). Se for necessária migração, que seja nova, pequena e justificada, sem alterar as migrações já aplicadas. Nenhuma dependência nova sem decisão do pesquisador.
+
+DECISÕES QUE EXIGEM AVALIAÇÃO HUMANA
+
+Três decisões envolvem arquitetura, pagamentos, vagas, cancelamentos e situações. Antes de criar arquivos, apresente para cada uma as opções viáveis com vantagens, desvantagens e uma recomendação, e interrompa para a decisão do pesquisador. Não escolha por conta própria.
+
+1. Como e quando a rotina roda. Apresente: temporizador dentro do processo da API, comando separado a ser agendado pelo sistema operacional ou as duas formas sobre a mesma função; intervalo e execução na inicialização; se a avaliação na leitura e na gravação continua; o que acontece com mais de um processo; a granularidade da transação (uma por execução ou uma por registro); e como cada execução fica registrada.
+2. Situações sem regra na especificação (pagamentos, vagas e cancelamentos). Apresente, para cada uma, a opção de não fazer nada: o pagamento pendente que nunca é confirmado; a reserva "Aguardando pagamento" abandonada, com a retenção expirada; e a reserva "Aguardando pagamento" de excursão que já terminou. Indique, em cada opção, o efeito sobre dinheiro, vaga, o limite de reservas pendentes do passageiro, o reembolso e a necessidade de migração. Qualquer cancelamento automático além dos já definidos é uma regra que a especificação não tem.
+3. Situação da excursão e acompanhamento. Apresente: se a excursão passa automaticamente a "Concluída" ou continua "Encerrada" (a matriz de situações está marcada "[confirmar]" em 05-FLUXOS-E-ESTADOS.md, os requisitos desta atividade não a citam e o esquema atual não aceita esse valor); se a excursão publicada deve ser encerrada automaticamente depois da partida; e se o administrador acompanha as execuções somente pela auditoria, pela saída do comando ou por uma tela.
+
+RESTRIÇÕES
+
+1. Não implemente funcionalidades fora do escopo.
+2. Não altere os requisitos ou regras de negócio definidos pelo projeto; dúvidas ou conflitos na especificação são para o pesquisador (CLAUDE.md, regra 2).
+3. Não inclua credenciais, tokens, senhas, números de cartão, dados bancários ou outros dados sensíveis no repositório, nos logs ou na auditoria. Use somente dados fictícios.
+4. Não reutilize código funcional de projetos anteriores nem consulte o repositório do estudo piloto.
+5. Não altere ou remova os arquivos existentes dentro das pastas TCC e docs/especificacao, exceto para preencher os campos de execução deste registro.
+6. Não modifique os registros experimentais existentes.
+7. Caso exista uma decisão relevante que não possa ser tomada tecnicamente sem alterar significativamente arquitetura, dependências, segurança, custos, integrações externas, regras de negócio ou escopo do produto, interrompa e apresente a decisão ao pesquisador.
+8. Você pode tomar decisões técnicas de baixo impacto necessárias, desde que as documente no relatório final, com o motivo e a versão exata de cada dependência adicionada.
+9. Não realize commit Git. O commit será realizado somente após revisão humana.
+10. Alterações críticas em pagamentos, vagas, cancelamentos, reembolsos e dados pessoais exigem revisão humana (RN-044): descreva no relatório cada ponto em que a rotina muda a situação de uma retenção, de uma reserva, de um pagamento, de uma vaga ou de uma excursão, cada mudança em código de outra atividade e cada migração, se houver.
+
+VALIDAÇÃO
+
+Ao concluir a implementação:
+
+- execute a análise estática, a verificação de tipos, os testes e o build;
+- coloque a rotina em execução real, com dados fictícios e intervalo curto, ajustando datas no banco quando necessário e declarando cada ajuste; confirme diretamente no banco, antes de qualquer consulta pela API, que as retenções expiraram, que a vaga da segunda parcela vencida foi liberada uma vez e que as reservas elegíveis foram concluídas;
+- execute a rotina de novo e simultaneamente a requisições, confirme que nada se repete e encerre o processo de forma controlada;
+- percorra no navegador as telas do passageiro e da administração afetadas, inclusive em largura de celular;
+- confirme que vagas_ocupadas nunca ficou negativa nem acima da capacidade e que auditoria e logs não têm dados sensíveis;
+- corrija problemas encontrados quando estiverem dentro do escopo desta atividade.
+
+RELATÓRIO OBRIGATÓRIO
+
+Ao finalizar, apresente um relatório contendo:
+
+1. resumo do que foi implementado;
+2. decisões técnicas tomadas e respectivas justificativas;
+3. tecnologias e versões efetivamente utilizadas;
+4. arquivos e diretórios relevantes criados ou modificados;
+5. dependências adicionadas;
+6. comandos relevantes executados;
+7. testes e verificações executados;
+8. resultados dos testes, análise estática, verificação de tipos e build;
+9. erros ou dificuldades encontrados;
+10. correções realizadas durante a execução;
+11. limitações ou pendências identificadas, inclusive de pagamento, de vagas, de concorrência, de operação da rotina, de privacidade e de acessibilidade;
+12. qualquer ponto que considere necessário para revisão humana.
+
+Não declare a atividade como aprovada. A aprovação e a classificação experimental serão realizadas exclusivamente pelo pesquisador após revisão humana.
+
+Inicie a AGT-014.
+
+## 6. Tentativas
+
+Tentativa 1 (única até aqui). Aprovação da instrução: 2026-11-26T15:41:05-03:00. Início da execução: 2026-11-26T15:41:05-03:00. Início da implementação (decisões respondidas): 2026-11-26T15:45:40-03:00. Fim (verificação final): 2026-11-26T15:57:39-03:00; duração em relógio de 11,98 min, sem contar a espera pela aprovação e pelas decisões nem a redação deste relatório.
+
+Decisões do pesquisador (resposta "recomendadas", 2026-11-26T15:45:40-03:00), tomadas depois da apresentação das opções com vantagens, desvantagens e recomendação, antes de qualquer arquivo de código:
+
+1. **Forma de execução da rotina (1A).** Temporizador dentro do processo da API e comando para uma execução avulsa, sobre a mesma função; execução na inicialização e a cada 60 segundos, com intervalo configurável (0 desliga); a avaliação na leitura e na gravação continua; uma transação para cada efeito; mais de um processo não repete efeito; cada alteração na auditoria e só contagens no console, sem tabela nova. Recusadas: só o temporizador; só o comando agendado no sistema operacional.
+2. **Situações sem regra na especificação.**
+   - 2.1 A: o pagamento pendente que nunca confirma **não é tratado** (continua pendente; uma confirmação tardia segue registrada, RN-022). Recusada: marcar como "falhou" após prazo.
+   - 2.2 A: a reserva abandonada, com a retenção expirada, **não é tratada**. Recusada: cancelamento após prazo.
+   - 2.3 A: a reserva "Aguardando pagamento" de excursão **já terminada** e **sem pagamento pendente ou confirmado** é **cancelada** pela rotina; as que têm pagamento ficam como estão. É uma regra que a especificação não define, adotada por decisão do pesquisador; o agente não alterou 04-REGRAS-DE-NEGOCIO.md. Recusada: não fazer nada.
+3. **Situação da excursão e acompanhamento.**
+   - 3.1 A: **não** criar a situação "Concluída" da excursão. Fica sem cumprir a previsão registrada na AGT-005 (13/11/2026) de que "Concluída" ficaria para os processos automáticos: limitação. Recusada: concluir automaticamente (reconstrução da tabela, executor de migrações e telas).
+   - 3.2 A: **não** encerrar automaticamente a excursão publicada depois da partida. Recusada: encerrar.
+   - 3.3 A: acompanhamento pela auditoria (visível no histórico da reserva no painel) e pelo console; **sem tela nova**. Recusada: tela com as últimas execuções.
+
+Justificativas (as das recomendações do agente, aceitas sem texto próprio do pesquisador): 1A funciona sem configuração do sistema operacional e mantém um comando para conferência, com falha isolada por efeito; 2.1 A preserva o registro de uma confirmação tardia (RN-022); 2.2 A evita cancelar, sem aviso, reserva que o passageiro ainda pode retomar; 2.3 A retira de "Em andamento" a reserva que já não pode ser paga, sem efeito em dinheiro ou vaga; 3.1 A e 3.2 A evitam migração e mudança de comportamento não pedidas pelos requisitos desta atividade; 3.3 A usa o histórico já existente e não antecipa o painel da AGT-016.
+
+## 7. Alterações realizadas pelo agente
+
+Arquivos novos:
+- `server/processos/rotina.ts` (quatro passos, cada um em transação própria; resultado, falhas e linhas de console sem dados);
+- `server/processos/agendador.ts` (temporizador dentro da API: inicialização, intervalo e parada);
+- `server/processos/config.ts` (`ROTINA_INTERVALO_SEGUNDOS`: padrão 60, 0 desliga, até 86400);
+- `server/processos/rotina-cli.ts` (execução avulsa);
+- `server/vagas/encerramento.ts` (decisão 2.3: cancelamento da reserva sem pagamento de excursão terminada);
+- `tests/processos-rotina.test.ts`, `tests/processos-execucao.test.ts`, `docs/processos-automaticos.md`.
+
+Alterados (código de outras atividades):
+- `server/main.ts`: lê a configuração antes de subir, inicia a rotina depois de a API estar no ar e a para antes de fechar o banco;
+- `package.json`: script `rotina`; `.env.example`: variável nova;
+- `src/admin/reservas-admin-api.ts`: rótulo do evento `reserva.cancelamento_automatico`;
+- só comentários, sem mudança de comportamento: `server/vagas/{disponibilidade,vencimento,conclusao}.ts`, `server/pagamentos/service.ts`, `server/excursoes/service.ts`;
+- `tests/web-admin-reservas.test.tsx`: um teste novo;
+- documentação: `README.md` e `docs/{reservas,banco-de-dados,excursoes-admin,administracao-reservas,cancelamentos}.md`.
+
+Pontos em que a rotina muda situações (RN-044):
+1. retenção `ativa` para `expirada` (função da AGT-008);
+2. reserva para `cancelada` por inadimplência e uma vaga liberada (função da AGT-010);
+3. reserva para `concluida` (função da AGT-011);
+4. **novo:** reserva `aguardando_pagamento` para `cancelada` e retenção ativa para `cancelada` (`encerramento.ts`).
+Nenhum passo muda pagamento, reembolso ou excursão; só o passo 2 altera vagas. Sem migração e sem dependência nova.
+
+## 8. Comandos e testes
+
+- `npm run check` (lint sem avisos, `tsc --noEmit`, testes e build): **647 testes aprovados em 34 arquivos**, build aprovado (última execução antes de 2026-11-26T15:57:39-03:00). Antes da atividade: 612 em 32. Novos: 35 (29 em `processos-rotina`, 5 em `processos-execucao`, 1 de interface).
+- `tests/processos-execucao.test.ts` (processos reais) repetido 3 vezes: 5 de 5 em cada.
+- Cobertura nova: fronteiras exatas (expiração da retenção, 23:59:59 de Brasília, virada do dia seguinte à data final), os critérios da decisão 2.3 e das decisões 2.1, 2.2, 3.1 e 3.2, repetição, convivência com a leitura, falha injetada por gatilho no banco em dois passos, banco bloqueado, duas conexões, dois processos que disputam o bloqueio, temporizador com relógio controlado, comando avulso (sucesso e erro), subida real da API com intervalo 1, 0 e inválido.
+- Mutações (arquivos restaurados e conferidos byte a byte; sobre os 34 testes de `tests/processos*`), todas detectadas: passo novo retirado (13 falhas); pagamento pendente passando a cancelar (1); fronteira da data final trocada (2); falha interrompendo os demais passos (2); sem execução inicial (2); parada sem efeito (1); API sem iniciar a rotina (2); mensagem completa do erro no console (1); cancelamento sem retenção nem auditoria (3).
+- Percurso em execução real (API, Vite e Microsoft Edge sem janela, banco temporário, dados fictícios):
+  - cenário montado pela interface com a rotina desligada (6 reservas) e API encerrada pelo tratador de sinal (código 0);
+  - **ajustes no banco, com a API parada:** Serra e Praia terminadas há 3 dias; prazo da segunda parcela da Cachoeira para a véspera; uma retenção vencida;
+  - API religada com intervalo de 2 s e lido o banco **antes de qualquer requisição**: reserva paga concluída; reservas sem pagamento (uma sem nenhum e uma recusada) canceladas, com as retenções; parcelada cancelada por inadimplência com a vaga liberada (Cachoeira 19 para 18); reserva com pagamento pendente continuou aguardando; abandonada continuou aguardando com a retenção expirada; excursões continuaram publicadas; 7 eventos de auditoria sem ator;
+  - mais 3 execuções e o comando avulso: nenhum evento novo;
+  - concorrência: lote inserido no banco (40 segundas parcelas vencidas), 6 comandos simultâneos, a rotina da API e 150 requisições: 40 cancelamentos, 40 eventos, 0 vaga restante, 150 respostas 200, seis códigos de saída 0, nenhuma falha. Um dos comandos fez os 40; a disputa forçada pelo bloqueio só está no teste automatizado;
+  - telas do passageiro (concluída, cancelada, parcelada vencida, pendentes) e histórico administrativo ("Sistema" e o texto do cancelamento automático), também em 390 px sem rolagem horizontal da página;
+  - banco: nenhuma ocupação negativa ou acima da capacidade, nenhuma retenção ativa vencida, nenhum reembolso criado; auditoria e console sem senha, CPF, e-mail ou nome; console do navegador sem mensagens.
+
+## 9. Erros e dificuldades
+
+1. Na primeira versão do teste novo, os dados eram inseridos antes das migrações; o agente percebeu na revisão e corrigiu antes de executar.
+2. O teste com dois comandos simultâneos não garantia disputa (um processo podia terminar antes de o outro começar). O agente passou a segurar o bloqueio de escrita até os dois estarem esperando.
+3. Um script de edição da documentação parou em um trecho que não correspondia ao texto de um comentário, depois de aplicar parte das edições; o restante foi aplicado por um segundo script.
+Nenhum teste falhou nas execuções feitas depois dessas correções, e não houve correção de código de produção depois dos testes.
+
+## 10. Relatório do agente
+
+1. **Implementado:** rotina automática (expiração da retenção, vencimento da segunda parcela, conclusão e cancelamento da reserva sem pagamento de excursão terminada), dentro da API e por comando avulso.
+2. **Decisões técnicas** (as do pesquisador estão na Seção 6). Escolhas do agente, não cobertas pelas decisões: o passo novo é aplicado só pela rotina, nunca na leitura; "sem pagamento pendente ou confirmado" inclui as reservas com pagamento recusado ou estornado; a retenção ainda ativa é cancelada junto; o motivo fica só na auditoria (`motivo_cancelamento` nulo, para não exigir migração); o console escreve a primeira execução e depois só as com alteração ou falha; o erro é descrito pelo texto genérico do SQLite, sem a mensagem completa; o comando avulso aplica migrações pendentes; os passos seguem ordem fixa.
+3. **Tecnologias:** Node.js v26.13.0, npm 11.20.0, `node:sqlite`, `node:child_process` nos testes, React 19.3.1, Vite 8.3.8, TypeScript 6.0.3, Vitest 5.1.0.
+4. **Arquivos:** Seção 7.
+5. **Dependências adicionadas:** nenhuma.
+6. **Comandos:** `npm run check`, `npx vitest run`, `npx tsc --noEmit`, `npx eslint`, scripts de mutação e de navegador na pasta temporária da sessão.
+7. e 8. **Testes e resultados:** Seção 8.
+9. e 10. **Erros e correções:** Seção 9.
+11. **Limitações e pendências:**
+    - **Na primeira subida da API sobre um banco existente, todas as reservas que atendem aos critérios são alteradas de uma vez**; a aplicação não desfaz cancelamento nem conclusão.
+    - Pela leitura do código (não testado): uma reserva com pagamento pendente de excursão terminada continua oferecendo "Continuar o pagamento", e a confirmação não verifica se a excursão terminou; uma confirmação tardia ocuparia a vaga e a reserva seguiria para Concluída. É comportamento anterior à atividade e não foi alterado.
+    - Pagamento pendente e reserva abandonada antes do fim continuam sem prazo (decisões 2.1 e 2.2).
+    - Excursão sem situação "Concluída" (decisão 3.1); a previsão registrada na AGT-005 não foi cumprida.
+    - A rotina só roda com a API ligada ou pelo comando; o agendamento no sistema operacional não é configurado nem foi exercitado.
+    - Execução síncrona: com o banco bloqueado, cada passo espera até 5 s (até 20 s nos quatro), e a API não responde nesse intervalo.
+    - Um registro com defeito impede o passo inteiro; o console não indica qual registro.
+    - A conclusão manual da AGT-012 passa a ter efeito só antes da execução seguinte ou com a rotina desligada.
+    - O passageiro não é avisado e a tela mostra apenas "Cancelada" (comunicação é a AGT-015).
+    - Ctrl+C real não exercitado: no Windows o sinal foi emitido dentro do próprio processo.
+    - Sem teste de carga; um navegador; sem leitor de tela.
+12. **Para revisão humana (RN-044):** o critério de `server/vagas/encerramento.ts`; a inclusão da regra 2.3 em `04-REGRAS-DE-NEGOCIO.md`, que o agente não alterou; as escolhas do item 2; o ponto do pagamento pendente de excursão terminada.
+
+O agente não declara aprovação nem classifica a atividade.
+
+## 11. Avaliação humana
+
+> **TEXTO REDIGIDO PELO AGENTE, a pedido do pesquisador (2026-11-26T16:03:21-03:00), com base nos registros e nas execuções.** O pesquisador respondeu "ap 3", lido pelo agente como a classificação AP-3; vale a autorização permanente que ele deu em 19/11/2026 para o fechamento padrão de cada atividade (critérios, revisão do código, commit e transcrição no Docs). O pesquisador não escreveu observações sobre o código nem respondeu aos dois pontos abertos (Seção 16). As marcações abaixo refletem as evidências.
+
+Atendeu ao objetivo: Proposta: sim. A expiração da retenção, a liberação da vaga por segunda parcela vencida e a conclusão das reservas passam a ser gravadas sem consulta de usuário, e a reserva sem pagamento de excursão terminada é cancelada conforme a decisão 2.3.
+
+Atendeu aos critérios de aceitação: Proposta: sim para os 22 critérios da Seção 4, todos marcados. Evidências: 647 testes aprovados em 34 arquivos (35 novos); lint, tipos e build sem erros; nove mutações de verificação (todas detectadas e restauradas); percurso em aplicação e navegador reais. Ressalvas: (1) datas ajustadas e lote de 40 reservas inserido diretamente no banco; (2) a parada da rotina antes do fechamento do banco foi conferida pela leitura do código e pelo encerramento com código 0, sem teste específico da ordem; (3) o encerramento foi acionado emitindo o sinal dentro do processo, não por Ctrl+C; (4) no percurso um único comando processou o lote, e a disputa forçada entre processos está só no teste automatizado; (5) sem teste de carga e sem leitor de tela.
+
+Atendeu às regras de negócio: Proposta: sim para RN-013 a RN-015, RN-019 a RN-026, RN-032 e RN-039 a RN-042. A decisão 2.3 acrescenta um comportamento que a especificação não define; 04-REGRAS-DE-NEGOCIO.md não foi alterado.
+
+Comportamento esperado confirmado: Proposta: sim, no percurso real e nos testes, com as ressalvas acima.
+
+Testes considerados suficientes: Proposta: suficientes para fronteiras de horário, critérios da regra nova, repetição, falha injetada, banco bloqueado, duas conexões, dois processos, temporizador, comando e subida da API; sem teste de carga.
+
+Problemas não identificados pelo agente: Proposta: nenhum identificado; os erros do próprio agente estão na Seção 9.
+
+Revisão do código: registrada como aprovada pela autorização permanente de 19/11/2026, com a classificação dada depois da apresentação do relatório, que indicava para revisão server/vagas/encerramento.ts e server/processos/. As limitações da Seção 10 (item 11) continuam registradas.
+
+## 12. Intervenção humana
+
+Houve intervenção humana: Sim.
+
+Tipo: decisão sobre processos automáticos, pagamentos, vagas, cancelamentos e situações. A instrução (Seção 5) previa três paradas para decisão do pesquisador (forma de execução da rotina; situações sem regra na especificação; situação da excursão e acompanhamento); o pesquisador aceitou as opções recomendadas pelo agente ("recomendadas") em 2026-11-26T15:45:40-03:00. Não houve correção de código do agente por intervenção humana.
+
+## 13. Classificação final
+
+Classificação: AP-3.
+
+(Decisão do pesquisador em 2026-11-26T16:03:21-03:00: "ap 3". Tentativa a que se aplica: 1. Critério da rubrica: AP-3 é a intervenção planejada de governança prevista na instrução; AP-4, a intervenção corretiva para reparar falhas não corrigidas pelo agente. O pesquisador não escreveu justificativa.)
+
+## 14. Controle de versão
+
+Commit relacionado: ce9cf5e
+
+---
+
+## 16. Observações finais
+
+A duração registrada (11,98 min, de 15:45:40 a 15:57:39 em 26/11/2026) é tempo de relógio da implementação depois das decisões e inclui a documentação, as verificações por mutação e o percurso em execução real; a espera pela aprovação, pelas decisões e pela classificação e a redação do relatório não são contadas. Sem interrupção da sessão durante a implementação. Sem migração e sem dependência nova. Pontos abertos, para decisão do pesquisador: (1) incluir ou não a regra da decisão 2.3 em 04-REGRAS-DE-NEGOCIO.md; (2) a confirmação de pagamento pendente de excursão terminada, que pela leitura do código não é recusada (comportamento anterior à atividade, não testado e não alterado); (3) a situação "Concluída" da excursão, prevista na AGT-005 e não criada (decisão 3.1). A versão da ferramenta (extensão 2.1.332, a mais recente instalada) não pôde ser confirmada como a que executou a atividade.
+
+## J. Quadro 3, análise e Seção 5.4 atualizados (substituem as Partes B e C do pedido de correção)
+
+### J1. Substituir o parágrafo de introdução, o título, a tabela e a fonte do Quadro 3 por:
+
+> A síntese dos registros dos dois conjuntos é apresentada no Quadro 3, que os mantém em colunas separadas e não os soma.
+
+**Quadro 3 — Síntese dos registros por conjunto de atividades**
+
+| Registro | Piloto (Codex, n = 5) | Experimento principal (Claude Code, n = 14) |
+| --- | --- | --- |
+| Atividades concluídas e classificadas | 5 de 5 executadas | 14 de 18 previstas |
+| AP-1 | 4 | 0 |
+| AP-2 | 0 | 0 |
+| AP-3 | 1 | 14 |
+| AP-4 | 0 | 0 |
+| RP | 0 | 0 |
+| Atividades com 1 tentativa | 3 | 13 |
+| Atividades com 2 tentativas | 1 | 1 |
+| Atividades com número de tentativas não registrado | 1 | 0 |
+| Testes aprovados na primeira e na última atividade avaliada | 6 (AGT-001) e 198 (AGT-005) | 15 (AGT-001) e 647 (AGT-014) |
+| Atividades com intervenção humana registrada | 1 | 14 |
+
+Fonte: elaborado pelos autores, a partir dos registros AGT e das planilhas de métricas (26/11/2026). As classificações são as registradas; a distinção entre AP-3 e AP-4 foi adotada em revisão posterior à AGT-010.
+
+### J2. Substituir o parágrafo que começa com "Sob uma perspectiva analítica" (ou o texto da antiga Parte B, se já aplicada) por:
+
+> No subconjunto avaliado do experimento principal (n = 14), as 14 atividades foram classificadas como AP-3 e nenhuma como AP-4. As instruções dessas atividades previam paradas para decisão dos pesquisadores, e a classificação AP-3 registra essas intervenções planejadas. A distribuição descreve somente as atividades avaliadas: não permite concluir sobre o desempenho do agente nem estabelecer relação de causa, e não há grupo de controle. A distinção entre AP-3 e AP-4 foi adotada em revisão posterior à AGT-010, o que constitui uma limitação a considerar na leitura desses números. O piloto com o Codex (n = 5) é apresentado em coluna própria e não é somado nem comparado estatisticamente ao experimento principal.
+
+### J3. Seção 5.4: substituir o parágrafo que começa com "As próximas atividades do experimento principal incluem" por:
+
+> As próximas atividades do experimento principal incluem, a partir da AGT-015, comunicação, painel administrativo, testes integrados e revisão técnica. Restam 4 atividades planejadas (AGT-015 a AGT-018) para a conclusão do ciclo experimental. A data de corte da execução experimental é 30/11/2026; as atividades não concluídas até essa data serão tratadas e registradas como trabalhos futuros.

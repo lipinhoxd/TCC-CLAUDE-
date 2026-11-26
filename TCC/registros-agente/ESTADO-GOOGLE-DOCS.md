@@ -25,6 +25,7 @@ campos de avaliação: docs/rubrica-avaliacao.md (repositório)".
 | 011 | AP-3 | c8ed387 | sim, com divergências | sim, com divergências | sim, com divergências | sim | divergente no Resumo e no Abstract |
 | 012 | AP-3 | 482f981 | sim | sim | **não inserida** | sim | sim (n = 12), com divergências nas classes |
 | 013 | AP-3 | b27f70e | pendente | pendente | pendente | pendente | pendente |
+| 014 | AP-3 | ce9cf5e | pendente | pendente | pendente | pendente | pendente |
 
 Critério único de classificação (AP-3 quando a instrução manda parar e a atividade só prossegue com
 decisão do pesquisador) está na rubrica, na Seção 6.3 e no Apêndice F do Docs.
@@ -148,3 +149,7 @@ O pesquisador confirmou a classe "AP-4" (rubrica atualizada; a Parte B de restau
 ## 2026-11-26T14:18:06-03:00: Quadro 3, análise e data de corte
 
 Pedido de correção atualizado: Partes B (Quadro 3 e análise refeitos só com dados dos registros) e C (Seção 5.4 com data de corte 30/11/2026). Ordem de envio: Parte A, dossiê da AGT-013, Partes B e C.
+
+## AGT-014 (2026-11-26T16:06:19-03:00)
+
+Dossiê: `TCC/relatorios/DOSSIE-GEMINI-AGT-014-2026-11-26.md` (a seção J substitui as Partes B e C do pedido de correção). Auditoria: `TCC/relatorios/AUDITORIA-SINCRONIA-AGT-014-2026-11-26.md`. **Aguardando o pesquisador enviar ao Gemini** (ordem: Parte A e dossiê da AGT-013, se ainda não enviados; depois o da AGT-014); em seguida, reler o Docs e conferir (n = 14; AGT-015 a AGT-018 não iniciadas; Quadros 2 e 3; fichas AGT-012, 013 e 014; ficha AGT-011; Seções 5.3 e 5.4; Apêndice D; nada novo inventado). Commits da atividade: ce9cf5e e d3ae627. Última leitura do Docs: depois da AGT-012.

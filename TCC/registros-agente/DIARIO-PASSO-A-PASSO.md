@@ -1504,3 +1504,31 @@ nova. A classificação (AP-1, AP-2, AP-3 ou RP) cabe ao pesquisador; o agente n
 **Ações:** o agente criou TCC/registros-agente/AGT-014.md (Seções 1 a 5, com a instrução original na Seção 5 e os critérios de aceitação). Conforme a Seção 5, nenhum arquivo de código é criado antes das decisões; o agente apresenta as três paradas ao pesquisador. Entram no commit de registro as correções da entrada 108 (frase A6 do pedido ao Gemini e data de corte no plano de atividades). Docs não alterado.
 
 **Pendente:** decisões 1 a 3 do pesquisador; envio ao Gemini e conferência do Docs.
+
+## Entrada 110 — AGT-014: decisões respondidas e início da implementação
+
+**Hora do sistema:** 2026-11-26T15:45:40-03:00
+
+**Pedido do pesquisador:** "recomendadas".
+
+**Decisões:** 1A (temporizador na API e comando avulso, a cada 60 s, avaliação na leitura mantida, uma transação por efeito); 2.1 A e 2.2 A (pagamento pendente e reserva abandonada não são tratados); 2.3 A (cancelar a reserva aguardando, sem pagamento pendente ou confirmado, de excursão terminada: regra não definida na especificação, adotada pelo pesquisador); 3.1 A, 3.2 A e 3.3 A (sem "Concluída" de excursão, sem encerramento automático, sem tela nova). Detalhes na Seção 6 do registro.
+
+**Ações:** início da implementação. Docs não alterado.
+
+## Entrada 111 — AGT-014: implementação, verificações e relatório do agente
+
+**Hora do sistema:** 2026-11-26T15:58:45-03:00 (verificação final da implementação: 2026-11-26T15:57:39-03:00)
+
+**Ações:** criados server/processos/ (rotina, agendador, configuração e comando) e server/vagas/encerramento.ts; main.ts passou a iniciar e parar a rotina; rótulo novo no histórico administrativo; documentação e comentários atualizados. npm run check: 647 de 647 testes em 34 arquivos, lint, tipos e build sem erro. Nove mutações detectadas e restauradas. Percurso em API e navegador reais com dados fictícios, com ajustes de data declarados. Sem migração, sem dependência nova, sem commit. Erros do agente e correções na Seção 9 do registro. Docs não alterado.
+
+**Pendente:** avaliação e classificação do pesquisador.
+
+## Entrada 112 — AGT-014: classificação AP-3, fechamento, dossiê e auditoria
+
+**Hora do sistema:** 2026-11-26T16:06:19-03:00
+
+**Pedido do pesquisador:** "ap 3" (26/11/2026, 16:03:21).
+
+**Ações:** fechamento padrão: critérios marcados, Seções 11 a 14 e 16 preenchidas (revisão do código registrada pela autorização permanente), métricas, quadro, matriz e ficha; npm run check com 647 de 647 testes; commits ce9cf5e (atividade) e d3ae627 (hash). Gerados o dossiê para o Gemini (com Quadro 3, análise e Seção 5.4 atualizados, que substituem as Partes B e C do pedido de correção) e a auditoria de sincronia. Estado do Docs e próximos passos atualizados. Docs não alterado nem relido.
+
+**Pendente:** envio ao Gemini e conferência; três pontos abertos da AGT-014; AGT-015 só quando o pesquisador disser "vamos".

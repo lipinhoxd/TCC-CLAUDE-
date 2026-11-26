@@ -11,7 +11,8 @@ decisão do pesquisador (ver "Decisões").
 | Dentro da API (`npm run dev:api` ou `npm run start:api`) | Na inicialização e a cada `ROTINA_INTERVALO_SEGUNDOS` (padrão **60**; de 1 a 86400; **0 desliga**). Para antes de o banco ser fechado no encerramento. |
 | `npm run rotina` | Uma execução avulsa sobre o banco de `DATABASE_PATH` (aplica migrações pendentes antes). Código de saída 1 se algum passo falhar. Pode ser agendado no sistema operacional; o repositório não configura isso. |
 
-As duas formas chamam `executarRotina` (`server/processos/rotina.ts`).
+As duas formas chamam `executarRotina` (`server/processos/rotina.ts`) com os passos de `server/comunicacao/passos.ts`: os quatro abaixo e, desde a
+AGT-015, a geração dos avisos e a entrega dos e-mails simulados (`docs/comunicacao.md`).
 
 ## Passos, na ordem
 
@@ -57,7 +58,7 @@ horário da rotina. O quarto é aplicado **somente pela rotina**.
 2. A execução é síncrona: enquanto espera um banco bloqueado (até 5 s por passo), a API não atende outras requisições.
 3. Um registro com defeito impede o passo inteiro em que está, até ser corrigido; o console mostra o passo, não o registro.
 4. Com a rotina desligada, a reserva sem pagamento de excursão terminada continua "Aguardando pagamento".
-5. O passageiro não é avisado do cancelamento automático (comunicação é a AGT-015); a tela mostra apenas "Cancelada".
+5. O cancelamento automático gera aviso desde a AGT-015 (`docs/comunicacao.md`); a tela da reserva continua mostrando apenas "Cancelada".
 6. A excursão não ganha situação "Concluída" (previsão registrada na AGT-005 que ficou sem implementar).
 7. Pagamento pendente e reserva abandonada antes do fim da excursão continuam sem prazo.
 8. Como a conclusão passa a ser gravada pela rotina, a conclusão manual do administrador (AGT-012) só tem efeito antes da execução seguinte

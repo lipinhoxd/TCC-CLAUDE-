@@ -661,7 +661,7 @@ describe('migracao 4 e duas conexoes', () => {
   it('a migracao 4 aplica sobre um banco na versao 3 e o banco garante um reembolso por cancelamento e por pagamento', () => {
     const d = openDatabase(':memory:');
     expect(runMigrations(d, migrations.slice(0, 3))).toEqual([1, 2, 3]);
-    expect(runMigrations(d)).toEqual([4]);
+    expect(runMigrations(d)).toEqual([4, 5]);
     expect(d.prepare('PRAGMA table_info(reembolso)').all().map((c) => c['name'])).toContain('pagamento_id');
     expect(d.prepare("SELECT name FROM sqlite_master WHERE type = 'index' AND tbl_name = 'reembolso' ORDER BY name").all().map((c) => c['name'])).toEqual(['uq_reembolso_cancelamento', 'uq_reembolso_pagamento']);
     d.close();

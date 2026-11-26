@@ -5,6 +5,7 @@ import { AdminExcursoes, FormularioExcursao } from './pages/AdminExcursoes.tsx';
 import { AdminCancelamentoExcursao, AdminReembolsos } from './pages/AdminCancelamentos.tsx';
 import { AdminPassageiroDetalhe, AdminPassageiros, AdminPendencias, AdminReservaDetalhe, AdminReservas } from './pages/AdminReservas.tsx';
 import { Cadastro, Login } from './pages/AuthPages.tsx';
+import { Avisos } from './pages/Avisos.tsx';
 import { DetalhePublico, ListaPublica } from './pages/ExcursoesPublicas.tsx';
 import { ComoFunciona, Contato, Home, NaoEncontrada, Sobre } from './pages/InfoPages.tsx';
 import { MinhasReservas, DetalheReserva } from './pages/MinhasReservas.tsx';
@@ -70,6 +71,7 @@ export const ROUTES: Record<string, ComponentType<PageProps>> = {
   '/cadastro': Cadastro,
   '/login': Login,
   '/reservas': MinhasReservas,
+  '/avisos': Avisos,
   '/admin/excursoes': AdminExcursoes,
   '/admin/reservas': AdminReservas,
   '/admin/passageiros': AdminPassageiros,

@@ -4,6 +4,8 @@ import { handleAdminRoute } from './admin/routes.ts';
 import type { AdminService } from './admin/service.ts';
 import type { AuthConfig } from './auth/config.ts';
 import type { CancelamentoService } from './cancelamentos/service.ts';
+import { handleAvisoRoute } from './comunicacao/routes.ts';
+import type { AvisoService } from './comunicacao/service.ts';
 import { handleAuthRoute, sendJson } from './auth/routes.ts';
 import type { AuthService } from './auth/service.ts';
 import { handleExcursaoRoute } from './excursoes/routes.ts';
@@ -26,6 +28,8 @@ export interface AppOptions {
   admin?: AdminService;
   /** Cancelamentos e reembolsos (AGT-013); sem ele, as rotas respondem 503. */
   cancelamentos?: CancelamentoService;
+  /** Avisos do passageiro (AGT-015); sem ele, a rota responde 503. */
+  avisos?: AvisoService;
 }
 
 async function handle(req: IncomingMessage, res: ServerResponse, options: AppOptions): Promise<void> {
@@ -45,6 +49,10 @@ async function handle(req: IncomingMessage, res: ServerResponse, options: AppOpt
   }
 
   if (handleConsultaPublica(req, res, pathname, options.excursoes)) {
+    return;
+  }
+
+  if (handleAvisoRoute(req, res, pathname, options.auth?.service, options.avisos)) {
     return;
   }
 

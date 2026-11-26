@@ -16,7 +16,10 @@ export interface PassoRotina {
   nome: string;
   /** Texto usado no console, sempre acompanhado apenas da quantidade. */
   rotulo: string;
-  executar: (db: DatabaseSync, agora: Date) => number;
+  /** Passo que abre as proprias transacoes (AGT-015: uma por e-mail); por padrao o passo inteiro roda em uma. */
+  semTransacao?: boolean;
+  /** Quantidade alterada; `avisos` sao linhas extras para o console, sem dados pessoais. */
+  executar: (db: DatabaseSync, agora: Date) => number | { alterados: number; avisos: string[] };
 }
 
 /** A ordem importa: o cancelamento sem pagamento vem por ultimo, depois de expirar retencoes e vencer segundas parcelas. */
@@ -31,6 +34,7 @@ export interface ResultadoRotina {
   /** Quantidade alterada por passo; null se o passo falhou (e nada dele foi gravado). */
   passos: Array<{ nome: string; rotulo: string; alterados: number | null }>;
   falhas: Array<{ nome: string; erro: string }>;
+  avisos?: string[];
 }
 
 /**
@@ -47,8 +51,10 @@ export function executarRotina(db: DatabaseSync, agora: Date, passos: readonly P
   const resultado: ResultadoRotina = { passos: [], falhas: [] };
   for (const passo of passos) {
     try {
-      const alterados = withTransaction(db, () => passo.executar(db, agora));
+      const saida = passo.semTransacao === true ? passo.executar(db, agora) : withTransaction(db, () => passo.executar(db, agora));
+      const { alterados, avisos } = typeof saida === 'number' ? { alterados: saida, avisos: [] } : saida;
       resultado.passos.push({ nome: passo.nome, rotulo: passo.rotulo, alterados });
+      if (avisos.length > 0) resultado.avisos = [...(resultado.avisos ?? []), ...avisos];
     } catch (erro) {
       resultado.passos.push({ nome: passo.nome, rotulo: passo.rotulo, alterados: null });
       resultado.falhas.push({ nome: passo.nome, erro: descreverErro(erro) });
@@ -57,13 +63,17 @@ export function executarRotina(db: DatabaseSync, agora: Date, passos: readonly P
   return resultado;
 }
 
-/** Houve alguma alteracao ou falha? */
+/** Houve alguma alteracao, aviso ou falha? */
 export function houveNovidade(resultado: ResultadoRotina): boolean {
-  return resultado.falhas.length > 0 || resultado.passos.some((p) => (p.alterados ?? 0) > 0);
+  return resultado.falhas.length > 0 || (resultado.avisos?.length ?? 0) > 0 || resultado.passos.some((p) => (p.alterados ?? 0) > 0);
 }
 
 /** Linhas para o console: so contagens e nomes dos passos, sem identificadores nem dados pessoais. */
 export function linhasDoResultado(resultado: ResultadoRotina): string[] {
   const contagens = resultado.passos.map((p) => `${p.rotulo}: ${p.alterados === null ? 'falhou' : p.alterados}`).join('; ');
-  return [`Rotina automática: ${contagens}.`, ...resultado.falhas.map((f) => `Rotina automática: falha em ${f.nome} (${f.erro}); será tentada de novo.`)];
+  return [
+    `Rotina automática: ${contagens}.`,
+    ...(resultado.avisos ?? []).map((a) => `Rotina automática: ${a}.`),
+    ...resultado.falhas.map((f) => `Rotina automática: falha em ${f.nome} (${f.erro}); será tentada de novo.`),
+  ];
 }

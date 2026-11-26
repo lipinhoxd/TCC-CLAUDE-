@@ -1,6 +1,9 @@
 import { AdminService } from './admin/service.ts';
 import { createApp } from './app.ts';
 import { CancelamentoService } from './cancelamentos/service.ts';
+import { passosDaRotina } from './comunicacao/passos.ts';
+import { emailDoAmbiente } from './comunicacao/provedor.ts';
+import { AvisoService } from './comunicacao/service.ts';
 import { loadAuthConfig } from './auth/config.ts';
 import { AuthService } from './auth/service.ts';
 import { fileOutbox, noOutbox } from './auth/support.ts';
@@ -10,6 +13,7 @@ import { PagamentoService } from './pagamentos/service.ts';
 import { iniciarAgendador } from './processos/agendador.ts';
 import type { Agendador } from './processos/agendador.ts';
 import { loadRotinaConfig } from './processos/config.ts';
+import { executarRotina } from './processos/rotina.ts';
 import { provedorDoAmbiente } from './pagamentos/provedor.ts';
 import { loadReservaConfig } from './reservas/config.ts';
 import { ReservaService } from './reservas/service.ts';
@@ -20,6 +24,7 @@ import { runMigrations } from './db/migrate.ts';
 const { host, port } = loadServerConfig();
 const authConfig = loadAuthConfig();
 const rotinaConfig = loadRotinaConfig();
+const passos = passosDaRotina(emailDoAmbiente());
 const db = openDatabase(loadDatabaseConfig().path);
 runMigrations(db);
 
@@ -37,6 +42,7 @@ const server = createApp({
   pagamentos: new PagamentoService(db, reservas, provedor),
   admin: new AdminService(db),
   cancelamentos: new CancelamentoService(db, reservas, provedor),
+  avisos: new AvisoService(db),
 });
 
 let agendador: Agendador | undefined;
@@ -44,7 +50,7 @@ let agendador: Agendador | undefined;
 server.listen(port, host, () => {
   console.log(`API em http://${host}:${port}`);
   // Processos automaticos (AGT-014): so depois de a API estar no ar; parados antes de fechar o banco.
-  agendador = iniciarAgendador({ db, intervaloMs: rotinaConfig.intervaloMs });
+  agendador = iniciarAgendador({ db, intervaloMs: rotinaConfig.intervaloMs, executar: (banco, agora) => executarRotina(banco, agora, passos) });
 });
 
 function shutdown(): void {

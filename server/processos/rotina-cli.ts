@@ -1,3 +1,5 @@
+import { passosDaRotina } from '../comunicacao/passos.ts';
+import { emailDoAmbiente } from '../comunicacao/provedor.ts';
 import { loadDatabaseConfig } from '../db/config.ts';
 import { openDatabase } from '../db/connection.ts';
 import { runMigrations } from '../db/migrate.ts';
@@ -8,7 +10,7 @@ try {
   const db = openDatabase(loadDatabaseConfig().path);
   try {
     runMigrations(db);
-    const resultado = executarRotina(db, new Date());
+    const resultado = executarRotina(db, new Date(), passosDaRotina(emailDoAmbiente()));
     for (const linha of linhasDoResultado(resultado)) console.log(linha);
     if (resultado.falhas.length > 0) process.exitCode = 1;
   } finally {

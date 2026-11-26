@@ -1,6 +1,6 @@
 # Matriz de rastreabilidade (requisito → atividade → evidência)
 
-Atualizada em 26/11/2026 (AGT-014). Fonte dos requisitos: `docs/requisitos/`. Atividade prevista: `docs/especificacao/07-PLANO-DE-ATIVIDADES.md` (e a coluna AGT dos RF). **Evidência** só existe para o que foi executado no experimento principal (AGT-001 a AGT-014; ver a coluna Estado de cada linha e os commits em `TCC/metricas/METRICAS.csv`); o restante está **Planejada**. Não há, aqui, evidência do piloto (repositório não reaberto): **[DADO NÃO REGISTRADO]**.
+Atualizada em 26/11/2026 (AGT-015). Fonte dos requisitos: `docs/requisitos/`. Atividade prevista: `docs/especificacao/07-PLANO-DE-ATIVIDADES.md` (e a coluna AGT dos RF). **Evidência** só existe para o que foi executado no experimento principal (AGT-001 a AGT-015; ver a coluna Estado de cada linha e os commits em `TCC/metricas/METRICAS.csv`); o restante está **Planejada**. Não há, aqui, evidência do piloto (repositório não reaberto): **[DADO NÃO REGISTRADO]**.
 
 Cadeia (TCC, Seção 3.8): requisito → atividade AGT → instrução → execução → alterações → testes → revisão humana → classificação → commit.
 
@@ -47,7 +47,7 @@ Cadeia (TCC, Seção 3.8): requisito → atividade AGT → instrução → execu
 | RF-037 | Administração de reservas | 012 | Evidenciada na AGT-012 | `server/admin/service.ts`, `server/admin/routes.ts`, `src/pages/AdminReservas.tsx`; `tests/admin-api.test.ts`, `tests/web-admin-reservas.test.tsx` |
 | RF-038 | Consulta de passageiros | 012 | Evidenciada na AGT-012 | `server/admin/service.ts`, `server/admin/routes.ts`, `src/pages/AdminReservas.tsx`; `tests/admin-api.test.ts`, `tests/web-admin-reservas.test.tsx` |
 | RF-039 | Alteração manual de situação, quando autorizada | 012 | Evidenciada na AGT-012 (só transições sem efeito financeiro) | `server/admin/service.ts`, `server/admin/routes.ts`, `src/pages/AdminReservas.tsx`; `tests/admin-api.test.ts`, `tests/web-admin-reservas.test.tsx` |
-| RF-040 | Comunicação transacional ao passageiro (simulada/configurável) | 015 | Planejada | — |
+| RF-040 | Comunicação transacional ao passageiro (simulada/configurável) | 015 | Evidenciada na AGT-015 (avisos na plataforma e e-mail simulado, sem envio real) | `server/comunicacao/`, `src/pages/Avisos.tsx`; `tests/comunicacao.test.ts`, `tests/web-avisos.test.tsx`, `tests/processos-execucao.test.ts` |
 | RF-041 | Painel administrativo consolidado | 016 | Planejada | — |
 | RF-042 | Histórico e auditoria de operações administrativas e automáticas | 005/016 | Parcial na AGT-005 (excursões; auditoria de reservas e processos automáticos fica para as demais) | `GET /api/admin/excursoes/:id/historico`; `tests/excursoes-api.test.ts` |
 

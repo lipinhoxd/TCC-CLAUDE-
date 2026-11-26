@@ -1,5 +1,5 @@
 import { spawn } from 'node:child_process';
-import { mkdtempSync, rmSync } from 'node:fs';
+import { mkdtempSync, readFileSync, rmSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import { fileURLToPath, pathToFileURL } from 'node:url';
@@ -56,7 +56,9 @@ interface Saida {
 }
 function executar(argumentos: string[], env: Record<string, string>): Promise<Saida> {
   return new Promise((resolve, reject) => {
-    const filho = spawn(process.execPath, argumentos, { cwd: RAIZ, env: { ...process.env, ...env }, stdio: ['ignore', 'pipe', 'pipe'] });
+    // O e-mail simulado vai para a pasta temporaria, nunca para a pasta do repositorio.
+    const ambiente = { ...process.env, COMUNICACAO_OUTBOX_PATH: join(dir, 'comunicacao.jsonl'), ...env };
+    const filho = spawn(process.execPath, argumentos, { cwd: RAIZ, env: ambiente, stdio: ['ignore', 'pipe', 'pipe'] });
     let texto = '';
     filho.stdout.on('data', (d: Buffer) => (texto += d.toString('utf8')));
     filho.stderr.on('data', (d: Buffer) => (texto += d.toString('utf8')));
@@ -95,6 +97,12 @@ describe('comando de execucao avulsa e processos simultaneos', () => {
     expect(numero("SELECT COUNT(*) AS n FROM reserva WHERE situacao = 'cancelada' AND motivo_cancelamento = 'inadimplencia'")).toBe(VENCIDAS);
     expect(numero("SELECT COUNT(*) AS n FROM auditoria WHERE acao = 'reserva.vencimento_segunda_parcela'")).toBe(VENCIDAS);
     expect(saidas.map((s) => s.texto).join('')).not.toMatch(/@|Pessoa/);
+    // AGT-015: um aviso por evento e um e-mail por aviso, mesmo com dois processos (cada execucao envia ate 100).
+    expect((await executar([CLI], { DATABASE_PATH: caminho })).codigo).toBe(0);
+    expect(numero('SELECT COUNT(*) AS n FROM mensagem')).toBe(VENCIDAS);
+    const enviados = readFileSync(join(dir, 'comunicacao.jsonl'), 'utf8').trim().split('\n').map((l) => (JSON.parse(l) as { mensagem_id: number }).mensagem_id);
+    expect(enviados).toHaveLength(VENCIDAS);
+    expect(new Set(enviados).size).toBe(VENCIDAS);
   }, 30_000);
 
   it('sai com codigo 1 e mensagem sem caminho quando nao consegue abrir o banco', async () => {
@@ -121,6 +129,7 @@ describe('rotina ligada pela inicializacao da API', () => {
     expect(saida.codigo).toBe(0);
     expect(saida.texto).toContain(`segundas parcelas vencidas: ${VENCIDAS}`);
     expect(saida.texto).not.toMatch(/falha/);
+    expect(numero('SELECT COUNT(*) AS n FROM mensagem')).toBe(VENCIDAS); // AGT-015: a API usa os passos completos
     expect(numero('SELECT vagas_ocupadas AS n FROM excursao')).toBe(0);
   }, 30_000);
 

@@ -755,3 +755,30 @@ main > dl {
   height: 1.3rem;
   accent-color: var(--primary);
 }
+
+/* Avisos do passageiro (AGT-015) */
+.avisos {
+  display: grid;
+  gap: 1rem;
+  max-width: 44rem;
+  margin: 0 0 1rem;
+  padding: 0;
+  list-style: none;
+}
+
+.avisos li {
+  padding: 0.9rem 1.1rem;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  overflow-wrap: anywhere;
+}
+
+.avisos h2 {
+  margin: 0;
+  font-size: 1.1rem;
+}
+
+.btn-secondary:disabled {
+  cursor: default;
+}

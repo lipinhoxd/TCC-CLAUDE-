@@ -12,6 +12,7 @@ export const ADMIN_ITENS = [
 ] as const;
 
 export const PASSAGEIRO_ITEM = { to: '/reservas', label: 'Minhas reservas' } as const;
+export const AVISOS_ITEM = { to: '/avisos', label: 'Avisos' } as const;
 
 export const NAV_ITEMS = [
   { to: '/', label: 'Home' },
@@ -73,7 +74,7 @@ export function Layout({ children }: { children: ReactNode }) {
   const { path, flash } = useRouter();
   const { checkFailed, user } = useSession();
   // Conveniencia de navegacao: o servidor continua sendo a autoridade sobre o acesso.
-  const itensMenu = user?.perfil === 'administrador' ? [...NAV_ITEMS, ADMIN_ITEM, ...ADMIN_ITENS] : user?.perfil === 'passageiro' ? [...NAV_ITEMS, PASSAGEIRO_ITEM] : NAV_ITEMS;
+  const itensMenu = user?.perfil === 'administrador' ? [...NAV_ITEMS, ADMIN_ITEM, ...ADMIN_ITENS] : user?.perfil === 'passageiro' ? [...NAV_ITEMS, PASSAGEIRO_ITEM, AVISOS_ITEM] : NAV_ITEMS;
   const [menuOpen, setMenuOpen] = useState(false);
   const mainRef = useRef<HTMLElement>(null);
   const firstRender = useRef(true);

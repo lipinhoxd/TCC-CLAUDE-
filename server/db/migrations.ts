@@ -185,4 +185,35 @@ CREATE UNIQUE INDEX uq_reembolso_cancelamento ON reembolso (reserva_id) WHERE pa
 CREATE UNIQUE INDEX uq_reembolso_pagamento ON reembolso (pagamento_id) WHERE pagamento_id IS NOT NULL;
 `,
   },
+  {
+    // AGT-015 (decisoes 1A e 3.1 a 3.3 do pesquisador): avisos ao passageiro gerados pela rotina a partir da auditoria, um por
+    // evento, so para eventos posteriores a esta migracao (o marco comeca no ultimo registro existente). Nao altera linhas existentes.
+    version: 5,
+    name: 'comunicacao',
+    sql: `
+CREATE TABLE comunicacao_marco (
+  id INTEGER PRIMARY KEY CHECK (id = 1),
+  ultima_auditoria_id INTEGER NOT NULL CHECK (ultima_auditoria_id >= 0)
+) STRICT;
+INSERT INTO comunicacao_marco (id, ultima_auditoria_id) SELECT 1, COALESCE(MAX(id), 0) FROM auditoria;
+CREATE TABLE mensagem (
+  id INTEGER PRIMARY KEY,
+  usuario_id INTEGER NOT NULL REFERENCES usuario (id) ON DELETE RESTRICT,
+  reserva_id INTEGER NOT NULL REFERENCES reserva (id) ON DELETE RESTRICT,
+  auditoria_id INTEGER NOT NULL REFERENCES auditoria (id) ON DELETE RESTRICT,
+  tipo TEXT NOT NULL CHECK (tipo IN ('pagamento_confirmado', 'pagamento_em_analise', 'cancelada_inadimplencia', 'cancelada_passageiro', 'cancelada_organizacao', 'cancelada_administracao', 'cancelada_excursao_terminada', 'cancelada_apos_reembolso', 'reembolso_processado')),
+  assunto TEXT NOT NULL CHECK (length(trim(assunto)) > 0),
+  corpo TEXT NOT NULL CHECK (length(trim(corpo)) > 0),
+  evento_em TEXT NOT NULL CHECK (evento_em GLOB '????-??-??T??:??:??*Z'),
+  criado_em TEXT NOT NULL CHECK (criado_em GLOB '????-??-??T??:??:??*Z'),
+  email_situacao TEXT NOT NULL DEFAULT 'pendente' CHECK (email_situacao IN ('pendente', 'enviado', 'falhou')),
+  email_tentativas INTEGER NOT NULL DEFAULT 0 CHECK (email_tentativas BETWEEN 0 AND 3),
+  email_enviado_em TEXT CHECK (email_enviado_em GLOB '????-??-??T??:??:??*Z'),
+  CONSTRAINT uq_mensagem_evento UNIQUE (auditoria_id),
+  CONSTRAINT ck_mensagem_envio CHECK ((email_situacao = 'enviado') = (email_enviado_em IS NOT NULL))
+) STRICT;
+CREATE INDEX ix_mensagem_usuario ON mensagem (usuario_id, id);
+CREATE INDEX ix_mensagem_envio ON mensagem (id) WHERE email_situacao = 'pendente';
+`,
+  },
 ];

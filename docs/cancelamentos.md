@@ -49,7 +49,7 @@ Só situações, ids e valores em centavos; sem dados pessoais nem de cartão.
 2. Entre a criação e o processamento do reembolso de uma pendência, a reserva continua em Aguardando pagamento.
 3. Quem já estava cancelado por inadimplência não é reembolsado quando a organização cancela a excursão (decisão 3).
 4. Reserva cancelada sem reembolso não tem linha em `reembolso`; o motivo está na auditoria.
-5. Sem aviso ao passageiro além da tela (AGT-015); a tarefa agendada é a da AGT-014 (`docs/processos-automaticos.md`).
+5. Os avisos ao passageiro são os da AGT-015 (`docs/comunicacao.md`); a tarefa agendada é a da AGT-014 (`docs/processos-automaticos.md`).
 6. A excursão cancelada deixa de aparecer na consulta pública; o passageiro vê a própria reserva cancelada.
 7. A justificativa é texto livre, não filtrado quanto a dados pessoais.
 8. Concorrência testada com duas conexões e pedidos simultâneos, sem teste de carga; um navegador, sem leitor de tela.

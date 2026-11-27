@@ -1688,3 +1688,23 @@ nova. A classificação (AP-1, AP-2, AP-3 ou RP) cabe ao pesquisador; o agente n
 **Orientação sobre a classificação:** o agente recomendou AP-3 no relatório e apresentou a leitura contrária (AP-4); registrado como possível influência. A decisão foi do pesquisador.
 
 **Pendente:** envio ao Gemini e conferência; perguntas ao autor (situações da retenção; RN-046 no instante da partida); AGT-018 só quando o pesquisador disser "vamos".
+
+## Entrada 129 — AGT-018: rascunho da instrução apresentado
+
+**Hora do sistema:** 2026-11-26T22:16:04-03:00
+
+**Pedido do pesquisador:** "vamos" (enviado com o dossiê da AGT-017 selecionado no editor; lido como início da AGT-018, conforme a mensagem anterior do agente).
+
+**Ações:** o agente conferiu o plano, os requisitos não funcionais, a matriz de rastreabilidade e os navegadores instalados, e publicou o rascunho da instrução em página privada, com três paradas: alcance e critérios; revisão humana e segundo avaliador; tratamento do encontrado e pontos abertos. Nenhum arquivo AGT-018.md e nenhum código foram criados. O envio do dossiê da AGT-017 ao Gemini não foi confirmado.
+
+**Pendente:** aprovação ou correções do pesquisador sobre o rascunho; conferência do Docs. Sem commit.
+
+## Entrada 130 — AGT-018: instrução aprovada, registro criado e parada das três decisões
+
+**Hora do sistema:** 2026-11-26T22:17:32-03:00
+
+**Pedido do pesquisador:** "aprovo" (instrução da AGT-018).
+
+**Ações:** o agente criou TCC/registros-agente/AGT-018.md (Seções 1 a 5, com a instrução original na Seção 5 e os critérios de aceitação). Conforme a Seção 5, nenhum arquivo do projeto é criado ou alterado antes das decisões; para apresentar as opções, o agente fez somente leituras. Docs não alterado.
+
+**Pendente:** decisões 1 a 3 do pesquisador; envio do dossiê da AGT-017 ao Gemini e conferência do Docs.

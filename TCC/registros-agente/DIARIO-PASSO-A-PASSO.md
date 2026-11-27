@@ -1708,3 +1708,15 @@ nova. A classificação (AP-1, AP-2, AP-3 ou RP) cabe ao pesquisador; o agente n
 **Ações:** o agente criou TCC/registros-agente/AGT-018.md (Seções 1 a 5, com a instrução original na Seção 5 e os critérios de aceitação). Conforme a Seção 5, nenhum arquivo do projeto é criado ou alterado antes das decisões; para apresentar as opções, o agente fez somente leituras. Docs não alterado.
 
 **Pendente:** decisões 1 a 3 do pesquisador; envio do dossiê da AGT-017 ao Gemini e conferência do Docs.
+
+## Entrada 131 — publicação do repositório no GitHub
+
+**Hora do sistema:** 2026-11-26T22:32:30-03:00
+
+**Pedido do pesquisador:** "eu gostaria de subir todo esse projeto no GitHub" e, depois da conferência, "publico".
+
+**Conferência antes do envio:** repositório de destino vazio e público; busca no histórico pelos padrões usuais de chaves e tokens sem ocorrências; arquivos de ambiente, banco de dados e dependências fora do controle de versão. O agente apresentou o que ficaria visível, e o pesquisador decidiu publicar sem reescrever o histórico.
+
+**Ações:** conexão do remoto trocada para HTTPS (a conexão anterior era recusada); enviados o ramo main (até o commit 01fdfed) e a tag agt-001-tentativa-1; conferido que os identificadores no GitHub são iguais aos locais. Este registro entra em um commit posterior, enviado em seguida.
+
+**Pendente:** decisões 1 a 3 da AGT-018; envio do dossiê da AGT-017 ao Gemini e conferência do Docs. Novos envios ao GitHub somente a pedido.

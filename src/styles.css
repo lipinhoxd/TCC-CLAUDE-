@@ -432,6 +432,17 @@ main > dl {
   }
 }
 
+/* Telas largas, so com o menu do administrador (AGT-018): o cabecalho usa mais largura e os itens cabem em uma linha */
+@media (min-width: 75rem) {
+  .site-header:has(a[href='/admin']) .container {
+    max-width: 80rem;
+  }
+
+  .site-header:has(a[href='/admin']) .menu nav a {
+    padding-inline: 0.55rem;
+  }
+}
+
 @media (prefers-reduced-motion: no-preference) {
   .btn,
   .menu nav a {

@@ -28,4 +28,4 @@ implementar "Concluída" na excursão, que fica como trabalho futuro.
 
 ## Situação da retenção de vaga
 
-`Ativa` → `Convertida` (ocupação) ou `Expirada`/`Liberada`.
+`Ativa` → `Confirmada` (ocupação), `Expirada` (prazo vencido) ou `Cancelada` (liberada antes do prazo).

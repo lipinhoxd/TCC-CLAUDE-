@@ -59,6 +59,18 @@ export class AttemptLimiter {
     this.entries.delete(key);
   }
 
+  /** Desfaz uma tentativa contada (a que deu certo), sem zerar as falhas anteriores da chave. */
+  release(key: string): void {
+    const entry = this.entries.get(key);
+    if (entry === undefined) {
+      return;
+    }
+    entry.count -= 1;
+    if (entry.count <= 0) {
+      this.entries.delete(key);
+    }
+  }
+
   private evict(nowMs: number): void {
     for (const [key, entry] of this.entries) {
       if (entry.windowEnd <= nowMs) {

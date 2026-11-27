@@ -37,6 +37,17 @@ npm run dev                  # front-end em http://127.0.0.1:5173 (terminal 2)
 Verificação da API: `GET http://127.0.0.1:3001/api/health` deve responder `{"status":"ok"}`.
 Em desenvolvimento, o front-end encaminha as chamadas a `/api` para a API (mesma origem, necessária para o cookie de sessão).
 
+No Windows, no Prompt de Comando, use `copy .env.example .env.local` no lugar de `cp`.
+
+### Primeiro acesso: administrador e excursões de demonstração
+
+O banco começa vazio. Para ter um administrador e excursões fictícias:
+
+1. Em `.env.local` (arquivo local, fora do Git), preencha as seis variáveis `ADMIN_*` descritas em `.env.example`, **com dados fictícios**.
+   A senha precisa de 10 caracteres ou mais, com letras e números, e não pode conter `#`.
+2. Execute `npm run admin:create` e, depois, `npm run seed:demo`.
+3. Apague a senha do `.env.local`. Nunca escreva senhas em `.env.example`, que é versionado.
+
 ## Comandos
 
 | Comando | Função |

@@ -33,7 +33,13 @@ export interface AppOptions {
 }
 
 async function handle(req: IncomingMessage, res: ServerResponse, options: AppOptions): Promise<void> {
-  const { pathname } = new URL(req.url ?? '/', 'http://localhost');
+  // Um endereco que nao pode ser interpretado e erro de quem pediu, nao do servidor (AGT-018).
+  const endereco = URL.parse(req.url ?? '/', 'http://localhost');
+  if (endereco === null) {
+    sendJson(res, 400, { error: 'requisicao_invalida' });
+    return;
+  }
+  const { pathname } = endereco;
 
   if (pathname === '/api/health') {
     if (req.method !== 'GET') {

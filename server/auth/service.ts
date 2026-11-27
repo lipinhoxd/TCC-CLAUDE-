@@ -191,6 +191,10 @@ export class AuthService {
     if (wait > 0) {
       throw new HttpError(429, 'muitas_tentativas', { retryAfterSeconds: wait });
     }
+    // A tentativa e contada antes da verificacao, que e demorada: pedidos simultaneos nao passam do limite (AGT-018). Se a
+    // entrada der certo, a contagem e desfeita abaixo.
+    this.loginByAccount.recordFailure(accountKey, nowMs);
+    this.loginByAddress.recordFailure(address, nowMs);
 
     const row =
       email === null ? undefined : this.db.prepare('SELECT * FROM usuario WHERE email = ?').get(email);
@@ -200,8 +204,6 @@ export class AuthService {
     const matches = plausible ? await verifyPassword(senha, stored) : false;
 
     if (row === undefined || !matches) {
-      this.loginByAccount.recordFailure(accountKey, nowMs);
-      this.loginByAddress.recordFailure(address, nowMs);
       registrarAuditoria(this.db, {
         atorUsuarioId: null,
         acao: 'auth.login_falha',
@@ -214,6 +216,7 @@ export class AuthService {
     }
 
     this.loginByAccount.reset(accountKey);
+    this.loginByAddress.release(address);
     const user = toPublicUser(row);
     const token = generateToken();
     const now = this.clock();
@@ -377,6 +380,14 @@ export class AuthService {
       throw new HttpError(400, 'validacao', {
         fields: { nova_senha: isBlank(body['nova_senha']) ? 'obrigatorio' : problem },
       });
+    }
+    // O token e conferido antes do calculo do hash, que e caro: um token desconhecido, usado ou vencido nao consome
+    // processamento (AGT-018). A transacao abaixo confere de novo.
+    const existe = this.db
+      .prepare("SELECT 1 AS x FROM token_acesso WHERE token_hash = ? AND finalidade = 'recuperacao_acesso' AND usado_em IS NULL AND expira_em > ?")
+      .get(hashToken(token), this.clock().toISOString());
+    if (existe === undefined) {
+      throw new HttpError(400, 'token_invalido');
     }
     const novaHash = await hashPassword(body['nova_senha'] as string, this.config.scrypt);
     const now = this.clock();

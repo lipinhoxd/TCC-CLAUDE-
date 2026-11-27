@@ -40,7 +40,9 @@ na hora.
   do e-mail. Comparada em tempo constante; e-mail inexistente também executa uma comparação, para não
   diferenciar pelo tempo.
 - Limite de tentativas: 5 falhas por e-mail+endereço (e 20 por endereço) em 15 min (`LOGIN_MAX_ATTEMPTS`,
-  `LOGIN_WINDOW_MINUTES`). Pedidos de recuperação seguem o mesmo limite, sem revelá-lo.
+  `LOGIN_WINDOW_MINUTES`). Pedidos de recuperação seguem o mesmo limite, sem revelá-lo. Desde a AGT-018 a tentativa é contada antes da
+  verificação da senha (pedidos simultâneos não passam do limite) e descontada quando a entrada dá certo; o token de recuperação é conferido
+  antes do cálculo do hash da senha nova.
 - Auditoria: `usuario.cadastro`, `usuario.administrador_criado`, `auth.login`, `auth.login_falha`,
   `auth.logout`, `usuario.perfil_alterado` (só os nomes dos campos), `auth.recuperacao_solicitada` e
   `auth.recuperacao_concluida`, sem senha, token, CPF, e-mail ou telefone.
@@ -65,7 +67,7 @@ As mesmas validações do cadastro valem. Nada fica no repositório.
 6. **HTTPS e cabeçalhos:** a API não termina TLS; `Secure` no cookie depende de `NODE_ENV=production` ou `COOKIE_SECURE=true`. Não há `Content-Security-Policy` (API sem HTML).
 7. **Sessões expiradas não são removidas** do banco; não há rotina de limpeza nem limite de sessões por usuário. A auditoria cresce a cada falha de login.
 8. **Troca de e-mail e de data de nascimento** não existem (fora de RF-005 nesta atividade).
-9. **Data de nascimento comparada em UTC**, sem ajuste de fuso.
+9. **Data de nascimento:** a comparação em UTC, registrada aqui antes, foi corrigida na AGT-017 (dia de Brasília).
 10. **Lista de senhas comuns é curta** (10 itens); não há verificação contra vazamentos.
 11. **Timing da recuperação:** para conta existente há gravação no banco e entrega, o que pode diferir em milissegundos de uma conta inexistente.
 12. **Pontos de revisão humana (RN-044):** `server/auth/password.ts`, `service.ts` (login, recuperação), `routes.ts` (cookie e autorização) e `support.ts` (limitador).

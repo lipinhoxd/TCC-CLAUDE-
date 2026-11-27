@@ -179,7 +179,13 @@ export function authorize(req: IncomingMessage, service: AuthService, roles: Per
   return auth;
 }
 
-/** Responde a um erro de rota: HttpError vira a resposta padronizada; o resto vira 500 sem detalhes. */
+/** Erros do SQLite quando o bloqueio de escrita nao e obtido dentro do busy_timeout. */
+const BANCO_OCUPADO = /database is (locked|busy)|SQLITE_BUSY/i;
+
+/**
+ * Responde a um erro de rota: HttpError vira a resposta padronizada; banco ocupado vira 503 com Retry-After (em qualquer area,
+ * AGT-018); o resto vira 500 sem detalhes.
+ */
 export function sendError(req: IncomingMessage, res: ServerResponse, pathname: string, error: unknown): void {
   if (error instanceof HttpError) {
     const headers: Record<string, string> = {};
@@ -191,6 +197,8 @@ export function sendError(req: IncomingMessage, res: ServerResponse, pathname: s
       body['fields'] = error.fields;
     }
     sendJson(res, error.status, body, headers);
+  } else if (error instanceof Error && BANCO_OCUPADO.test(error.message)) {
+    sendJson(res, 503, { error: 'banco_ocupado' }, { 'Retry-After': '1' });
   } else {
     // Registra so o tipo do erro: mensagens internas podem conter dados do banco ou da requisicao.
     console.error(`Erro interno em ${req.method} ${pathname}: ${error instanceof Error ? error.name : 'erro'}`);

@@ -1,6 +1,6 @@
 # Matriz de rastreabilidade (requisito → atividade → evidência)
 
-Atualizada em 26/11/2026 (AGT-017). Fonte dos requisitos: `docs/requisitos/`. Atividade prevista: `docs/especificacao/07-PLANO-DE-ATIVIDADES.md` (e a coluna AGT dos RF). **Evidência** só existe para o que foi executado no experimento principal (AGT-001 a AGT-017; ver a coluna Estado de cada linha e os commits em `TCC/metricas/METRICAS.csv`); o restante está **Planejada**. Não há, aqui, evidência do piloto (repositório não reaberto): **[DADO NÃO REGISTRADO]**.
+Atualizada em 27/11/2026 (AGT-018). Fonte dos requisitos: `docs/requisitos/`. Atividade prevista: `docs/especificacao/07-PLANO-DE-ATIVIDADES.md` (e a coluna AGT dos RF). **Evidência** só existe para o que foi executado no experimento principal (AGT-001 a AGT-018; ver a coluna Estado de cada linha e os commits em `TCC/metricas/METRICAS.csv`); o restante está **Planejada**. Não há, aqui, evidência do piloto (repositório não reaberto): **[DADO NÃO REGISTRADO]**.
 
 Cadeia (TCC, Seção 3.8): requisito → atividade AGT → instrução → execução → alterações → testes → revisão humana → classificação → commit.
 
@@ -21,7 +21,7 @@ Cadeia (TCC, Seção 3.8): requisito → atividade AGT → instrução → execu
 | RF-011 | Configuração de capacidade | 005 | Evidenciada na AGT-005 | `server/excursoes/validation.ts`; `tests/excursoes-api.test.ts` |
 | RF-012 | Configuração de preço | 005 | Evidenciada na AGT-005 | `server/excursoes/validation.ts`, `shared/dinheiro.ts`; `tests/excursoes-api.test.ts`, `tests/dinheiro-rota.test.ts` |
 | RF-013 | Habilitação de pagamento em duas parcelas e prazo da segunda | 005 | Evidenciada na AGT-005 | `server/excursoes/validation.ts`, `shared/fuso.ts`; `tests/excursoes-api.test.ts`, `tests/fuso.test.ts` |
-| RF-014 | Publicação e situação da excursão | 005/006 | Parcial na AGT-005 (parte administrativa; exibição pública é da AGT-006) | `server/excursoes/service.ts` (situações); `tests/excursoes-api.test.ts` |
+| RF-014 | Publicação e situação da excursão | 005/006 | Evidenciada nas AGT-005 (administração) e AGT-006 (exibição somente das publicadas); conferida na AGT-018 | `server/excursoes/`; `tests/excursoes-api.test.ts`, `tests/consulta-publica.test.ts` |
 | RF-015 | Listagem pública de excursões | 006 | Evidenciada na AGT-006 | `server/excursoes/publico.ts`, `src/pages/ExcursoesPublicas.tsx`; `tests/consulta-publica.test.ts`, `tests/web-publico.test.tsx` |
 | RF-016 | Detalhamento da excursão | 006 | Evidenciada na AGT-006 | `GET /api/excursoes/:id`; `tests/consulta-publica.test.ts`, `tests/web-publico.test.tsx` |
 | RF-017 | Exibição de disponibilidade de vagas | 006/008 | Evidenciada na AGT-008 (capacidade menos ocupadas menos retenções ativas; parcial na AGT-006) | `server/vagas/disponibilidade.ts`, `server/excursoes/publico.ts`; `tests/consulta-publica.test.ts`, `tests/vagas-concorrencia.test.ts` |
@@ -53,41 +53,43 @@ Cadeia (TCC, Seção 3.8): requisito → atividade AGT → instrução → execu
 
 ## Requisitos não funcionais
 
+A AGT-018 conferiu os 33 requisitos: resultado, forma de verificação e limites de cada um em `docs/revisao-tecnica-final.md`.
+
 | RNF | Requisito | AGT prevista | Estado | Evidência (principal) |
 | --- | --- | --- | --- | --- |
 | RNF-001 | Hash seguro de senha | 003 | Evidenciada na AGT-003 (ver limitações em docs/autenticacao.md) | server/auth/password.ts; tests/auth-validation.test.ts |
 | RNF-002 | Proteção de rotas administrativas | 003 | Evidenciada na AGT-003 (ver limitações em docs/autenticacao.md) | GET /api/admin/ping; tests/auth-api.test.ts |
 | RNF-003 | Validação de dados | 003 | Evidenciada na AGT-003 (ver limitações em docs/autenticacao.md) | server/auth/validation.ts; tests/auth-validation.test.ts |
 | RNF-004 | Autorização verificada no servidor | 003 | Evidenciada na AGT-003 (ver limitações em docs/autenticacao.md) | server/auth/routes.ts; tests/auth-api.test.ts |
-| RNF-005 | Proteção de dados pessoais | 003 | Evidenciada na AGT-003 (ver limitações em docs/autenticacao.md) | CPF mascarado; auditoria sem dados pessoais; tests/auth-api.test.ts |
+| RNF-005 | Proteção de dados pessoais | 003 | Parcial (sem exclusão, retenção ou proteção do banco em repouso) | AGT-003 e AGT-018; `tests/revisao-final.test.ts`; `docs/revisao-tecnica-final.md` |
 | RNF-006 | Segurança de sessão | 003 | Evidenciada na AGT-003 (ver limitações em docs/autenticacao.md) | cookie HttpOnly e hash do token; tests/auth-api.test.ts |
 | RNF-007 | Integridade dos dados | 002 | Evidenciada na AGT-002 | `server/db/migrations.ts` (restrições, chaves estrangeiras); `tests/db-schema.test.ts` |
 | RNF-008 | Prevenção de excedente de capacidade | 002 | Evidenciada na AGT-002 (estrutura) e na AGT-008 (retenção e mecanismo de ocupar e liberar) | `CHECK` em `excursao`; `tests/db-schema.test.ts`, `tests/db-concorrencia.test.ts` |
 | RNF-009 | Consistência em operações críticas | 002 | Evidenciada na AGT-002 | `server/db/transaction.ts`; `tests/db-transaction-audit.test.ts` |
 | RNF-010 | Tratamento de falhas | 004 | Evidenciada na AGT-004 (ver limitações em docs/interface-publica.md) | estados de erro e de rede em `src/pages/AuthPages.tsx`; `tests/web-sessao.test.tsx` |
-| RNF-011 | Desempenho das consultas públicas | a definir | Planejada | — |
-| RNF-012 | Desempenho das operações de reserva e pagamento | a definir | Planejada | — |
+| RNF-011 | Desempenho das consultas públicas | 018 | Parcial na AGT-018 (medido sem meta) | `docs/revisao-tecnica-final.md` |
+| RNF-012 | Desempenho das operações de reserva e pagamento | 018 | Parcial na AGT-018 (medido sem meta) | `docs/revisao-tecnica-final.md` |
 | RNF-013 | Interface compreensível | 004 | Evidenciada na AGT-004 (ver limitações em docs/interface-publica.md) | rótulos, foco, link de pular; `tests/web-navegacao.test.tsx` |
 | RNF-014 | Consistência visual | 004 | Evidenciada na AGT-004 (ver limitações em docs/interface-publica.md) | variáveis de CSS em `src/styles.css` |
 | RNF-015 | Feedback ao usuário | 004 | Evidenciada na AGT-004 (ver limitações em docs/interface-publica.md) | avisos e mensagens por campo; `tests/web-sessao.test.tsx` |
 | RNF-016 | Responsividade | 004 | Evidenciada na AGT-004 (ver limitações em docs/interface-publica.md) | verificada em 390 px e 1280 px no navegador |
-| RNF-017 | Compatibilidade com navegadores modernos | 004 | Parcial na AGT-004: só Microsoft Edge (Chromium) verificado | verificação em navegador; ver docs/interface-publica.md |
+| RNF-017 | Compatibilidade com navegadores modernos | 004 | Parcial nas AGT-004 e AGT-018 (Edge e Chrome, mesmo motor) | `docs/revisao-tecnica-final.md` |
 | RNF-018 | Organização do código | 001 | Evidenciada na AGT-001 | Pastas `src/`, `server/`, `tests/` |
 | RNF-019 | Padronização | 001 | Evidenciada na AGT-001 | `eslint.config.mjs`, `tsconfig.json`, `.editorconfig`; lint sem avisos |
 | RNF-020 | Modularidade | 001 | Evidenciada na AGT-001 | `server/config.ts`, `server/app.ts`, `server/main.ts`; `src/config/env.ts` |
 | RNF-021 | Documentação técnica | 001 | Evidenciada na AGT-001 | `README.md` |
 | RNF-022 | Testes automatizados | 001 | Evidenciada na AGT-001 | `tests/*.test.ts(x)`: 15 testes aprovados |
-| RNF-023 | Validação antes da integração | 001 | Evidenciada na AGT-001 | `npm run check` (lint, testes, build) |
+| RNF-023 | Validação antes da integração | 001 | Parcial (verificação antes de cada commit, sem automação no repositório) | `npm run check`; `docs/revisao-tecnica-final.md` |
 | RNF-024 | Prevenção de regressões | 001 | Evidenciada na AGT-001 | Suíte automatizada (15 testes), de fundação |
 | RNF-025 | Controle de versão | 001 | Evidenciada na AGT-001 | Commits `4cd310c`, `d65d64f`; tag `agt-001-tentativa-1` |
-| RNF-026 | Rastreabilidade experimental | 001 | Evidenciada na AGT-001 | `TCC/registros-agente/AGT-001.md`, diário, `METRICAS.csv` |
-| RNF-027 | Registro (logs) de operações sem dados sensíveis | 001 | Prevista na AGT-001; evidência parcial na AGT-003 (auditoria e log da autenticação sem dados sensíveis) | `tests/auth-api.test.ts` |
-| RNF-028 | Minimização de dados pessoais coletados e exibidos | 001 | Prevista na AGT-001; sem evidência registrada | — |
+| RNF-026 | Rastreabilidade experimental | 001 | Parcial (versão da ferramenta não registrada ou não confirmada) | registros AGT, diário, `METRICAS.csv`; `docs/revisao-tecnica-final.md` |
+| RNF-027 | Registro (logs) de operações sem dados sensíveis | 001 | Evidenciada na AGT-018 | `tests/auth-api.test.ts`, `tests/regras-negocio.test.ts` (RN-042); `docs/revisao-tecnica-final.md` |
+| RNF-028 | Minimização de dados pessoais coletados e exibidos | 001 | Evidenciada na AGT-018 | `tests/revisao-final.test.ts`; `docs/revisao-tecnica-final.md` |
 | RNF-029 | Qualidade estática (lint e verificação de tipos sem erros) | 001 | Evidenciada na AGT-001 | `npm run lint` e `npm run typecheck` sem erros |
-| RNF-030 | Revisão humana de implementações produzidas por IA | 018 | Planejada | — |
-| RNF-031 | Validação independente da autoavaliação do agente | 018 | Planejada | — |
-| RNF-032 | Preservação das especificações | 018 | Planejada | — |
-| RNF-033 | Registro de intervenções humanas | 018 | Planejada | — |
+| RNF-030 | Revisão humana de implementações produzidas por IA | 018 | Parcial na AGT-018 (8 de 10 itens do roteiro; código não lido) | `docs/revisao-humana-roteiro.md`; registro AGT-018, Seção 11 |
+| RNF-031 | Validação independente da autoavaliação do agente | 018 | Não atendido na AGT-018 (sem segundo avaliador) | `docs/segundo-avaliador.md` |
+| RNF-032 | Preservação das especificações | 018 | Parcial na AGT-018 (preservação anterior à execução não comprovada pelo Git em 9 atividades) | `docs/revisao-tecnica-final.md` |
+| RNF-033 | Registro de intervenções humanas | 018 | Evidenciada na AGT-018 | `docs/revisao-tecnica-final.md` |
 
 ## Regras de negócio
 

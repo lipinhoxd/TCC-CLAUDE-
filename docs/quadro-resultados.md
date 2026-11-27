@@ -1,6 +1,6 @@
 # Quadro de resultados por atividade
 
-Atualizado em 26/11/2026. Os dois estudos são apresentados separados e **não se somam**.
+Atualizado em 27/11/2026. Os dois estudos são apresentados separados e **não se somam**.
 Fontes: TCC (Seção 5), `TCC/registros-agente/`, `TCC/metricas/METRICAS.csv` e Git.
 Células sem dado verificável contêm **[DADO NÃO REGISTRADO]**.
 
@@ -30,7 +30,7 @@ Não há inferência estatística.
 
 ## 2. Experimento principal (Claude Code)
 
-n = 17 atividades concluídas e classificadas (de 18 previstas).
+n = 18 atividades concluídas e classificadas (de 18 previstas).
 
 | AGT | Atividade | Estado | Classe | Tentativas | Testes | Duração | Intervenção | Commit |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- |
@@ -51,9 +51,9 @@ n = 17 atividades concluídas e classificadas (de 18 previstas).
 | 015 | Comunicação | Concluída | AP-3 | 1 | 685 (647 anteriores + 38 novos), todos aprovados | ≈ 14,4 min (inclui documentação, mutações e percurso em execução real; espera pelas decisões não contada) | Sim: decisão sobre canal, eventos, dados pessoais e entrega (três paradas previstas) | `8e486ff` |
 | 016 | Painel administrativo | Concluída | AP-3 | 1 | 720 (685 anteriores + 35 novos), todos aprovados | ≈ 14,5 min (inclui documentação, mutações e percurso em execução real; espera pelas decisões não contada) | Sim: decisão sobre conteúdo do painel, histórico e leitura e acesso (três paradas previstas) | `8b4bbef` |
 | 017 | Testes integrados e validação das regras | Concluída | AP-3 | 1 | 796 (720 anteriores + 76 novos), todos aprovados | ≈ 62,5 min (inclui repetições da suíte, mutações, investigação sob carga e percurso em execução real; esperas pelas decisões não contadas) | Sim: decisão sobre verificação, correções e pontos abertos de regras (três paradas previstas) e sobre um teste instável | `e85d169` |
-| 018 | Ver `docs/especificacao/07-PLANO-DE-ATIVIDADES.md` | Planejada | — | — | — | — | — | — |
+| 018 | Revisão técnica final | Concluída | AP-3 | 1 | 807 (796 anteriores + 11 novos), todos aprovados | ≈ 18,9 min (revisão, correções e verificações; esperas pelas decisões e revisão humana não contadas) | Sim: decisão sobre alcance, revisão humana e pontos abertos (três paradas previstas) e revisão pelo roteiro (8 de 10 itens) | `HASH_A_PREENCHER` |
 
-Distribuição descritiva: 17 AP-3 (n = 17) no subconjunto avaliado, o que **não permite concluir
+Distribuição descritiva: 18 AP-3 (n = 18) no subconjunto avaliado, o que **não permite concluir
 nada sobre o desempenho do agente**. As atividades seguem um critério único (decisão do pesquisador exigida pela instrução = AP-3; ver `docs/rubrica-avaliacao.md`). Perfil: tarefas fundacionais. Não há inferência estatística nem grupo
 de controle.
 

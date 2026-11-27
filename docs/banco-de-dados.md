@@ -73,7 +73,8 @@ reembolso não estavam definidas na especificação (na época, a RN-037 estava 
   `tests/db-concorrencia.test.ts` com duas conexões ao mesmo arquivo.
 - **Implementado na AGT-008:** `server/vagas/disponibilidade.ts` (`disponibilidade`, `ocuparVaga`, `liberarVaga`, `expirarVencidas`).
   A retenção não altera `vagas_ocupadas`: a disponibilidade é capacidade menos ocupadas menos retenções `ativa` com `expira_em` no futuro.
-  O banco ocupado além do `busy_timeout` de 5 s vira 503 `banco_ocupado` na API, sem nova tentativa automática.
+  O banco ocupado além do `busy_timeout` de 5 s vira 503 `banco_ocupado` na API, sem nova tentativa automática (em todas as áreas desde a
+  AGT-018; antes, as rotas de acesso e de excursões respondiam 500).
 - **Implementado na AGT-009:** `server/pagamentos/confirmacao.ts` converte a retenção em ocupação (`ocuparVaga` com a retenção consumida) na
   mesma transação que marca o pagamento e a reserva. Detalhes em `docs/reservas.md`.
 - **Implementado na AGT-015 (migração 5):** tabelas `mensagem` (um aviso por registro de auditoria) e `comunicacao_marco` (até onde a

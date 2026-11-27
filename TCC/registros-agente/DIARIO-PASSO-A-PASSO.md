@@ -1650,3 +1650,41 @@ nova. A classificação (AP-1, AP-2, AP-3 ou RP) cabe ao pesquisador; o agente n
 **Ações:** o agente criou TCC/registros-agente/AGT-017.md (Seções 1 a 5, com a instrução original na Seção 5 e os critérios de aceitação). Conforme a Seção 5, nenhum arquivo do projeto é criado antes das decisões. Para apresentar o ponto aberto do pagamento pendente com evidência, o agente executou uma sonda em memória, sem criar arquivo. Docs não alterado.
 
 **Pendente:** decisões 1 a 3 do pesquisador; conferência do Docs depois da aplicação do dossiê da AGT-016.
+
+## Entrada 125 — AGT-017: decisões respondidas e início da implementação
+
+**Hora do sistema:** 2026-11-26T19:53:14-03:00
+
+**Pedido do pesquisador:** "recomendadas".
+
+**Decisões:** 1.1 A a 1.4 A (testes pela API, quatro categorias, uma alteração proposital por regra, governança não verificável por teste); 2 A (corrigir defeitos sem mudar regra); 3.1 A (confirmação depois da partida não ocupa vaga), 3.2 A (RN-045 e RN-046 acrescentadas), 3.3 A (marcas "[confirmar]" retiradas), 3.4 A e 3.5 A. Detalhes na Seção 6 do registro.
+
+**Ações:** especificação atualizada somente com o texto aprovado (04, 05 e a cópia em docs/requisitos). Início da implementação. Docs não alterado.
+
+## Entrada 126 — AGT-017: testes, correções, teste instável e decisão
+
+**Hora do sistema:** 2026-11-26T20:40:13-03:00
+
+**Ações desde a Entrada 125:** criados tests/helpers/plataforma.ts, tests/regras-negocio.test.ts e tests/fluxos-integrados.test.ts. Antes das correções (19:56:46), 5 testes novos falharam: 1 da RN-001 (data calculada em UTC) e 4 da confirmação depois da partida (RN-046). Corrigidos server/auth/validation.ts, server/pagamentos/confirmacao.ts e server/comunicacao/textos.ts. npm run check aprovado (795 testes, 40 arquivos, 20:02:01). 44 alterações propositais, uma por regra, todas detectadas e restauradas (20:06:00). Na repetição da suíte, 1 falha em 29 rodadas completas, em teste da AGT-014; causa reproduzida sob carga artificial (banco ocupado além de 5 s). Pergunta ao pesquisador; resposta "Esperar 20 s no comando". Corrigido server/processos/rotina-cli.ts. Escritos docs/validacao-das-regras.md e atualizados README e cinco documentos. Docs (Google) não alterado.
+
+## Entrada 127 — AGT-017: execução concluída e relatório
+
+**Hora do sistema:** 2026-11-26T21:03:10-03:00
+
+**Ações desde a Entrada 126:** npm run check aprovado (20:41:53). Nova repetição da suíte: 1 falha em 17 rodadas, em teste da AGT-006 (título da aba). O agente corrigiu src/ui.tsx sem alterar o teste antigo e criou tests/web-titulo.test.tsx (falhou 5 de 5 antes, passou 5 de 5 depois). npm run check aprovado (796 testes, 41 arquivos, 20:51:18). Percurso em navegador real com cenário contínuo (20:51:22 a 20:54:20), com três ajustes declarados no banco e invariantes atendidos. Suíte repetida 22 vezes sem falha (21:01:55). Registro AGT-017 preenchido (Seções 7 a 10, 12 e 16). Sem commit; Docs não alterado.
+
+**Relatório em página privada:** https://claude.ai/artifact/R3vJs9XtJHeogM3Vt1DCQr
+
+**Pendente:** revisão e classificação pelo pesquisador; conferência do Docs depois da aplicação dos dossiês.
+
+## Entrada 128 — AGT-017: classificação AP-3, fechamento, dossiê e auditoria
+
+**Hora do sistema:** 2026-11-26T21:55:09-03:00
+
+**Pedido do pesquisador:** "ap 3" (26/11/2026, 21:50:40). Antes dele houve avisos automáticos da ferramenta sobre o acompanhamento de páginas, que não são mensagens do pesquisador.
+
+**Ações:** fechamento padrão: critérios marcados, Seções 11, 13, 14 e 16 preenchidas (revisão do código registrada pela autorização permanente; anotado que a fronteira da RN-046 não foi confirmada expressamente), métricas, quadro, matriz e ficha; npm run check com 796 de 796 testes (21:53:16); commits e85d169 (atividade) e 9d0dc49 (hash). Gerados o dossiê para o Gemini (com RN-045 e RN-046 e Quadro 3, análise e Seção 5.4 para n = 17) e a auditoria de sincronia; corrigida uma frase imprecisa na matriz de validação. Estado do Docs e próximos passos atualizados. Docs não alterado nem relido.
+
+**Orientação sobre a classificação:** o agente recomendou AP-3 no relatório e apresentou a leitura contrária (AP-4); registrado como possível influência. A decisão foi do pesquisador.
+
+**Pendente:** envio ao Gemini e conferência; perguntas ao autor (situações da retenção; RN-046 no instante da partida); AGT-018 só quando o pesquisador disser "vamos".

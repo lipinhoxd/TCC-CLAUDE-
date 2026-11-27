@@ -92,7 +92,7 @@ confirmação depois da partida ocupava vaga, comportamento que a especificaçã
 | 1 | RN-001/RN-039: a idade e a data futura eram calculadas pelo dia UTC; das 21:00 às 23:59 de Brasília, quem completaria 18 anos no dia seguinte conseguia se cadastrar. | Corrigido (`server/auth/validation.ts`). |
 | 2 | Pagamento pendente aprovado depois da partida, ou depois do fim, ocupava a vaga e a reserva seguia para Pronto para embarque e Concluída. | Decisão do pesquisador (RN-046), implementada. |
 | 3 | Teste da AGT-014 (duas rotinas simultâneas) instável: um processo esperava mais de 5 s pelo banco e terminava com erro, sem dado incorreto. | Decisão do pesquisador: o comando `npm run rotina` passa a esperar 20 s. Sob carga extrema a falha continua possível. |
-| 4 | Três comportamentos sem texto na especificação ou marcados "[confirmar]". | RN-045 e RN-046 acrescentadas e marcas retiradas, por decisão. |
+| 4 | Comportamentos sem texto na especificação (hoje RN-045 e RN-046) e pontos marcados "[confirmar]". | RN-045 e RN-046 acrescentadas e marcas retiradas, por decisão. |
 | 5 | RN-005: não há comprovação de posse do telefone. | Registrada como atendida em parte; trabalho futuro. |
 | 6 | A excursão não tem a situação "Concluída" do desenho em `05-FLUXOS-E-ESTADOS.md`. | Mantida a decisão de não implementar; trabalho futuro. |
 | 7 | Nomes das situações da retenção: a especificação diz "Convertida" e "Expirada/Liberada"; o sistema grava `confirmada`, `expirada` e `cancelada`. | Só relatado (**pergunta ao autor**); nenhum comportamento divergente. |

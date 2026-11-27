@@ -1758,3 +1758,13 @@ nova. A classificação (AP-1, AP-2, AP-3 ou RP) cabe ao pesquisador; o agente n
 **Orientação sobre a classificação:** o agente recomendou AP-3 no relatório; registrado como possível influência. A decisão foi do pesquisador, tomada antes da revisão.
 
 **Pendente:** envio ao Gemini e conferência; envio ao GitHub a pedido; segundo avaliador; revisão do código dos itens 2 e 6.
+
+## Entrada 136 — envio da AGT-018 ao GitHub
+
+**Hora do sistema:** 2026-11-27T18:48:56-03:00
+
+**Pedido do pesquisador:** "github", lido pelo agente como o envio ao GitHub que a mensagem anterior oferecia.
+
+**Ações:** conferidos os três commits pendentes (busca por chaves, tokens, e-mails e caminhos do computador sem ocorrências) e enviado o ramo main até o commit a038d94. Este registro entra em um commit posterior, enviado em seguida.
+
+**Pendente:** envio dos dossiês ao Gemini e conferência do Docs; segundo avaliador até 30/11; revisão do código dos itens 2 e 6 do roteiro. Novos envios ao GitHub somente a pedido.

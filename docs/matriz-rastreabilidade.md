@@ -1,6 +1,6 @@
 # Matriz de rastreabilidade (requisito → atividade → evidência)
 
-Atualizada em 26/11/2026 (AGT-016). Fonte dos requisitos: `docs/requisitos/`. Atividade prevista: `docs/especificacao/07-PLANO-DE-ATIVIDADES.md` (e a coluna AGT dos RF). **Evidência** só existe para o que foi executado no experimento principal (AGT-001 a AGT-016; ver a coluna Estado de cada linha e os commits em `TCC/metricas/METRICAS.csv`); o restante está **Planejada**. Não há, aqui, evidência do piloto (repositório não reaberto): **[DADO NÃO REGISTRADO]**.
+Atualizada em 26/11/2026 (AGT-017). Fonte dos requisitos: `docs/requisitos/`. Atividade prevista: `docs/especificacao/07-PLANO-DE-ATIVIDADES.md` (e a coluna AGT dos RF). **Evidência** só existe para o que foi executado no experimento principal (AGT-001 a AGT-017; ver a coluna Estado de cada linha e os commits em `TCC/metricas/METRICAS.csv`); o restante está **Planejada**. Não há, aqui, evidência do piloto (repositório não reaberto): **[DADO NÃO REGISTRADO]**.
 
 Cadeia (TCC, Seção 3.8): requisito → atividade AGT → instrução → execução → alterações → testes → revisão humana → classificação → commit.
 
@@ -91,20 +91,21 @@ Cadeia (TCC, Seção 3.8): requisito → atividade AGT → instrução → execu
 
 ## Regras de negócio
 
-AGT prevista conforme o plano; regras sem AGT no plano ficam na AGT-017 (validação geral).
+AGT prevista conforme o plano; regras sem AGT no plano ficam na AGT-017 (validação geral). A AGT-017 verificou as 46 regras: forma de
+verificação, limites e evidência de cada uma em `docs/validacao-das-regras.md` e testes em `tests/regras-negocio.test.ts`.
 
 | RN | Regra | AGT prevista | Estado | Evidência |
 | --- | --- | --- | --- | --- |
-| RN-001 | Apenas usuários com 18 anos ou mais podem concluir o cadastro. | 003 | Evidenciada na AGT-003 | `tests/auth-validation.test.ts` (maioridade) |
+| RN-001 | Apenas usuários com 18 anos ou mais podem concluir o cadastro. | 003 | Evidenciada nas AGT-003 e AGT-017 (defeito do dia em UTC corrigido na AGT-017) | `server/auth/validation.ts`; `tests/auth-validation.test.ts`, `tests/regras-negocio.test.ts` |
 | RN-002 | O CPF deve ser único. | 003 | Evidenciada na AGT-003 | `tests/auth-validation.test.ts` |
 | RN-003 | O e-mail deve ser único. | 003 | Evidenciada na AGT-003 | `tests/auth-validation.test.ts` |
 | RN-004 | São obrigatórios: nome completo, CPF, data de nascimento, telefone ou WhatsApp, e-mail e senha. | 003 | Evidenciada na AGT-003 | `tests/auth-api.test.ts` |
-| RN-005 | O telefone ou WhatsApp deve passar pelo mecanismo de validação definido. | 003 | Parcial na AGT-003 (só formato; posse do número não verificada) | `tests/auth-validation.test.ts` |
+| RN-005 | O telefone ou WhatsApp deve passar pelo mecanismo de validação definido. | 003 | Parcial nas AGT-003 e AGT-017 (só formato; posse do número não verificada) | `tests/auth-validation.test.ts`, `tests/regras-negocio.test.ts` |
 | RN-006 | O login ocorre por e-mail e senha. | 003 | Evidenciada na AGT-003 | `tests/auth-api.test.ts` |
 | RN-007 | A recuperação de acesso usa token de uso único e validade limitada. | 003 | Evidenciada na AGT-003 (duração de 30 min decidida pelo pesquisador; sem entrega real do token em produção) | `tests/auth-api.test.ts` |
 | RN-008 | A sessão expira e pode ser revogada; o acesso protegido é revalidado no servidor. | 003 | Evidenciada na AGT-003 | `tests/auth-api.test.ts` |
-| RN-009 | Cada reserva é individual e vinculada a um único passageiro autenticado. | 007 | Planejada | — |
-| RN-010 | O checkout é obrigatório. | 007 | Planejada | — |
+| RN-009 | Cada reserva é individual e vinculada a um único passageiro autenticado. | 007 | Evidenciada na AGT-017 (verificação; implementada na AGT-007) | `server/reservas/service.ts`; `tests/regras-negocio.test.ts` |
+| RN-010 | O checkout é obrigatório. | 007 | Evidenciada na AGT-017 (verificação) | `server/pagamentos/service.ts`; `tests/regras-negocio.test.ts` |
 | RN-011 | O pagamento integral é a modalidade padrão. | 009 | Evidenciada na AGT-009 | `server/pagamentos/service.ts`; `tests/pagamento-api.test.ts` |
 | RN-012 | O pagamento em duas parcelas de 50% pode ser habilitado individualmente por excursão. | 010 | Evidenciada nas AGT-005 e AGT-007 (configuração e exigência na reserva); aplicada na AGT-010 | `server/excursoes/service.ts`, `server/pagamentos/service.ts`; `tests/parcelado-api.test.ts` |
 | RN-013 | A data limite da segunda parcela é configurada por excursão e é anterior à partida (23:59:59 da data configurada). | 010 | Evidenciada nas AGT-005 e AGT-007 (configuração); aplicada na AGT-010 ao pagamento e ao vencimento | `server/vagas/vencimento.ts`; `tests/parcelado-api.test.ts` |
@@ -115,7 +116,7 @@ AGT prevista conforme o plano; regras sem AGT no plano ficam na AGT-017 (valida�
 | RN-018 | A confirmação da segunda parcela conclui a quitação. | 010 | Evidenciada na AGT-010 | `server/pagamentos/confirmacao.ts`, `server/vagas/vencimento.ts`; `tests/parcelado-confirmacao.test.ts`, `tests/parcelado-api.test.ts` |
 | RN-019 | Se a segunda parcela não for paga no prazo, a vaga é liberada. | 010 | Evidenciada na AGT-010 | `server/pagamentos/confirmacao.ts`, `server/vagas/vencimento.ts`; `tests/parcelado-confirmacao.test.ts`, `tests/parcelado-api.test.ts` |
 | RN-020 | Nesse caso, a primeira parcela permanece não reembolsável. | 010 | Evidenciada na AGT-010 | `server/pagamentos/confirmacao.ts`, `server/vagas/vencimento.ts`; `tests/parcelado-confirmacao.test.ts`, `tests/parcelado-api.test.ts` |
-| RN-021 | Nenhuma operação pode resultar em vagas ocupadas acima da capacidade da excursão. | 008 | Parcial na AGT-008 (restrição do banco da AGT-002, retenção e `ocuparVaga`; a ocupação por pagamento é da AGT-009) | `server/vagas/disponibilidade.ts`; `tests/vagas-concorrencia.test.ts`, `tests/db-schema.test.ts` |
+| RN-021 | Nenhuma operação pode resultar em vagas ocupadas acima da capacidade da excursão. | 008 | Evidenciada na AGT-017 (banco, retenção e ocupação por pagamento; sem teste de carga) | `server/vagas/disponibilidade.ts`; `tests/vagas-concorrencia.test.ts`, `tests/regras-negocio.test.ts` |
 | RN-022 | Confirmação financeira recebida após a expiração da retenção, sem disponibilidade, é registrada para tratamento administrativo, sem criar vaga adicional. | 009 | Evidenciada na AGT-009 (o registro; o tratamento administrativo é das AGT-012 e AGT-013) | `confirmarPagamento`; `tests/pagamento-confirmacao.test.ts`, `tests/pagamento-api.test.ts` |
 | RN-023 | As situações da reserva são: Aguardando pagamento, Pronto para embarque, Concluída e Cancelada. | 011 | Evidenciada na AGT-011 (as quatro situações aparecem na lista e no detalhe) | `src/pages/MinhasReservas.tsx`, `server/vagas/conclusao.ts`; `tests/area-passageiro-api.test.ts`, `tests/web-area-passageiro.test.tsx` |
 | RN-024 | Reservas integralmente pagas ou com segunda parcela quitada ficam "Pronto para embarque". | 011 | Evidenciada nas AGT-009, AGT-010 e AGT-011 (atribuída e exibida) | `confirmarPagamento`; `tests/parcelado-api.test.ts` |
@@ -127,15 +128,17 @@ AGT prevista conforme o plano; regras sem AGT no plano ficam na AGT-017 (valida�
 | RN-030 | O reembolso incide sobre o valor efetivamente pago e elegível. | 013 | Evidenciada na AGT-013 | `server/cancelamentos/`, `src/pages/CancelarReserva.tsx`, `src/pages/AdminCancelamentos.tsx`; `tests/cancelamento-api.test.ts`, `tests/web-cancelamento.test.tsx` |
 | RN-031 | Cancelamento pela organização: reembolso integral dos valores pagos aos passageiros afetados. | 013 | Evidenciada na AGT-013 | `server/cancelamentos/`, `src/pages/CancelarReserva.tsx`, `src/pages/AdminCancelamentos.tsx`; `tests/cancelamento-api.test.ts`, `tests/web-cancelamento.test.tsx` |
 | RN-032 | A primeira parcela de reserva parcelada não quitada permanece não reembolsável (inadimplência). | 013 | Evidenciada nas AGT-010 e AGT-013 (não reembolsada na inadimplência e no cancelamento pelo passageiro; no cancelamento pela organização a decisão do pesquisador a devolve, com base na RN-031) | `server/vagas/vencimento.ts`, `server/cancelamentos/regra.ts`; `tests/parcelado-confirmacao.test.ts`, `tests/cancelamento-api.test.ts` |
-| RN-033 | O administrador configura capacidade, preço, parcelamento e prazo da segunda parcela de cada excursão. | 005 | Planejada | — |
+| RN-033 | O administrador configura capacidade, preço, parcelamento e prazo da segunda parcela de cada excursão. | 005 | Evidenciada na AGT-017 (verificação; implementada na AGT-005) | `server/excursoes/service.ts`; `tests/regras-negocio.test.ts` |
 | RN-034 | O administrador consulta passageiros e reservas. | 012 | Evidenciada na AGT-012 | `server/admin/service.ts`, `server/admin/routes.ts`, `src/pages/AdminReservas.tsx`; `tests/admin-api.test.ts`, `tests/web-admin-reservas.test.tsx` |
 | RN-035 | Alterações manuais de situação só ocorrem quando autorizadas e ficam registradas na auditoria. | 012 | Evidenciada na AGT-012 | `alterarSituacao` em `server/admin/service.ts`; `tests/admin-api.test.ts` |
 | RN-036 | Com reserva ou retenção ativa, condições comerciais e temporais da excursão não podem ser editadas; nome, imagem e descrição continuam editáveis. | 005 | Evidenciada na AGT-005 (confirmada pela aprovação da instrução) | `tests/excursoes-api.test.ts` |
 | RN-037 | A excursão é criada em Rascunho; a publicação é ação distinta. | 005 | Evidenciada na AGT-005 (confirmada pela aprovação da instrução) | `tests/excursoes-api.test.ts` |
-| RN-038 | Valores monetários são guardados em centavos inteiros (BRL). | 005 | Planejada | — |
-| RN-039 | Instantes são guardados em UTC e interpretados no fuso America/Sao_Paulo. | 005 | Planejada | — |
-| RN-040 | Retenção, confirmação e expiração usam mecanismos que preservam a capacidade sob processamento concorrente. | 008 | Parcial na AGT-008 (retenção e expiração; a confirmação é da AGT-009) | `BEGIN IMMEDIATE` em `iniciarCheckout`; `tests/vagas-concorrencia.test.ts`, `tests/retencao-api.test.ts` |
-| RN-041 | Operações administrativas e automáticas relevantes geram histórico de auditoria. | 017 (validação geral) | Planejada | — |
-| RN-042 | Logs e auditoria não contêm senhas, tokens ou dados cadastrais desnecessários. | 017 (validação geral) | Planejada | — |
-| RN-043 | A IA não pode alterar autonomamente regras de negócio aprovadas. | 017 (validação geral) | Planejada | — |
-| RN-044 | Alterações críticas em autenticação, dados pessoais, pagamentos, vagas, cancelamentos e reembolsos exigem revisão humana. | 017 (validação geral) | Planejada | — |
+| RN-038 | Valores monetários são guardados em centavos inteiros (BRL). | 005 | Evidenciada na AGT-017 (verificação) | `shared/dinheiro.ts`; `tests/regras-negocio.test.ts` |
+| RN-039 | Instantes são guardados em UTC e interpretados no fuso America/Sao_Paulo. | 005 | Evidenciada na AGT-017 (verificação; defeito de data corrigido, ver RN-001) | `shared/fuso.ts`; `tests/regras-negocio.test.ts` |
+| RN-040 | Retenção, confirmação e expiração usam mecanismos que preservam a capacidade sob processamento concorrente. | 008 | Evidenciada na AGT-017 (duas conexões e confirmações simultâneas; uma máquina) | `server/db/transaction.ts`; `tests/regras-negocio.test.ts` |
+| RN-041 | Operações administrativas e automáticas relevantes geram histórico de auditoria. | 017 | Evidenciada na AGT-017 (lista de ações verificada no teste) | `server/db/audit.ts`; `tests/regras-negocio.test.ts` |
+| RN-042 | Logs e auditoria não contêm senhas, tokens ou dados cadastrais desnecessários. | 017 | Evidenciada na AGT-017 (nos fluxos exercitados) | `server/db/audit.ts`; `tests/regras-negocio.test.ts` |
+| RN-043 | A IA não pode alterar autonomamente regras de negócio aprovadas. | 017 | Não verificável por teste; conferida nos registros na AGT-017, com ressalva | `docs/validacao-das-regras.md` |
+| RN-044 | Alterações críticas em autenticação, dados pessoais, pagamentos, vagas, cancelamentos e reembolsos exigem revisão humana. | 017 | Não verificável por teste; conferida nos registros na AGT-017, com ressalva | `docs/validacao-das-regras.md` |
+| RN-045 | A reserva em Aguardando pagamento, sem pagamento pendente ou confirmado, de excursão já terminada é cancelada automaticamente. | 014, 017 | Evidenciada nas AGT-014 (rotina) e AGT-017 (regra acrescentada por decisão e verificada) | `server/vagas/encerramento.ts`; `tests/regras-negocio.test.ts` |
+| RN-046 | A confirmação financeira recebida depois da partida da excursão não ocupa vaga e é registrada para tratamento administrativo. | 017 | Evidenciada na AGT-017 (regra acrescentada por decisão, implementada e verificada) | `server/pagamentos/confirmacao.ts`; `tests/regras-negocio.test.ts` |

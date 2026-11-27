@@ -6,9 +6,17 @@ import { runMigrations } from '../db/migrate.ts';
 import { descreverErro, executarRotina, linhasDoResultado } from './rotina.ts';
 
 /** npm run rotina: executa os processos automaticos uma vez (AGT-014, decisao 1A). Sai com codigo 1 se algum passo falhar. */
+
+/**
+ * Quanto o comando espera por um banco ocupado antes de desistir de um passo (AGT-017, decisao do pesquisador). So neste comando: ele
+ * disputa o banco com a rotina da API e nao atende ninguem enquanto espera. A API continua com o limite padrao de openDatabase.
+ */
+const ESPERA_PELO_BANCO_MS = 20_000;
+
 try {
   const db = openDatabase(loadDatabaseConfig().path);
   try {
+    db.exec(`PRAGMA busy_timeout = ${ESPERA_PELO_BANCO_MS}`);
     runMigrations(db);
     const resultado = executarRotina(db, new Date(), passosDaRotina(emailDoAmbiente()));
     for (const linha of linhasDoResultado(resultado)) console.log(linha);

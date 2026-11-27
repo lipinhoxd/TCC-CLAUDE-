@@ -1,14 +1,17 @@
-import { createContext, useContext, useEffect } from 'react';
+import { createContext, useContext, useLayoutEffect } from 'react';
 import type { InputHTMLAttributes, ReactNode, TextareaHTMLAttributes } from 'react';
 
 const AppNameContext = createContext('BPM Trip');
 export const AppNameProvider = AppNameContext.Provider;
 export const useAppName = (): string => useContext(AppNameContext);
 
-/** Define o titulo da aba para a pagina atual (acessibilidade e historico do navegador). */
+/**
+ * Define o titulo da aba para a pagina atual (acessibilidade e historico do navegador). Antes de a tela ser desenhada
+ * (useLayoutEffect, AGT-017): o titulo muda junto com o conteudo.
+ */
 export function usePageTitle(title: string): void {
   const appName = useAppName();
-  useEffect(() => {
+  useLayoutEffect(() => {
     document.title = title === appName ? appName : `${title} · ${appName}`;
   }, [title, appName]);
 }

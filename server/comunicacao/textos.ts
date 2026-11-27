@@ -79,9 +79,9 @@ function frases(d: DadosDoAviso): string[] {
     }
     case 'pagamento_em_analise': {
       const valor = formatarReais(numero(e['valor_centavos']));
-      return e['apos_vencimento'] === true
-        ? [`Confirmamos o pagamento da segunda parcela, de ${valor}, depois do prazo. A reserva continua cancelada e a organização vai tratar o caso.`]
-        : [`Confirmamos o pagamento de ${valor}, mas não havia vaga disponível para a reserva. A organização vai tratar o caso.`];
+      if (e['apos_vencimento'] === true) return [`Confirmamos o pagamento da segunda parcela, de ${valor}, depois do prazo. A reserva continua cancelada e a organização vai tratar o caso.`];
+      if (e['apos_partida'] === true) return [`Confirmamos o pagamento de ${valor} depois da partida da excursão. A vaga não foi ocupada e a organização vai tratar o caso.`];
+      return [`Confirmamos o pagamento de ${valor}, mas não havia vaga disponível para a reserva. A organização vai tratar o caso.`];
     }
     case 'cancelada_inadimplencia':
       return ['O prazo da segunda parcela venceu: a reserva foi cancelada, a vaga foi liberada e a primeira parcela não é reembolsável.'];

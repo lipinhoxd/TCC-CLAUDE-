@@ -83,6 +83,12 @@ A rotina automática gera avisos sobre pagamentos, cancelamentos e reembolsos, q
 
 O administrador tem um **Painel** (`/admin`) com valores, reservas por situação, pendências, e-mails que falharam e a ocupação das excursões a realizar, e um **Histórico** (`/admin/historico`) das operações administrativas e automáticas, com filtros. Ver [docs/painel-administrativo.md](docs/painel-administrativo.md).
 
+## Validação das regras
+
+Testes integrados dos fluxos principais (`tests/fluxos-integrados.test.ts`) e um bloco de testes por regra de negócio
+(`tests/regras-negocio.test.ts`; uma regra isolada: `npx vitest run tests/regras-negocio.test.ts -t "^RN-021 "`). O resultado por regra, com
+os limites do que foi verificado, está em `docs/validacao-das-regras.md`.
+
 ## Consulta pública de excursões
 
 Lista e detalhe das excursões publicadas (`/excursoes`, `/excursoes/:id`) e API pública de leitura (`GET /api/excursoes`). Para ver com dados fictícios: `npm run admin:create` e `npm run seed:demo`. Imagens em `public/imagens/`. Detalhes e limitações em [docs/consulta-publica.md](docs/consulta-publica.md).

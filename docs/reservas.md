@@ -99,6 +99,7 @@ Decisões do pesquisador (20/11/2026, "recomendadas"):
 | Confirmação | `confirmarPagamento` (`server/pagamentos/confirmacao.ts`), em **uma única transação `BEGIN IMMEDIATE`**: marca o pagamento `confirmado`, converte a retenção (`confirmada`), ocupa a vaga com `ocuparVaga` (AGT-008) e coloca a reserva em "Pronto para embarque" (RN-016). **Idempotente**: repetir devolve o resultado anterior, sem ocupar outra vaga. Uma falha no meio desfaz tudo. |
 | Depois da expiração, com vaga livre | A confirmação ocupa a vaga normalmente. |
 | Depois da expiração, sem vaga (RN-022, RF-026) | O pagamento fica `confirmado` e **sinalizado** na coluna nova `pendencia_administrativa = 'confirmacao_sem_vaga'` (migração 2), mais auditoria `pagamento.confirmado_sem_vaga`. A reserva **continua "Aguardando pagamento"**, nenhuma vaga é criada e `vagas_ocupadas` não passa da capacidade. O passageiro vê que a organização vai tratar o caso, sem promessa de reembolso (estorno e reembolso são da AGT-013). |
+| A partir da partida (RN-046, AGT-017) | A confirmação **não ocupa vaga**, mesmo havendo vaga ou retenção: mesmo tratamento da linha anterior (pendência para a administração), com `apos_partida` na auditoria e aviso próprio. O administrador reembolsa a pendência, e a reserva é cancelada (AGT-013). Antes da partida, nada muda. |
 
 Interpretação registrada para revisão: a desistência (AGT-007) passa a ser bloqueada por pagamento **pendente ou confirmado**; um
 pagamento recusado (`falhou`) não impede desistir. Antes, qualquer linha de pagamento bloqueava.

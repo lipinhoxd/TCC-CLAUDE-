@@ -1,8 +1,8 @@
-# 04 — Regras de negócio (RN-001 a RN-044)
+# 04 — Regras de negócio (RN-001 a RN-046)
 
 Origem: **Piloto** = ID e texto usados nos registros do piloto; **TCC 4.5.x** = Capítulo 4, seção
 indicada; **Piloto/AGT-005** = regra aplicada no relatório da AGT-005; **Nova** = definida nesta
-versão. Regras marcadas **[confirmar]** precisam de decisão dos pesquisadores.
+versão. As marcas "[confirmar]" foram retiradas na AGT-017 (26/11/2026), por decisão dos pesquisadores; a coluna Origem cita a decisão de cada uma.
 
 ## Cadastro e acesso (TCC 4.5.1)
 
@@ -14,7 +14,7 @@ versão. Regras marcadas **[confirmar]** precisam de decisão dos pesquisadores.
 | RN-004 | São obrigatórios: nome completo, CPF, data de nascimento, telefone ou WhatsApp, e-mail e senha. | Piloto |
 | RN-005 | O telefone ou WhatsApp deve passar pelo mecanismo de validação definido. | Piloto |
 | RN-006 | O login ocorre por e-mail e senha. | Piloto |
-| RN-007 | A recuperação de acesso usa token de uso único e validade limitada. **[confirmar a duração]** | Nova |
+| RN-007 | A recuperação de acesso usa token de uso único e validade limitada. | Nova; duração de 30 minutos decidida na AGT-003 |
 | RN-008 | A sessão expira e pode ser revogada; o acesso protegido é revalidado no servidor. | Nova |
 
 ## Reservas, pagamentos e vagas (TCC 4.5.2)
@@ -63,13 +63,20 @@ versão. Regras marcadas **[confirmar]** precisam de decisão dos pesquisadores.
 | RN-033 | O administrador configura capacidade, preço, parcelamento e prazo da segunda parcela de cada excursão. | TCC 4.5.5 |
 | RN-034 | O administrador consulta passageiros e reservas. | TCC 4.5.5 |
 | RN-035 | Alterações manuais de situação só ocorrem quando autorizadas e ficam registradas na auditoria. | TCC 4.5.5 |
-| RN-036 | Com reserva ou retenção ativa, condições comerciais e temporais da excursão não podem ser editadas; nome, imagem e descrição continuam editáveis. **[confirmar]** | Piloto/AGT-005 |
-| RN-037 | A excursão é criada em Rascunho; a publicação é ação distinta. **[confirmar]** | Piloto/AGT-005 |
+| RN-036 | Com reserva ou retenção ativa, condições comerciais e temporais da excursão não podem ser editadas; nome, imagem e descrição continuam editáveis. | Piloto/AGT-005; confirmada na AGT-005 |
+| RN-037 | A excursão é criada em Rascunho; a publicação é ação distinta. | Piloto/AGT-005; confirmada na AGT-005 |
 | RN-038 | Valores monetários são guardados em centavos inteiros (BRL). | Piloto/AGT-005 |
 | RN-039 | Instantes são guardados em UTC e interpretados no fuso America/Sao_Paulo. | Piloto/AGT-005 |
 | RN-040 | Retenção, confirmação e expiração usam mecanismos que preservam a capacidade sob processamento concorrente. | TCC 4.5.5 |
 | RN-041 | Operações administrativas e automáticas relevantes geram histórico de auditoria. | TCC 4.7 |
 | RN-042 | Logs e auditoria não contêm senhas, tokens ou dados cadastrais desnecessários. | Nova |
+
+## Regras acrescentadas por decisão dos pesquisadores
+
+| ID | Regra | Origem |
+| --- | --- | --- |
+| RN-045 | A reserva em Aguardando pagamento, sem pagamento pendente ou confirmado, de excursão já terminada é cancelada automaticamente. | Decisão do pesquisador (AGT-014, 26/11/2026) |
+| RN-046 | A confirmação financeira recebida depois da partida da excursão não ocupa vaga e é registrada para tratamento administrativo. | Decisão do pesquisador (AGT-017, 26/11/2026) |
 
 ## Governança do agente de IA
 

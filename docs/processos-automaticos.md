@@ -31,7 +31,8 @@ horário da rotina. O quarto é aplicado **somente pela rotina**.
 - Cada passo em sua própria transação `BEGIN IMMEDIATE`: a falha de um desfaz só ele e não impede os outros; a execução seguinte tenta de novo.
 - Repetir não tem efeito (o registro alterado deixa de atender a condição); com dois processos, o segundo espera o bloqueio de escrita e não
   encontra o que fazer.
-- Banco ocupado além de 5 s (`busy_timeout`): o passo falha com `database is locked` e fica para a execução seguinte.
+- Banco ocupado além do limite (`busy_timeout`): o passo falha com `database is locked` e fica para a execução seguinte. O limite é de 5 s
+  na rotina da API e, desde a AGT-017, de 20 s no comando `npm run rotina`, que antes desistia ao disputar o banco com outra execução.
 - Nenhuma rota HTTP dispara ou configura a rotina.
 
 ## Registro e acompanhamento

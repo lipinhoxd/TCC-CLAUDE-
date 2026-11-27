@@ -18,11 +18,13 @@ Um fluxo é avaliado pelo comportamento resultante quando as operações são en
 
 `Aguardando pagamento` → `Pronto para embarque` → `Concluída`; a partir de qualquer situação não final, `Cancelada`.
 
-## Situações da excursão **[confirmar]**
+## Situações da excursão
 
 `Rascunho` → `Publicada` → `Encerrada` → `Concluída`; `Cancelada` a partir de Rascunho, Publicada ou Encerrada.
-Origem: estados usados no piloto (draft, published, closed, completed, cancelled). A matriz de
-transições completa é decisão dos pesquisadores.
+Origem: estados usados no piloto (draft, published, closed, completed, cancelled). Decisões dos
+pesquisadores: a AGT-005 adotou quatro situações (Rascunho, Publicada, Encerrada e Cancelada) e as
+transições entre elas (`docs/excursoes-admin.md`); na AGT-014 e na AGT-017 decidiu-se **não**
+implementar "Concluída" na excursão, que fica como trabalho futuro.
 
 ## Situação da retenção de vaga
 

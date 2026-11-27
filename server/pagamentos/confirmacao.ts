@@ -18,6 +18,9 @@ import { vencerSegundasParcelas } from '../vagas/vencimento.ts';
  * pagamento fica confirmado e sinalizado (pendencia_administrativa), a reserva continua "Aguardando pagamento" e nenhuma vaga
  * adicional e criada (RN-022). Uma segunda parcela confirmada depois do prazo e da liberacao da vaga tambem fica confirmada e
  * sinalizada, e a reserva continua Cancelada por inadimplencia (AGT-010).
+ *
+ * Confirmacao recebida a partir do instante da partida (RN-046, AGT-017): nao ocupa vaga, mesmo havendo vaga ou retencao; segue o
+ * mesmo tratamento administrativo da confirmacao sem vaga, e o evento da auditoria leva `apos_partida`.
  */
 
 export type ResultadoConfirmacao = 'confirmado' | 'ja_confirmado' | 'confirmado_sem_vaga';
@@ -115,7 +118,11 @@ export function confirmarPagamento(db: DatabaseSync, pagamentoId: number, agora:
   const retencao = db.prepare("SELECT id FROM retencao_vaga WHERE reserva_id = ? AND situacao = 'ativa'").get(reservaId);
   const retencaoId = retencao === undefined ? undefined : Number(retencao['id']);
 
-  if (ocuparVaga(db, excursaoId, agora, retencaoId)) {
+  // A partir da partida a vaga ja nao pode ser usada: a confirmacao nao ocupa (RN-046).
+  const excursao = db.prepare('SELECT partida_utc FROM excursao WHERE id = ?').get(excursaoId);
+  const partiu = new Date(String(excursao?.['partida_utc'])).getTime() <= agora.getTime();
+
+  if (!partiu && ocuparVaga(db, excursaoId, agora, retencaoId)) {
     if (retencaoId !== undefined) {
       db.prepare("UPDATE retencao_vaga SET situacao = 'confirmada' WHERE id = ?").run(retencaoId);
       registrarAuditoria(db, {
@@ -154,8 +161,8 @@ export function confirmarPagamento(db: DatabaseSync, pagamentoId: number, agora:
     return 'confirmado';
   }
 
-  // Sem vaga (RN-022): a confirmacao nao cria vaga adicional. O pagamento fica confirmado e sinalizado para a administracao;
-  // uma retencao ainda ativa que nao conseguiu ocupar (estado inconsistente) e cancelada para nao segurar vaga a toa.
+  // Sem vaga (RN-022) ou depois da partida (RN-046): a confirmacao nao cria vaga adicional. O pagamento fica confirmado e sinalizado
+  // para a administracao; uma retencao ainda ativa que nao ocupou e cancelada para nao segurar vaga a toa.
   if (retencaoId !== undefined) {
     db.prepare("UPDATE retencao_vaga SET situacao = 'cancelada' WHERE id = ?").run(retencaoId);
     registrarAuditoria(db, {
@@ -179,7 +186,7 @@ export function confirmarPagamento(db: DatabaseSync, pagamentoId: number, agora:
     entidade: 'pagamento',
     registroId: pagamentoId,
     estadoAnterior: { situacao: 'pendente' },
-    estadoNovo: { situacao: 'confirmado', reserva_id: reservaId, parcela, valor_centavos: valor, pendencia_administrativa: 'confirmacao_sem_vaga' },
+    estadoNovo: { situacao: 'confirmado', reserva_id: reservaId, parcela, valor_centavos: valor, pendencia_administrativa: 'confirmacao_sem_vaga', ...(partiu ? { apos_partida: true } : {}) },
     ocorridoEm: agora,
   });
   return 'confirmado_sem_vaga';

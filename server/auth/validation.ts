@@ -1,3 +1,5 @@
+import { utcParaBrasilia } from '../../shared/fuso.ts';
+
 export type FieldErrors = Record<string, string>;
 
 const EMAIL_FORMAT =
@@ -68,7 +70,7 @@ export function normalizePhone(raw: unknown): string | null {
 
 export type BirthDateResult = 'ok' | 'invalida' | 'menor_de_idade';
 
-/** Valida a data (AAAA-MM-DD, existente, nao futura) e a maioridade de 18 anos (RN-001). */
+/** Valida a data (AAAA-MM-DD, existente, nao futura) e a maioridade de 18 anos (RN-001), com o "hoje" de Brasilia (RN-039). */
 export function checkBirthDate(raw: unknown, now: Date): BirthDateResult {
   if (typeof raw !== 'string' || !/^\d{4}-\d{2}-\d{2}$/.test(raw)) {
     return 'invalida';
@@ -78,9 +80,7 @@ export function checkBirthDate(raw: unknown, now: Date): BirthDateResult {
   if (date.getUTCFullYear() !== y || date.getUTCMonth() !== m - 1 || date.getUTCDate() !== d || y < 1900) {
     return 'invalida';
   }
-  const ny = now.getUTCFullYear();
-  const nm = now.getUTCMonth() + 1;
-  const nd = now.getUTCDate();
+  const [ny, nm, nd] = utcParaBrasilia(now).data.split('-').map(Number) as [number, number, number];
   if (y > ny || (y === ny && (m > nm || (m === nm && d > nd)))) {
     return 'invalida';
   }

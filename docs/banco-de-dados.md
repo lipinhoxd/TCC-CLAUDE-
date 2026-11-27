@@ -57,7 +57,7 @@ Convenções: dinheiro em **centavos inteiros** (RN-038; `STRICT` recusa decimai
 ISO 8601 **UTC** terminado em `Z` (RN-039; `CHECK` de formato); datas de calendário `AAAA-MM-DD`.
 
 Situações da excursão (`rascunho`, `publicada`, `encerrada`, `cancelada`), de pagamento, retenção e
-reembolso não estão definidas na especificação (a RN-037 está como "[confirmar]"). São valores
+reembolso não estavam definidas na especificação (na época, a RN-037 estava como "[confirmar]"; a marca foi retirada na AGT-017). São valores
 **provisórios** escolhidos nesta atividade; o pesquisador os confirmou em 13/11/2026.
 
 ## Capacidade e concorrência (RN-021, RN-040, RNF-008)

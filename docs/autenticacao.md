@@ -33,7 +33,7 @@ na hora.
 
 ## Regras implementadas
 
-- Cadastro: todos os campos (RN-004); maioridade de 18 anos pela data de nascimento (RN-001); CPF com
+- Cadastro: todos os campos (RN-004); maioridade de 18 anos pela data de nascimento, contada no dia de Brasília (RN-001, RN-039; AGT-017); CPF com
   dígitos verificadores e único (RN-002); e-mail em minúsculas e único (RN-003). O perfil enviado no
   cadastro é ignorado.
 - Senha: 10 a 128 caracteres, com letra e número, fora de uma lista curta de senhas comuns, e diferente

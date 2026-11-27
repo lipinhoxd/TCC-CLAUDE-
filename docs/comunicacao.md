@@ -17,7 +17,7 @@ Um aviso aparece com atraso de até um intervalo da rotina (padrão 60 s). Com a
 | Registro de auditoria | Tipo | O texto informa |
 | --- | --- | --- |
 | `pagamento.confirmado` | `pagamento_confirmado` | Valor; na 1ª parcela, a data limite e a regra de não reembolso; na 2ª, a quitação. |
-| `pagamento.confirmado_sem_vaga` | `pagamento_em_analise` | Valor e que a organização vai tratar o caso. |
+| `pagamento.confirmado_sem_vaga` | `pagamento_em_analise` | Valor e que a organização vai tratar o caso; o texto diz se faltou vaga, se a segunda parcela chegou depois do prazo ou, desde a AGT-017, se a confirmação chegou depois da partida. |
 | `reserva.vencimento_segunda_parcela` | `cancelada_inadimplencia` | Cancelamento, vaga liberada, 1ª parcela não reembolsável. |
 | `reserva.cancelamento_passageiro` | `cancelada_passageiro` | Valor e percentual do reembolso registrado, ou por que não há. |
 | `reserva.cancelamento_organizacao` | `cancelada_organizacao` | Cancelamento da excursão e valor do reembolso registrado. |

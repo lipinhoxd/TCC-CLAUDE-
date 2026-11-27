@@ -1720,3 +1720,41 @@ nova. A classificação (AP-1, AP-2, AP-3 ou RP) cabe ao pesquisador; o agente n
 **Ações:** conexão do remoto trocada para HTTPS (a conexão anterior era recusada); enviados o ramo main (até o commit 01fdfed) e a tag agt-001-tentativa-1; conferido que os identificadores no GitHub são iguais aos locais. Este registro entra em um commit posterior, enviado em seguida.
 
 **Pendente:** decisões 1 a 3 da AGT-018; envio do dossiê da AGT-017 ao Gemini e conferência do Docs. Novos envios ao GitHub somente a pedido.
+
+## Entrada 132 — apoio à instalação em outro computador
+
+**Hora do sistema:** 2026-11-27T18:03:56-03:00 (registro feito junto com a Entrada 133)
+
+**Pedidos do pesquisador (26 e 27/11/2026):** orientar um parceiro do projeto a baixar o repositório, instalar as dependências e executar o sistema.
+
+**Ações:** o agente explicou o envio e o recebimento de alterações pelo GitHub e o passo a passo de instalação, do arquivo local de configuração e dos dados de demonstração, sem alterar o projeto. Segundo o relato do pesquisador, a instalação e a execução funcionaram no outro computador; o agente não viu esse computador e o relato não é verificação própria.
+
+## Entrada 133 — AGT-018: decisões respondidas e início da implementação
+
+**Hora do sistema:** 2026-11-27T18:03:56-03:00
+
+**Pedido do pesquisador:** "recomendadas".
+
+**Decisões:** 1.1 A a 1.4 A (quatro categorias; desempenho medido sem meta; Chrome além do Edge; npm audit); 2.1 A e 2.2 A (revisão guiada; segundo avaliador registrado como não atendido, com material pronto); 3.1 A a 3.6 A (corrigir sem mudar regra; RN-046 no instante exato, confirmada; texto das situações da retenção; manter textos "sem vaga"; ajustar só o estilo do menu; vulnerabilidades só relatadas). Detalhes na Seção 6 do registro.
+
+**Ações:** especificação atualizada somente com o texto aprovado (situações da retenção em 05-FLUXOS-E-ESTADOS.md). Início da implementação. Docs não alterado.
+
+## Entrada 134 — AGT-018: execução concluída e relatório
+
+**Hora do sistema:** 2026-11-27T18:23:32-03:00
+
+**Ações desde a Entrada 133:** npm audit (9 moderadas, só em desenvolvimento); revisão do código das partes críticas; 5 testes novos reprovados antes das correções (18:06:47) e quatro defeitos corrigidos (limite de tentativas sob pedidos simultâneos, banco ocupado respondendo 500, hash antes de conferir o token, endereço malformado); ajustes de documentação, README e estilo do menu; reprodução do zero a partir do GitHub e do código final; medição de desempenho sem meta; percurso de todas as páginas no Edge e no Chrome; conferência das especificações e dos registros; npm run check com 807 de 807 testes (18:17:24); suíte repetida 20 vezes sem falha. Criados o documento da revisão, o roteiro de revisão humana e o material do segundo avaliador. Registro AGT-018 preenchido (Seções 7 a 10, 12 e 16). Sem commit; nada enviado ao GitHub; Docs não alterado.
+
+**Pendente:** respostas do pesquisador ao roteiro e classificação.
+
+## Entrada 135 — AGT-018: classificação, revisão pelo roteiro, fechamento, dossiê e auditoria
+
+**Hora do sistema:** 2026-11-27T18:47:41-03:00
+
+**Pedidos do pesquisador (27/11/2026):** "ap 3" (18:27:30); na pergunta do agente sobre a revisão não respondida, "Revisar antes" (18:28:02); depois, as respostas dos itens, até 18:44:28.
+
+**Ações:** o agente preparou um ambiente temporário com dados fictícios para a revisão e orientou cada item. Itens 1, 3, 4, 5, 7, 8, 9 e 10 "ok"; itens 2 e 6 "não revisei". No item 9, a primeira tentativa usou data de maior de idade, e um "ok" posterior não tinha correspondência no banco; o agente apontou, e o teste foi refeito. Ambiente desligado e apagado. Fechamento: critérios marcados, Seções 11 a 14 e 16, RNF-030 como atendido em parte, métricas, quadro, matriz e ficha; npm run check com 807 de 807 testes; commits edcdb90 (atividade) e b5fcb73 (hash). Gerados o dossiê para o Gemini (com Quadro 3, análise e Seção 5.4 para n = 18) e a auditoria de sincronia. Estado do Docs e próximos passos atualizados. Docs não alterado nem relido; nada enviado ao GitHub.
+
+**Orientação sobre a classificação:** o agente recomendou AP-3 no relatório; registrado como possível influência. A decisão foi do pesquisador, tomada antes da revisão.
+
+**Pendente:** envio ao Gemini e conferência; envio ao GitHub a pedido; segundo avaliador; revisão do código dos itens 2 e 6.

@@ -29,6 +29,7 @@ campos de avaliação: docs/rubrica-avaliacao.md (repositório)".
 | 015 | AP-3 | 8e486ff | pendente | pendente | pendente | pendente | pendente |
 | 016 | AP-3 | 8b4bbef | pendente | pendente | pendente | pendente | pendente |
 | 017 | AP-3 | e85d169 | pendente | pendente | pendente | pendente | pendente |
+| 018 | AP-3 | edcdb90 | pendente | pendente | pendente | pendente | pendente |
 
 Critério único de classificação (AP-3 quando a instrução manda parar e a atividade só prossegue com
 decisão do pesquisador) está na rubrica, na Seção 6.3 e no Apêndice F do Docs.
@@ -168,3 +169,7 @@ Dossiê: `TCC/relatorios/DOSSIE-GEMINI-AGT-016-2026-11-26.md` (a seção J subst
 ## AGT-017 (2026-11-26T21:55:09-03:00)
 
 Dossiê: `TCC/relatorios/DOSSIE-GEMINI-AGT-017-2026-11-26.md` (a seção J substitui as anteriores; a seção G acrescenta a RN-045 e a RN-046). Auditoria: `TCC/relatorios/AUDITORIA-SINCRONIA-AGT-017-2026-11-26.md`. **Aguardando o pesquisador enviar ao Gemini** (ordem: Parte A e dossiês das AGT-013 a 016, se ainda não enviados; depois o da AGT-017); em seguida, reler o Docs e conferir (n = 17; AGT-018 não iniciada; Quadros 2 e 3; fichas AGT-011 a 017; Seções 5.3 e 5.4; Apêndice D; 46 regras; nada novo inventado). Commits da atividade: e85d169 e 9d0dc49. Última leitura do Docs: depois da AGT-012.
+
+## AGT-018 (2026-11-27T18:47:41-03:00)
+
+Dossiê: `TCC/relatorios/DOSSIE-GEMINI-AGT-018-2026-11-27.md` (a seção J substitui as anteriores). Auditoria: `TCC/relatorios/AUDITORIA-SINCRONIA-AGT-018-2026-11-27.md`. **Aguardando o pesquisador enviar ao Gemini** (ordem: Parte A e dossiês das AGT-013 a 017, se ainda não enviados; depois o da AGT-018); em seguida, reler o Docs e conferir (n = 18; Quadros 2 e 3; fichas AGT-011 a 018; Seções 5.3 e 5.4; Apêndice D; 46 regras; situações da retenção; nada novo inventado). Commits da atividade: edcdb90 e b5fcb73. Última leitura do Docs: depois da AGT-012.
